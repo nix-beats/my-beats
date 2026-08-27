@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My-Beats</title>
-    <!-- External Playlist Files -->
+    <!-- Playlist Files -->
     <script src="bollywood.js"></script>
     <script src="sadabahar.js"></script>
     <script src="retro.js"></script>
-    <script src="yt-fetcher.js"></script>
+    <!-- Official YouTube API Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -42,14 +43,14 @@
             margin: 0 auto;
         }
 
-        /* 50% Transparent Cards with Increased Height */
+        /* 50% Transparent Cards */
         .card {
-            background: rgba(0, 0, 0, 0.5); /* 50% Transparent */
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(8px);
             border-radius: 14px;
             padding: 14px 12px;
-            min-height: 165px; /* Height Inreased */
+            min-height: 165px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -65,7 +66,6 @@
             letter-spacing: 1px;
         }
 
-        /* Top Row: Art, Text, Heart */
         .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         
         .cd-art { 
@@ -84,7 +84,6 @@
         .song-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
         .artist-name { font-size: 10.5px; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Heart Icon */
         .heart-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; }
         .heart-btn svg { width: 20px; height: 20px; fill: none; stroke: #ffffff; stroke-width: 2.2; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8)); }
         .heart-btn.liked svg { fill: #ff2a5f; stroke: #ff2a5f; }
@@ -134,11 +133,17 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
         .play-btn svg { fill: #000; width: 13px; height: 13px; filter: none; }
+
+        /* Hidden YouTube Engine */
+        #yt-player { position: absolute; width: 1px; height: 1px; top: -9999px; left: -9999px; opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <div class="logo">MY-BEATS</div>
+
+    <!-- Hidden YouTube Player Container -->
+    <div id="yt-player"></div>
 
     <div class="grid-container">
         <!-- Box 1: Bollywood -->
@@ -154,12 +159,9 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
-            
-            <!-- Seekbar -->
             <div class="seekbar-row">
                 <input type="range" class="seekbar" id="seek-bollywood" value="0" min="0" max="100" oninput="seekAudio('bollywood', this.value)">
             </div>
-
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('bollywood')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('bollywood')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
@@ -182,12 +184,9 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
-
-            <!-- Seekbar -->
             <div class="seekbar-row">
                 <input type="range" class="seekbar" id="seek-sadabahar" value="0" min="0" max="100" oninput="seekAudio('sadabahar', this.value)">
             </div>
-
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('sadabahar')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('sadabahar')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
@@ -210,12 +209,9 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
-
-            <!-- Seekbar -->
             <div class="seekbar-row">
                 <input type="range" class="seekbar" id="seek-retro" value="0" min="0" max="100" oninput="seekAudio('retro', this.value)">
             </div>
-
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('retro')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('retro')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
@@ -238,12 +234,9 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
-
-            <!-- Seekbar -->
             <div class="seekbar-row">
                 <input type="range" class="seekbar" id="seek-fav" value="0" min="0" max="100" oninput="seekAudio('fav', this.value)">
             </div>
-
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('fav')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('fav')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
@@ -254,8 +247,6 @@
         </div>
     </div>
 
-    <audio id="global-audio"></audio>
-
     <script>
         const musicData = {
             bollywood: bollywoodSongs,
@@ -264,8 +255,32 @@
         };
 
         const currentTracks = {};
-        const audio = document.getElementById('global-audio');
         let activeCategory = null;
+        let ytPlayer = null;
+        let isYtReady = false;
+
+        // Initialize Official YouTube Engine
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-player', {
+                height: '1',
+                width: '1',
+                playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
+                events: {
+                    'onReady': () => { isYtReady = true; },
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                if (activeCategory) setPlayIcon(activeCategory, true);
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                if (activeCategory) setPlayIcon(activeCategory, false);
+            } else if (event.data === YT.PlayerState.ENDED) {
+                if (activeCategory) nextSong(activeCategory);
+            }
+        }
 
         window.onload = () => {
             ['bollywood', 'sadabahar', 'retro'].forEach(cat => {
@@ -276,19 +291,26 @@
             loadFavUI();
         };
 
-        // Real-time Seekbar Update
-        audio.ontimeupdate = () => {
-            if (activeCategory && audio.duration) {
-                const percent = (audio.currentTime / audio.duration) * 100;
-                const seekbar = document.getElementById(`seek-${activeCategory}`);
-                if (seekbar) seekbar.value = percent || 0;
+        // Real-Time Seekbar Sync
+        setInterval(() => {
+            if (activeCategory && ytPlayer && isYtReady && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                const duration = ytPlayer.getDuration();
+                const currentTime = ytPlayer.getCurrentTime();
+                if (duration > 0) {
+                    const percent = (currentTime / duration) * 100;
+                    const seekbar = document.getElementById(`seek-${activeCategory}`);
+                    if (seekbar) seekbar.value = percent || 0;
+                }
             }
-        };
+        }, 500);
 
-        // Manual Audio Seeking
         function seekAudio(cat, val) {
-            if (activeCategory === cat && audio.duration) {
-                audio.currentTime = (val / 100) * audio.duration;
+            if (activeCategory === cat && ytPlayer && isYtReady) {
+                const duration = ytPlayer.getDuration();
+                if (duration > 0) {
+                    const targetTime = (val / 100) * duration;
+                    ytPlayer.seekTo(targetTime, true);
+                }
             }
         }
 
@@ -298,35 +320,32 @@
             card.querySelector('.artist-name').innerText = currentTracks[cat].artist;
         }
 
-        async function togglePlay(cat) {
+        function togglePlay(cat) {
+            if (!isYtReady) return alert("YouTube Engine Initializing, please wait a second...");
+
             if (cat === 'fav') {
                 const favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
                 if (favs.length === 0) return alert('No favorite songs added!');
                 if (!currentTracks['fav']) currentTracks['fav'] = favs[0];
             }
 
-            if (activeCategory === cat && !audio.paused) {
-                audio.pause();
-                setPlayIcon(cat, false);
+            const song = currentTracks[cat];
+
+            if (activeCategory === cat) {
+                const state = ytPlayer.getPlayerState();
+                if (state === YT.PlayerState.PLAYING) {
+                    ytPlayer.pauseVideo();
+                } else {
+                    ytPlayer.playVideo();
+                }
             } else {
-                if (activeCategory && activeCategory !== cat) {
+                if (activeCategory) {
                     setPlayIcon(activeCategory, false);
                     document.getElementById(`seek-${activeCategory}`).value = 0;
                 }
                 activeCategory = cat;
-                const card = document.getElementById(`card-${cat}`);
-                card.querySelector('.song-title').innerText = "Loading Audio...";
-
-                try {
-                    const audioUrl = await getYouTubeAudioUrl(currentTracks[cat].id);
-                    audio.src = audioUrl;
-                    audio.play();
-                    updateCardUI(cat);
-                    setPlayIcon(cat, true);
-                } catch (err) {
-                    alert("Unable to load YouTube stream.");
-                    updateCardUI(cat);
-                }
+                ytPlayer.loadVideoById(song.id);
+                updateCardUI(cat);
             }
         }
 
@@ -349,7 +368,9 @@
             const randIndex = Math.floor(Math.random() * musicData[cat].length);
             currentTracks[cat] = { index: randIndex, ...musicData[cat][randIndex] };
             updateCardUI(cat);
-            if (activeCategory === cat) togglePlay(cat);
+            if (activeCategory === cat) {
+                ytPlayer.loadVideoById(currentTracks[cat].id);
+            }
         }
 
         function nextSong(cat) {
@@ -358,7 +379,9 @@
             const song = musicData[cat][currentTracks[cat].index];
             currentTracks[cat] = { index: currentTracks[cat].index, ...song };
             updateCardUI(cat);
-            if (activeCategory === cat) togglePlay(cat);
+            if (activeCategory === cat) {
+                ytPlayer.loadVideoById(song.id);
+            }
         }
 
         function prevSong(cat) {
@@ -367,7 +390,9 @@
             const song = musicData[cat][currentTracks[cat].index];
             currentTracks[cat] = { index: currentTracks[cat].index, ...song };
             updateCardUI(cat);
-            if (activeCategory === cat) togglePlay(cat);
+            if (activeCategory === cat) {
+                ytPlayer.loadVideoById(song.id);
+            }
         }
 
         function toggleFav(cat) {
@@ -391,14 +416,4 @@
         function loadFavUI() {
             const favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
             if (favs.length > 0) {
-                document.getElementById('fav-title').innerText = favs[0].title;
-                document.getElementById('fav-artist').innerText = favs[0].artist;
-                currentTracks['fav'] = favs[0];
-            } else {
-                document.getElementById('fav-title').innerText = "No Favorites";
-                document.getElementById('fav-artist').innerText = "Click Heart";
-            }
-        }
-    </script>
-</body>
-</html>
+                document.getElementById('fav-title').innerText 
