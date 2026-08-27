@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My-Beats Web Player</title>
 
+    <!-- गानों की एक्सटर्नल फाइल्स -->
+    <script src="bollywood.js"></script>
+    <script src="sadhabhar.js"></script>
+
     <!-- YouTube Engine API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
@@ -12,78 +16,86 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
         body { 
-            background: #0f0f12;
-            color: #fff; 
+            /* आपकी रिपोजिटरी की bg.jpg इमेज */
+            background: url('bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff; 
             padding: 20px 10px; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
         
         .logo { 
             font-size: 28px; 
             font-weight: 900; 
-            color: #ff2a5f; 
-            margin-bottom: 24px;
-            margin-top: 10px;
-            letter-spacing: 2px;
+            color: #ffffff; 
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
             text-align: center;
         }
 
+        /* Category Tabs */
         .category-tabs {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
             justify-content: center;
         }
 
         .tab-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ccc;
-            padding: 8px 16px;
-            border-radius: 20px;
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             transition: 0.3s;
+            backdrop-filter: blur(4px);
         }
 
         .tab-btn.active {
-            background: #ff2a5f;
-            color: #fff;
-            border-color: #ff2a5f;
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
         }
 
+        /* Transparent Track Box with White Outline */
         .card {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
+            background: transparent;
+            border: 1.5px solid #ffffff;
+            backdrop-filter: blur(5px);
             border-radius: 20px;
-            padding: 20px;
+            padding: 22px;
             width: 100%;
-            max-width: 350px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            max-width: 340px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .category-title { 
-            font-size: 12px; 
+            font-size: 11px; 
             text-transform: uppercase; 
-            color: #ff2a5f; 
+            color: #ffffff; 
             margin-bottom: 12px; 
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            opacity: 0.8;
         }
 
         .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
         
+        /* Rotating CD */
         .cd-art { 
-            width: 55px; 
-            height: 55px; 
+            width: 58px; 
+            height: 58px; 
             border-radius: 50%; 
-            border: 2px solid #ff2a5f; 
+            border: 2px solid #ffffff; 
             object-fit: cover; 
             animation: spin 8s linear infinite;
             animation-play-state: paused;
@@ -99,13 +111,13 @@
 
         .song-info { flex: 1; margin: 0 14px; overflow: hidden; }
         .song-title { font-size: 16px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 13px; color: #aaa; margin-top: 2px; }
+        .artist-name { font-size: 13px; color: rgba(255, 255, 255, 0.75); margin-top: 2px; }
 
-        .seekbar-row { margin: 15px 0 10px 0; }
+        .seekbar-row { margin: 15px 0 12px 0; }
         .seekbar {
             width: 100%;
-            height: 5px;
-            accent-color: #ff2a5f;
+            height: 4px;
+            accent-color: #ffffff;
             cursor: pointer;
             border-radius: 5px;
         }
@@ -114,23 +126,23 @@
             display: flex; 
             justify-content: space-around; 
             align-items: center; 
-            background: rgba(0,0,0,0.4); 
-            padding: 10px; 
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 8px; 
             border-radius: 14px; 
-            margin-top: 10px;
         }
         
-        .btn { background: none; border: none; cursor: pointer; color: #fff; font-size: 20px; }
+        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 20px; }
         .play-btn { 
             background: #ffffff; 
-            color: #000;
-            width: 42px; 
-            height: 42px; 
+            color: #000000;
+            width: 40px; 
+            height: 40px; 
             border-radius: 50%; 
             display: flex; 
             align-items: center; 
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         #yt-player-container {
@@ -148,23 +160,22 @@
 
     <div class="logo">MY-BEATS</div>
 
-    <!-- Category Switcher Tabs -->
+    <!-- 2 Main Categories -->
     <div class="category-tabs">
-        <button class="tab-btn active" onclick="switchCategory('bollywood')">Bollywood</button>
-        <button class="tab-btn" onclick="switchCategory('punjabi')">Punjabi</button>
-        <button class="tab-btn" onclick="switchCategory('lofi')">Chill / Lo-Fi</button>
+        <button class="tab-btn active" onclick="switchCategory('bollywood', this)">Bollywood Pop</button>
+        <button class="tab-btn" onclick="switchCategory('sadhabhar', this)">Sada Bahar</button>
     </div>
 
-    <!-- YouTube Engine Element -->
+    <!-- YouTube Hidden Engine -->
     <div id="yt-player-container">
         <div id="yt-player"></div>
     </div>
 
-    <!-- Player Card -->
+    <!-- Transparent Player Box -->
     <div class="card">
-        <div class="category-title" id="cat-title">Bollywood Hits</div>
+        <div class="category-title" id="cat-title">BOLLYWOOD POP</div>
         <div class="top-row">
-            <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art" id="cd-art">
+            <img src="bollywood.cd.jpg" class="cd-art" id="cd-art">
             <div class="song-info">
                 <div class="song-title" id="song-title">Loading...</div>
                 <div class="artist-name" id="artist-name">---</div>
@@ -181,48 +192,58 @@
     </div>
 
     <script>
-        // Playlist Data organized by Category
-        const musicData = {
-            bollywood: [
-                { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
-                { id: "VAdGW7QDJiU", title: "Chaleya", artist: "Anirudh Ravichander" },
-                { id: "UEvOsQBu1jY", title: "Apna Bana Le", artist: "Arijit Singh" }
-            ],
-            punjabi: [
-                { id: "cl0a3i2wFcc", title: "Softly", artist: "Karan Aujla" },
-                { id: "2h0L112l1W0", title: "Checking With You", artist: "Karan Aujla" },
-                { id: "vX2cDW8LUWk", title: "Elevated", artist: "Shubh" }
-            ],
-            lofi: [
-                { id: "jfKfPfyJRdk", title: "Lofi Hip Hop Radio", artist: "Lofi Girl" },
-                { id: "5qap5aO4i9A", title: "Lofi Sleep Beats", artist: "ChillHop" }
-            ]
-        };
+        // Default songs fallback if external JS isn't loaded yet
+        const defaultBollywood = [
+            { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
+            { id: "VAdGW7QDJiU", title: "Chaleya", artist: "Anirudh Ravichander" }
+        ];
+
+        const defaultSadhabhar = [
+            { id: "284T-ae8_wU", title: "Lag Ja Gale", artist: "Lata Mangeshkar" },
+            { id: "g0eO74UmxEs", title: "Pal Pal Dil Ke Paas", artist: "Kishore Kumar" }
+        ];
 
         let currentCategory = "bollywood";
         let currentIndex = 0;
         let ytPlayer = null;
         let isPlaying = false;
 
-        function updateUI() {
-            const song = musicData[currentCategory][currentIndex];
-            document.getElementById('song-title').innerText = song.title;
-            document.getElementById('artist-name').innerText = song.artist;
-            document.getElementById('cat-title').innerText = currentCategory.toUpperCase() + " HITS";
+        function getSongs() {
+            if (currentCategory === "bollywood") {
+                return (window.bollywoodSongs && window.bollywoodSongs.length > 0) ? window.bollywoodSongs : defaultBollywood;
+            } else {
+                return (window.sadhabharSongs && window.sadhabharSongs.length > 0) ? window.sadhabharSongs : defaultSadhabhar;
+            }
         }
 
-        function switchCategory(cat) {
+        function updateUI() {
+            const songsList = getSongs();
+            const song = songsList[currentIndex];
+            
+            document.getElementById('song-title').innerText = song.title;
+            document.getElementById('artist-name').innerText = song.artist;
+            document.getElementById('cat-title').innerText = currentCategory === 'bollywood' ? 'BOLLYWOOD POP' : 'SADA BAHAR';
+            
+            // CD Image Changing
+            const cdArt = document.getElementById('cd-art');
+            if (currentCategory === 'bollywood') {
+                cdArt.src = "bollywood.cd.jpg";
+            } else {
+                cdArt.src = "sadhabhar.cd.jpg";
+            }
+        }
+
+        function switchCategory(cat, btnElem) {
             if (currentCategory === cat) return;
             currentCategory = cat;
             currentIndex = 0;
             
-            // Update active tab buttons
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            btnElem.classList.add('active');
 
             updateUI();
             if (ytPlayer && isPlaying) {
-                ytPlayer.loadVideoById(musicData[currentCategory][currentIndex].id);
+                ytPlayer.loadVideoById(getSongs()[currentIndex].id);
             }
         }
 
@@ -249,8 +270,8 @@
         }
 
         function togglePlay() {
-            if (!ytPlayer) return alert("Player initialising, please wait a second...");
-            const song = musicData[currentCategory][currentIndex];
+            if (!ytPlayer) return alert("Please wait, player loading...");
+            const song = getSongs()[currentIndex];
             
             if (isPlaying) {
                 ytPlayer.pauseVideo();
@@ -264,20 +285,20 @@
         }
 
         function nextSong() {
-            const catSongs = musicData[currentCategory];
-            currentIndex = (currentIndex + 1) % catSongs.length;
+            const list = getSongs();
+            currentIndex = (currentIndex + 1) % list.length;
             updateUI();
             if (ytPlayer && isPlaying) {
-                ytPlayer.loadVideoById(catSongs[currentIndex].id);
+                ytPlayer.loadVideoById(list[currentIndex].id);
             }
         }
 
         function prevSong() {
-            const catSongs = musicData[currentCategory];
-            currentIndex = (currentIndex - 1 + catSongs.length) % catSongs.length;
+            const list = getSongs();
+            currentIndex = (currentIndex - 1 + list.length) % list.length;
             updateUI();
             if (ytPlayer && isPlaying) {
-                ytPlayer.loadVideoById(catSongs[currentIndex].id);
+                ytPlayer.loadVideoById(list[currentIndex].id);
             }
         }
 
@@ -298,7 +319,7 @@
             }
         }, 500);
 
-        // Run UI update immediately on page load
+        // Run UI update immediately
         updateUI();
     </script>
 </body>
