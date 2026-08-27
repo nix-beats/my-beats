@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My-Beats</title>
+    <!-- External Playlist Files -->
+    <script src="bollywood.js"></script>
+    <script src="sadabahar.js"></script>
+    <script src="retro.js"></script>
+    <script src="yt-fetcher.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
+        /* Clear Background Image */
         body { 
-            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('bg.jpg') no-repeat center center fixed;
+            background: url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff; 
             padding: 15px; 
@@ -17,53 +24,55 @@
         
         .logo { 
             text-align: center; 
-            margin-bottom: 15px; 
-            color: #ff2a5f; 
-            font-size: 22px;
+            margin-bottom: 18px; 
+            color: #ffffff; 
+            font-size: 24px;
             letter-spacing: 3px; 
-            font-weight: 800;
+            font-weight: 900;
             text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
         }
 
-        /* 2x2 Compact Grid (Upper Half) */
+        /* Grid Layout */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            max-width: 550px;
+            gap: 14px;
+            max-width: 580px;
             margin: 0 auto;
         }
 
-        /* Compact Card */
+        /* 50% Transparent Cards with Increased Height */
         .card {
-            background: rgba(18, 18, 24, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            border-radius: 12px;
-            padding: 10px;
+            background: rgba(0, 0, 0, 0.5); /* 50% Transparent */
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 14px 12px;
+            min-height: 165px; /* Height Inreased */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
         .category-title { 
-            font-size: 10px; 
+            font-size: 11px; 
             text-transform: uppercase; 
             color: #ff2a5f; 
-            margin-bottom: 8px; 
-            font-weight: 700; 
+            margin-bottom: 6px; 
+            font-weight: 800; 
             letter-spacing: 1px;
         }
 
         /* Top Row: Art, Text, Heart */
-        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         
         .cd-art { 
-            width: 36px; 
-            height: 36px; 
+            width: 40px; 
+            height: 40px; 
             border-radius: 50%; 
-            border: 1.5px solid #ff2a5f; 
+            border: 2px solid #ff2a5f; 
             object-fit: cover; 
             animation: rotate 10s linear infinite; 
             animation-play-state: paused; 
@@ -71,37 +80,60 @@
         .cd-art.playing { animation-play-state: running; }
         @keyframes rotate { 100% { transform: rotate(360deg); } }
 
-        .song-info { flex: 1; margin: 0 8px; overflow: hidden; }
-        .song-title { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 10px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .song-info { flex: 1; margin: 0 10px; overflow: hidden; }
+        .song-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+        .artist-name { font-size: 10.5px; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Heart Icon Button */
+        /* Heart Icon */
         .heart-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; }
-        .heart-btn svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; transition: all 0.2s; }
+        .heart-btn svg { width: 20px; height: 20px; fill: none; stroke: #ffffff; stroke-width: 2.2; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8)); }
         .heart-btn.liked svg { fill: #ff2a5f; stroke: #ff2a5f; }
+
+        /* Seekbar Line */
+        .seekbar-row { display: flex; align-items: center; margin: 6px 0; }
+        .seekbar {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        }
+        .seekbar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff2a5f;
+            cursor: pointer;
+            box-shadow: 0 0 6px rgba(0,0,0,0.6);
+        }
 
         /* Controls Row */
         .controls-row { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            background: rgba(0,0,0,0.4); 
-            padding: 4px 8px; 
-            border-radius: 8px; 
+            background: rgba(0,0,0,0.35); 
+            padding: 6px 10px; 
+            border-radius: 10px; 
         }
         
         .btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; }
-        .btn svg { width: 14px; height: 14px; fill: #aaa; transition: fill 0.2s; }
-        .btn:hover svg { fill: #fff; }
+        .btn svg { width: 15px; height: 15px; fill: #ffffff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8)); }
 
         .play-btn { 
-            background: #fff; 
-            width: 28px; 
-            height: 28px; 
+            background: #ffffff; 
+            width: 30px; 
+            height: 30px; 
             border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
-        .play-btn svg { fill: #000; width: 12px; height: 12px; }
-        .play-btn:hover svg { fill: #000; }
+        .play-btn svg { fill: #000; width: 13px; height: 13px; filter: none; }
     </style>
 </head>
 <body>
@@ -122,10 +154,16 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
+            
+            <!-- Seekbar -->
+            <div class="seekbar-row">
+                <input type="range" class="seekbar" id="seek-bollywood" value="0" min="0" max="100" oninput="seekAudio('bollywood', this.value)">
+            </div>
+
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('bollywood')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('bollywood')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-                <button class="btn play-btn" onclick="togglePlay('bollywood')"><svg viewBox="0 0 24 24" class="play-icon"><path d="M8 5v14l11-7z"/></svg></button>
+                <button class="btn play-btn" onclick="togglePlay('bollywood')"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
                 <button class="btn" onclick="nextSong('bollywood')"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
                 <button class="btn"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
             </div>
@@ -144,16 +182,22 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
+
+            <!-- Seekbar -->
+            <div class="seekbar-row">
+                <input type="range" class="seekbar" id="seek-sadabahar" value="0" min="0" max="100" oninput="seekAudio('sadabahar', this.value)">
+            </div>
+
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('sadabahar')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('sadabahar')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-                <button class="btn play-btn" onclick="togglePlay('sadabahar')"><svg viewBox="0 0 24 24" class="play-icon"><path d="M8 5v14l11-7z"/></svg></button>
+                <button class="btn play-btn" onclick="togglePlay('sadabahar')"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
                 <button class="btn" onclick="nextSong('sadabahar')"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
                 <button class="btn"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
             </div>
         </div>
 
-        <!-- Box 3: 80s - 90s Songs -->
+        <!-- Box 3: 80s-90s -->
         <div class="card" id="card-retro">
             <div class="category-title">80s - 90s Classics</div>
             <div class="top-row">
@@ -166,10 +210,16 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
+
+            <!-- Seekbar -->
+            <div class="seekbar-row">
+                <input type="range" class="seekbar" id="seek-retro" value="0" min="0" max="100" oninput="seekAudio('retro', this.value)">
+            </div>
+
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('retro')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('retro')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-                <button class="btn play-btn" onclick="togglePlay('retro')"><svg viewBox="0 0 24 24" class="play-icon"><path d="M8 5v14l11-7z"/></svg></button>
+                <button class="btn play-btn" onclick="togglePlay('retro')"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
                 <button class="btn" onclick="nextSong('retro')"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
                 <button class="btn"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
             </div>
@@ -188,10 +238,16 @@
                     <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </button>
             </div>
+
+            <!-- Seekbar -->
+            <div class="seekbar-row">
+                <input type="range" class="seekbar" id="seek-fav" value="0" min="0" max="100" oninput="seekAudio('fav', this.value)">
+            </div>
+
             <div class="controls-row">
                 <button class="btn" onclick="shuffleSong('fav')"><svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></button>
                 <button class="btn" onclick="prevSong('fav')"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-                <button class="btn play-btn" onclick="togglePlay('fav')"><svg viewBox="0 0 24 24" class="play-icon"><path d="M8 5v14l11-7z"/></svg></button>
+                <button class="btn play-btn" onclick="togglePlay('fav')"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
                 <button class="btn" onclick="nextSong('fav')"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
                 <button class="btn"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
             </div>
@@ -202,18 +258,9 @@
 
     <script>
         const musicData = {
-            bollywood: [
-                { title: "Kesariya", artist: "Arijit Singh", url: "https://stream.zeno.fm/f3wvbb754wzuv" },
-                { title: "Chaleya", artist: "Anirudh", url: "https://stream.zeno.fm/0883394628quv" }
-            ],
-            sadabahar: [
-                { title: "Tere Bina Zindagi Se", artist: "Lata Mangeshkar", url: "https://stream.zeno.fm/601r2f8e138uv" },
-                { title: "Pal Pal Dil Ke Paas", artist: "Kishore Kumar", url: "https://stream.zeno.fm/4g48bh2628quv" }
-            ],
-            retro: [
-                { title: "Tamma Tamma Loge", artist: "Bappi Lahiri", url: "https://stream.zeno.fm/f3wvbb754wzuv" },
-                { title: "Dil Deewana", artist: "S. P. Balasubrahmanyam", url: "https://stream.zeno.fm/601r2f8e138uv" }
-            ]
+            bollywood: bollywoodSongs,
+            sadabahar: sadabaharSongs,
+            retro: retroSongs
         };
 
         const currentTracks = {};
@@ -229,13 +276,29 @@
             loadFavUI();
         };
 
+        // Real-time Seekbar Update
+        audio.ontimeupdate = () => {
+            if (activeCategory && audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                const seekbar = document.getElementById(`seek-${activeCategory}`);
+                if (seekbar) seekbar.value = percent || 0;
+            }
+        };
+
+        // Manual Audio Seeking
+        function seekAudio(cat, val) {
+            if (activeCategory === cat && audio.duration) {
+                audio.currentTime = (val / 100) * audio.duration;
+            }
+        }
+
         function updateCardUI(cat) {
             const card = document.getElementById(`card-${cat}`);
             card.querySelector('.song-title').innerText = currentTracks[cat].title;
             card.querySelector('.artist-name').innerText = currentTracks[cat].artist;
         }
 
-        function togglePlay(cat) {
+        async function togglePlay(cat) {
             if (cat === 'fav') {
                 const favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
                 if (favs.length === 0) return alert('No favorite songs added!');
@@ -248,11 +311,22 @@
             } else {
                 if (activeCategory && activeCategory !== cat) {
                     setPlayIcon(activeCategory, false);
+                    document.getElementById(`seek-${activeCategory}`).value = 0;
                 }
                 activeCategory = cat;
-                audio.src = currentTracks[cat].url;
-                audio.play();
-                setPlayIcon(cat, true);
+                const card = document.getElementById(`card-${cat}`);
+                card.querySelector('.song-title').innerText = "Loading Audio...";
+
+                try {
+                    const audioUrl = await getYouTubeAudioUrl(currentTracks[cat].id);
+                    audio.src = audioUrl;
+                    audio.play();
+                    updateCardUI(cat);
+                    setPlayIcon(cat, true);
+                } catch (err) {
+                    alert("Unable to load YouTube stream.");
+                    updateCardUI(cat);
+                }
             }
         }
 
