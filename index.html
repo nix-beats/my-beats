@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My-Beats</title>
-    <!-- Playlist Files -->
+
     <script src="bollywood.js"></script>
     <script src="sadabahar.js"></script>
     <script src="retro.js"></script>
-    <!-- Official YouTube API Script -->
+    
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
-        /* Clear Background Image */
         body { 
             background: url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
@@ -34,7 +33,6 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.8);
         }
 
-        /* Grid Layout */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -43,7 +41,6 @@
             margin: 0 auto;
         }
 
-        /* 50% Transparent Cards */
         .card {
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.25);
@@ -88,7 +85,6 @@
         .heart-btn svg { width: 20px; height: 20px; fill: none; stroke: #ffffff; stroke-width: 2.2; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8)); }
         .heart-btn.liked svg { fill: #ff2a5f; stroke: #ff2a5f; }
 
-        /* Seekbar Line */
         .seekbar-row { display: flex; align-items: center; margin: 6px 0; }
         .seekbar {
             width: 100%;
@@ -109,7 +105,6 @@
             box-shadow: 0 0 6px rgba(0,0,0,0.6);
         }
 
-        /* Controls Row */
         .controls-row { 
             display: flex; 
             justify-content: space-between; 
@@ -134,25 +129,34 @@
         }
         .play-btn svg { fill: #000; width: 13px; height: 13px; filter: none; }
 
-        /* Hidden YouTube Engine */
-        #yt-player { position: absolute; width: 1px; height: 1px; top: -9999px; left: -9999px; opacity: 0; pointer-events: none; }
+        /* Invisible YouTube Container compatible with mobile browsers */
+        #yt-player-container {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 1px;
+            height: 1px;
+            opacity: 0.01;
+            pointer-events: none;
+            z-index: -999;
+        }
     </style>
 </head>
 <body>
 
     <div class="logo">MY-BEATS</div>
 
-    <!-- Hidden YouTube Player Container -->
-    <div id="yt-player"></div>
+    <div id="yt-player-container">
+        <div id="yt-player"></div>
+    </div>
 
     <div class="grid-container">
-        <!-- Box 1: Bollywood -->
         <div class="card" id="card-bollywood">
             <div class="category-title">Bollywood Hits</div>
             <div class="top-row">
                 <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
                 <div class="song-info">
-                    <div class="song-title">Loading...</div>
+                    <div class="song-title">Select Song</div>
                     <div class="artist-name">Bollywood</div>
                 </div>
                 <button class="heart-btn" onclick="toggleFav('bollywood')">
@@ -171,13 +175,12 @@
             </div>
         </div>
 
-        <!-- Box 2: Hindi Sadabahar -->
         <div class="card" id="card-sadabahar">
             <div class="category-title">Hindi Sadabahar</div>
             <div class="top-row">
                 <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
                 <div class="song-info">
-                    <div class="song-title">Loading...</div>
+                    <div class="song-title">Select Song</div>
                     <div class="artist-name">Retro Evergreen</div>
                 </div>
                 <button class="heart-btn" onclick="toggleFav('sadabahar')">
@@ -196,13 +199,12 @@
             </div>
         </div>
 
-        <!-- Box 3: 80s-90s -->
         <div class="card" id="card-retro">
             <div class="category-title">80s - 90s Classics</div>
             <div class="top-row">
                 <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
                 <div class="song-info">
-                    <div class="song-title">Loading...</div>
+                    <div class="song-title">Select Song</div>
                     <div class="artist-name">Golden Era</div>
                 </div>
                 <button class="heart-btn" onclick="toggleFav('retro')">
@@ -221,7 +223,6 @@
             </div>
         </div>
 
-        <!-- Box 4: Favourites -->
         <div class="card" id="card-fav">
             <div class="category-title">Favourites</div>
             <div class="top-row">
@@ -248,25 +249,35 @@
     </div>
 
     <script>
+        // Safe Fallback Data to prevent crash
+        const defaultBollywood = [
+            { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
+            { id: "VAdGW7QDJIs", title: "Chaleya", artist: "Anirudh Ravichander" }
+        ];
+        const defaultSadabahar = [
+            { id: "vS3_72h9-jg", title: "Tere Bina Zindagi Se", artist: "Lata Mangeshkar" }
+        ];
+        const defaultRetro = [
+            { id: "1m-H7-1Vn1A", title: "Tamma Tamma Loge", artist: "Bappi Lahiri" }
+        ];
+
         const musicData = {
-            bollywood: bollywoodSongs,
-            sadabahar: sadabaharSongs,
-            retro: retroSongs
+            bollywood: (typeof bollywoodSongs !== 'undefined') ? bollywoodSongs : defaultBollywood,
+            sadabahar: (typeof sadabaharSongs !== 'undefined') ? sadabaharSongs : defaultSadabahar,
+            retro: (typeof retroSongs !== 'undefined') ? retroSongs : defaultRetro
         };
 
         const currentTracks = {};
         let activeCategory = null;
         let ytPlayer = null;
-        let isYtReady = false;
 
-        // Initialize Official YouTube Engine
+        // Init YouTube API
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                height: '1',
-                width: '1',
+                height: '100',
+                width: '100',
                 playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
                 events: {
-                    'onReady': () => { isYtReady = true; },
                     'onStateChange': onPlayerStateChange
                 }
             });
@@ -282,47 +293,50 @@
             }
         }
 
-        window.onload = () => {
+        function initApp() {
             ['bollywood', 'sadabahar', 'retro'].forEach(cat => {
-                const randIndex = Math.floor(Math.random() * musicData[cat].length);
-                currentTracks[cat] = { index: randIndex, ...musicData[cat][randIndex] };
-                updateCardUI(cat);
+                if (musicData[cat] && musicData[cat].length > 0) {
+                    const randIndex = Math.floor(Math.random() * musicData[cat].length);
+                    currentTracks[cat] = { index: randIndex, ...musicData[cat][randIndex] };
+                    updateCardUI(cat);
+                }
             });
             loadFavUI();
-        };
+        }
 
-        // Real-Time Seekbar Sync
+        // Live Seekbar Sync
         setInterval(() => {
-            if (activeCategory && ytPlayer && isYtReady && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
-                const duration = ytPlayer.getDuration();
-                const currentTime = ytPlayer.getCurrentTime();
-                if (duration > 0) {
-                    const percent = (currentTime / duration) * 100;
-                    const seekbar = document.getElementById(`seek-${activeCategory}`);
-                    if (seekbar) seekbar.value = percent || 0;
+            if (activeCategory && ytPlayer && typeof ytPlayer.getPlayerState === 'function') {
+                if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                    const duration = ytPlayer.getDuration();
+                    const currentTime = ytPlayer.getCurrentTime();
+                    if (duration > 0) {
+                        const percent = (currentTime / duration) * 100;
+                        const seekbar = document.getElementById(`seek-${activeCategory}`);
+                        if (seekbar) seekbar.value = percent || 0;
+                    }
                 }
             }
         }, 500);
 
         function seekAudio(cat, val) {
-            if (activeCategory === cat && ytPlayer && isYtReady) {
+            if (activeCategory === cat && ytPlayer && typeof ytPlayer.seekTo === 'function') {
                 const duration = ytPlayer.getDuration();
                 if (duration > 0) {
-                    const targetTime = (val / 100) * duration;
-                    ytPlayer.seekTo(targetTime, true);
+                    ytPlayer.seekTo((val / 100) * duration, true);
                 }
             }
         }
 
         function updateCardUI(cat) {
             const card = document.getElementById(`card-${cat}`);
-            card.querySelector('.song-title').innerText = currentTracks[cat].title;
-            card.querySelector('.artist-name').innerText = currentTracks[cat].artist;
+            if (card && currentTracks[cat]) {
+                card.querySelector('.song-title').innerText = currentTracks[cat].title;
+                card.querySelector('.artist-name').innerText = currentTracks[cat].artist;
+            }
         }
 
         function togglePlay(cat) {
-            if (!isYtReady) return alert("YouTube Engine Initializing, please wait a second...");
-
             if (cat === 'fav') {
                 const favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
                 if (favs.length === 0) return alert('No favorite songs added!');
@@ -330,27 +344,34 @@
             }
 
             const song = currentTracks[cat];
+            if (!song) return;
 
             if (activeCategory === cat) {
-                const state = ytPlayer.getPlayerState();
-                if (state === YT.PlayerState.PLAYING) {
-                    ytPlayer.pauseVideo();
-                } else {
-                    ytPlayer.playVideo();
+                if (ytPlayer && typeof ytPlayer.getPlayerState === 'function') {
+                    const state = ytPlayer.getPlayerState();
+                    if (state === YT.PlayerState.PLAYING) {
+                        ytPlayer.pauseVideo();
+                    } else {
+                        ytPlayer.playVideo();
+                    }
                 }
             } else {
                 if (activeCategory) {
                     setPlayIcon(activeCategory, false);
-                    document.getElementById(`seek-${activeCategory}`).value = 0;
+                    const oldSeek = document.getElementById(`seek-${activeCategory}`);
+                    if (oldSeek) oldSeek.value = 0;
                 }
                 activeCategory = cat;
-                ytPlayer.loadVideoById(song.id);
+                if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                    ytPlayer.loadVideoById(song.id);
+                }
                 updateCardUI(cat);
             }
         }
 
         function setPlayIcon(cat, isPlaying) {
             const card = document.getElementById(`card-${cat}`);
+            if (!card) return;
             const playSvg = card.querySelector('.play-btn');
             const cd = card.querySelector('.cd-art');
             
@@ -368,7 +389,7 @@
             const randIndex = Math.floor(Math.random() * musicData[cat].length);
             currentTracks[cat] = { index: randIndex, ...musicData[cat][randIndex] };
             updateCardUI(cat);
-            if (activeCategory === cat) {
+            if (activeCategory === cat && ytPlayer) {
                 ytPlayer.loadVideoById(currentTracks[cat].id);
             }
         }
@@ -379,7 +400,7 @@
             const song = musicData[cat][currentTracks[cat].index];
             currentTracks[cat] = { index: currentTracks[cat].index, ...song };
             updateCardUI(cat);
-            if (activeCategory === cat) {
+            if (activeCategory === cat && ytPlayer) {
                 ytPlayer.loadVideoById(song.id);
             }
         }
@@ -390,30 +411,6 @@
             const song = musicData[cat][currentTracks[cat].index];
             currentTracks[cat] = { index: currentTracks[cat].index, ...song };
             updateCardUI(cat);
-            if (activeCategory === cat) {
+            if (activeCategory === cat && ytPlayer) {
                 ytPlayer.loadVideoById(song.id);
-            }
-        }
-
-        function toggleFav(cat) {
-            const song = currentTracks[cat];
-            let favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
-            const existsIndex = favs.findIndex(s => s.title === song.title);
-            const heartBtn = document.getElementById(`card-${cat}`).querySelector('.heart-btn');
-
-            if (existsIndex > -1) {
-                favs.splice(existsIndex, 1);
-                heartBtn.classList.remove('liked');
-            } else {
-                favs.push(song);
-                heartBtn.classList.add('liked');
-            }
-
-            localStorage.setItem('myBeatsFavs', JSON.stringify(favs));
-            loadFavUI();
-        }
-
-        function loadFavUI() {
-            const favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
-            if (favs.length > 0) {
-                document.getElementById('fav-title').innerText 
+           
