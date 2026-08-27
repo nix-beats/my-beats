@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-Beats Web Player</title>
+    <title>My-Beats - Sadabahar Test</title>
 
-    <!-- गानों की एक्सटर्नल फाइल्स -->
-    <script src="bollywood.js"></script>
+    <!-- सिर्फ Sadhabhar वाली फाइल -->
     <script src="sadhabhar.js"></script>
 
     <!-- YouTube Engine API -->
@@ -16,7 +15,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
         body { 
-            /* आपकी रिपोजिटरी की bg.jpg इमेज */
             background: url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #ffffff; 
@@ -32,38 +30,10 @@
             font-size: 28px; 
             font-weight: 900; 
             color: #ffffff; 
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             letter-spacing: 3px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
             text-align: center;
-        }
-
-        /* Category Tabs */
-        .category-tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: 1px solid #ffffff;
-            color: #ffffff;
-            padding: 8px 18px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            transition: 0.3s;
-            backdrop-filter: blur(4px);
-        }
-
-        .tab-btn.active {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
         }
 
         /* Transparent Track Box with White Outline */
@@ -160,22 +130,16 @@
 
     <div class="logo">MY-BEATS</div>
 
-    <!-- 2 Main Categories -->
-    <div class="category-tabs">
-        <button class="tab-btn active" onclick="switchCategory('bollywood', this)">Bollywood Pop</button>
-        <button class="tab-btn" onclick="switchCategory('sadhabhar', this)">Sada Bahar</button>
-    </div>
-
-    <!-- YouTube Hidden Engine -->
+    <!-- Hidden YouTube Engine -->
     <div id="yt-player-container">
         <div id="yt-player"></div>
     </div>
 
     <!-- Transparent Player Box -->
     <div class="card">
-        <div class="category-title" id="cat-title">BOLLYWOOD POP</div>
+        <div class="category-title">SADA BAHAR</div>
         <div class="top-row">
-            <img src="bollywood.cd.jpg" class="cd-art" id="cd-art">
+            <img src="sadhabhar.cd.jpg" class="cd-art" id="cd-art">
             <div class="song-info">
                 <div class="song-title" id="song-title">Loading...</div>
                 <div class="artist-name" id="artist-name">---</div>
@@ -192,28 +156,22 @@
     </div>
 
     <script>
-        // Default songs fallback if external JS isn't loaded yet
-        const defaultBollywood = [
-            { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
-            { id: "VAdGW7QDJiU", title: "Chaleya", artist: "Anirudh Ravichander" }
-        ];
-
+        // Fallback default working Sadabahar songs (अगर फाइल में कोई समस्या हो)
         const defaultSadhabhar = [
-            { id: "284T-ae8_wU", title: "Lag Ja Gale", artist: "Lata Mangeshkar" },
-            { id: "g0eO74UmxEs", title: "Pal Pal Dil Ke Paas", artist: "Kishore Kumar" }
+            { id: "vS3_72h9-jg", title: "Tere Bina Zindagi Se", artist: "Lata & Kishore" },
+            { id: "85y1xP8bJ50", title: "Lag Ja Gale", artist: "Lata Mangeshkar" },
+            { id: "1V_394V8E1c", title: "Pal Pal Dil Ke Paas", artist: "Kishore Kumar" }
         ];
 
-        let currentCategory = "bollywood";
         let currentIndex = 0;
         let ytPlayer = null;
         let isPlaying = false;
 
         function getSongs() {
-            if (currentCategory === "bollywood") {
-                return (window.bollywoodSongs && window.bollywoodSongs.length > 0) ? window.bollywoodSongs : defaultBollywood;
-            } else {
-                return (window.sadhabharSongs && window.sadhabharSongs.length > 0) ? window.sadhabharSongs : defaultSadhabhar;
-            }
+            // sadhabhar.js से डेटा लेने की कोशिश
+            if (window.sadhabharSongs && window.sadhabharSongs.length > 0) return window.sadhabharSongs;
+            if (window.sadabaharSongs && window.sadabaharSongs.length > 0) return window.sadabaharSongs;
+            return defaultSadhabhar;
         }
 
         function updateUI() {
@@ -222,29 +180,6 @@
             
             document.getElementById('song-title').innerText = song.title;
             document.getElementById('artist-name').innerText = song.artist;
-            document.getElementById('cat-title').innerText = currentCategory === 'bollywood' ? 'BOLLYWOOD POP' : 'SADA BAHAR';
-            
-            // CD Image Changing
-            const cdArt = document.getElementById('cd-art');
-            if (currentCategory === 'bollywood') {
-                cdArt.src = "bollywood.cd.jpg";
-            } else {
-                cdArt.src = "sadhabhar.cd.jpg";
-            }
-        }
-
-        function switchCategory(cat, btnElem) {
-            if (currentCategory === cat) return;
-            currentCategory = cat;
-            currentIndex = 0;
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            btnElem.classList.add('active');
-
-            updateUI();
-            if (ytPlayer && isPlaying) {
-                ytPlayer.loadVideoById(getSongs()[currentIndex].id);
-            }
         }
 
         function onYouTubeIframeAPIReady() {
@@ -319,7 +254,7 @@
             }
         }, 500);
 
-        // Run UI update immediately
+        // UI को तुरंत अपडेट करें
         updateUI();
     </script>
 </body>
