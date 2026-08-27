@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My-Beats Music</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #0f0f13; color: #fff; padding: 20px; }
+        
+        h1.logo { text-align: center; margin-bottom: 20px; color: #ff2a5f; letter-spacing: 2px; }
+
+        /* 4 Track Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Single Track Box Card */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .category-title { font-size: 12px; text-transform: uppercase; color: #ff2a5f; margin-bottom: 10px; font-weight: 700; }
+
+        /* Top Section: CD, Name, Heart */
+        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .cd-art { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #444; object-fit: cover; animation: rotate 10s linear infinite; animation-play-state: paused; }
+        .cd-art.playing { animation-play-state: running; }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .song-info { flex: 1; margin: 0 12px; overflow: hidden; }
+        .song-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .artist-name { font-size: 11px; color: #aaa; }
+
+        .heart-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #fff; transition: transform 0.2s; }
+        .heart-btn.liked { color: #ff2a5f; }
+        .heart-btn:active { transform: scale(1.3); }
+
+        /* Bottom Section: Controls */
+        .controls-row { display: flex; justify-content: space-around; align-items: center; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 10px; }
+        .btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 14px; }
+        .btn:hover { color: #fff; }
+        .play-btn { background: #fff; color: #000; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1 class="logo">MY-BEATS</h1>
+
+    <div class="grid-container">
+        <!-- Box 1: Bollywood -->
+        <div class="card" id="card-bollywood">
+            <div class="category-title">🎬 Bollywood Hits</div>
+            <div class="top-row">
+                <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
+                <div class="song-info">
+                    <div class="song-title">Loading...</div>
+                    <div class="artist-name">Bollywood</div>
+                </div>
+                <button class="heart-btn" onclick="toggleFav('bollywood')">🤍</button>
+            </div>
+            <div class="controls-row">
+                <button class="btn" onclick="shuffleSong('bollywood')">🔀</button>
+                <button class="btn" onclick="prevSong('bollywood')">⏮</button>
+                <button class="btn play-btn" onclick="togglePlay('bollywood')">▶</button>
+                <button class="btn" onclick="nextSong('bollywood')">⏭</button>
+                <button class="btn">☰</button>
+            </div>
+        </div>
+
+        <!-- Box 2: Hindi Sadabahar -->
+        <div class="card" id="card-sadabahar">
+            <div class="category-title">📻 Hindi Sadabahar</div>
+            <div class="top-row">
+                <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
+                <div class="song-info">
+                    <div class="song-title">Loading...</div>
+                    <div class="artist-name">Retro Evergreen</div>
+                </div>
+                <button class="heart-btn" onclick="toggleFav('sadabahar')">🤍</button>
+            </div>
+            <div class="controls-row">
+                <button class="btn" onclick="shuffleSong('sadabahar')">🔀</button>
+                <button class="btn" onclick="prevSong('sadabahar')">⏮</button>
+                <button class="btn play-btn" onclick="togglePlay('sadabahar')">▶</button>
+                <button class="btn" onclick="nextSong('sadabahar')">⏭</button>
+                <button class="btn">☰</button>
+            </div>
+        </div>
+
+        <!-- Box 3: 80s - 90s Songs -->
+        <div class="card" id="card-retro">
+            <div class="category-title">🎶 80s - 90s Classics</div>
+            <div class="top-row">
+                <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
+                <div class="song-info">
+                    <div class="song-title">Loading...</div>
+                    <div class="artist-name">Golden Era</div>
+                </div>
+                <button class="heart-btn" onclick="toggleFav('retro')">🤍</button>
+            </div>
+            <div class="controls-row">
+                <button class="btn" onclick="shuffleSong('retro')">🔀</button>
+                <button class="btn" onclick="prevSong('retro')">⏮</button>
+                <button class="btn play-btn" onclick="togglePlay('retro')">▶</button>
+                <button class="btn" onclick="nextSong('retro')">⏭</button>
+                <button class="btn">☰</button>
+            </div>
+        </div>
+
+        <!-- Box 4: Favourites -->
+        <div class="card" id="card-fav">
+            <div class="category-title">❤️ Favourites</div>
+            <div class="top-row">
+                <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
+                <div class="song-info">
+                    <div class="song-title" id="fav-title">No Favorites Yet</div>
+                    <div class="artist-name" id="fav-artist">Click ❤️ to Add</div>
+                </div>
+                <button class="heart-btn liked">❤️</button>
+            </div>
+            <div class="controls-row">
+                <button class="btn" onclick="shuffleSong('fav')">🔀</button>
+                <button class="btn" onclick="prevSong('fav')">⏮</button>
+                <button class="btn play-btn" onclick="togglePlay('fav')">▶</button>
+                <button class="btn" onclick="nextSong('fav')">⏭</button>
+                <button class="btn">☰</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Master Audio Player -->
+    <audio id="global-audio"></audio>
+
+    <script>
+        // Data Store (Categorized Stream Links)
+        const musicData = {
+            bollywood: [
+                { title: "Kesariya", artist: "Arijit Singh", url: "https://stream.zeno.fm/f3wvbb754wzuv" },
+                { title: "Chaleya", artist: "Anirudh", url: "https://stream.zeno.fm/0883394628quv" }
+            ],
+            sadabahar: [
+                { title: "Tere Bina Zindagi Se", artist: "Lata Mangeshkar", url: "https://stream.zeno.fm/601r2f8e138uv" },
+                { title: "Pal Pal Dil Ke Paas", artist: "Kishore Kumar", url: "https://stream.zeno.fm/4g48bh2628quv" }
+            ],
+            retro: [
+                { title: "Tamma Tamma Loge", artist: "Bappi Lahiri", url: "https://stream.zeno.fm/f3wvbb754wzuv" },
+                { title: "Dil Deewana", artist: "S. P. Balasubrahmanyam", url: "https://stream.zeno.fm/601r2f8e138uv" }
+            ]
+        };
+
+        const currentTracks = {};
+        const audio = document.getElementById('global-audio');
+        let activeCategory = null;
+
+        // Initialize Random Tracks on Reload
+        window.onload = () => {
+            ['bollywood', 'sadabahar', 'retro'].forEach(cat => {
+                const randIndex = Math.floor(Math.random() * musicData[cat].length);
+                currentTracks[cat] = { index: randIndex, ...musicData[cat][randIndex] };
+                updateCardUI(cat);
+            });
+            loadFavUI();
+        };
+
+        function updateCardUI(cat) {
+            const card = document.getElementById(`card-${cat}`);
+            card.querySelector('.song-title').innerText = currentTracks[cat].title;
+            card.querySelector('.artist-name').innerText = currentTracks[cat].artist;
+        }
+
+        function togglePlay(cat) {
+            if (cat === 'fav') {
+                const favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
+                if (favs.length === 0) return alert('No favorite songs added!');
+                if (!currentTracks['fav']) currentTracks['fav'] = favs[0];
+            }
+
+            if (activeCategory === cat && !audio.paused) {
+                audio.pause();
+                setPlayIcon(cat, false);
+            } else {
+                if (activeCategory && activeCategory !== cat) {
+                    setPlayIcon(activeCategory, false);
+                }
+                activeCategory = cat;
+                audio.src = currentTracks[cat].url;
+                audio.play();
+                setPlayIcon(cat, true);
+            }
+        }
+
+        function setPlayIcon(cat, isPlaying) {
+            const card = document.getElementById(`card-${cat}`);
+            const btn = card.querySelector('.play-btn');
+            const cd = card.querySelector('.cd-art');
+            btn.innerText = isPlaying ? '⏸' : '▶';
+            if (isPlaying) cd.classList.add('playing');
+            else cd.classList.remove('playing');
+        }
+
+        function shuffleSong(cat) {
+            if (cat === 'fav') return;
+            const randIndex = Math.floor(Math.random() * musicData[cat].length);
+            currentTracks[cat] = { index: randIndex, ...musicData[cat][randIndex] };
+            updateCardUI(cat);
+            if (activeCategory === cat) togglePlay(cat);
+        }
+
+        function nextSong(cat) {
+            if (cat === 'fav') return;
+            currentTracks[cat].index = (currentTracks[cat].index + 1) % musicData[cat].length;
+            const song = musicData[cat][currentTracks[cat].index];
+            currentTracks[cat] = { index: currentTracks[cat].index, ...song };
+            updateCardUI(cat);
+            if (activeCategory === cat) togglePlay(cat);
+        }
+
+        function prevSong(cat) {
+            if (cat === 'fav') return;
+            currentTracks[cat].index = (currentTracks[cat].index - 1 + musicData[cat].length) % musicData[cat].length;
+            const song = musicData[cat][currentTracks[cat].index];
+            currentTracks[cat] = { index: currentTracks[cat].index, ...song };
+            updateCardUI(cat);
+            if (activeCategory === cat) togglePlay(cat);
+        }
+
+        // Favourites System (Local Storage)
+        function toggleFav(cat) {
+            const song = currentTracks[cat];
+            let favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
+            
+            const existsIndex = favs.findIndex(s => s.title === song.title);
+            const heartBtn = document.getElementById(`card-${cat}`).querySelector('.heart-btn');
+
+            if (existsIndex > -1) {
+                favs.splice(existsIndex, 1);
+                heartBtn.innerText = '🤍';
+                heartBtn.classList.remove('liked');
+            } else {
+                favs.push(song);
+                heartBtn.innerText = '❤️';
+                heartBtn.classList.add('liked');
+            }
+
+            localStorage.setItem('myBeatsFavs', JSON.stringify(favs));
+            loadFavUI();
+        }
+
+        function loadFavUI() {
+            const favs = JSON.parse(localStorage.getItem('myBeatsFavs') || '[]');
+            if (favs.length > 0) {
+                document.getElementById('fav-title').innerText = favs[0].title;
+                document.getElementById('fav-artist').innerText = favs[0].artist;
+                currentTracks['fav'] = favs[0];
+            } else {
+                document.getElementById('fav-title').innerText = "No Favorites Yet";
+                document.getElementById('fav-artist').innerText = "Click ❤️ to Add";
+            }
+        }
+    </script>
+</body>
+</html>
