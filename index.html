@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My-Beats</title>
 
-    <script src="bollywood.js"></script>
-    <script src="sadabahar.js"></script>
-    <script src="retro.js"></script>
-    
+    <!-- YouTube Engine API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
@@ -42,7 +39,7 @@
         }
 
         .card {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(8px);
             border-radius: 14px;
@@ -129,7 +126,6 @@
         }
         .play-btn svg { fill: #000; width: 13px; height: 13px; filter: none; }
 
-        /* Invisible YouTube Container compatible with mobile browsers */
         #yt-player-container {
             position: fixed;
             bottom: 0;
@@ -151,12 +147,13 @@
     </div>
 
     <div class="grid-container">
+        <!-- Bollywood Box -->
         <div class="card" id="card-bollywood">
             <div class="category-title">Bollywood Hits</div>
             <div class="top-row">
                 <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
                 <div class="song-info">
-                    <div class="song-title">Select Song</div>
+                    <div class="song-title">Loading...</div>
                     <div class="artist-name">Bollywood</div>
                 </div>
                 <button class="heart-btn" onclick="toggleFav('bollywood')">
@@ -175,12 +172,13 @@
             </div>
         </div>
 
+        <!-- Hindi Sadabahar Box -->
         <div class="card" id="card-sadabahar">
             <div class="category-title">Hindi Sadabahar</div>
             <div class="top-row">
                 <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
                 <div class="song-info">
-                    <div class="song-title">Select Song</div>
+                    <div class="song-title">Loading...</div>
                     <div class="artist-name">Retro Evergreen</div>
                 </div>
                 <button class="heart-btn" onclick="toggleFav('sadabahar')">
@@ -199,12 +197,13 @@
             </div>
         </div>
 
+        <!-- 80s - 90s Box -->
         <div class="card" id="card-retro">
             <div class="category-title">80s - 90s Classics</div>
             <div class="top-row">
                 <img src="https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg" class="cd-art">
                 <div class="song-info">
-                    <div class="song-title">Select Song</div>
+                    <div class="song-title">Loading...</div>
                     <div class="artist-name">Golden Era</div>
                 </div>
                 <button class="heart-btn" onclick="toggleFav('retro')">
@@ -223,6 +222,7 @@
             </div>
         </div>
 
+        <!-- Favourites Box -->
         <div class="card" id="card-fav">
             <div class="category-title">Favourites</div>
             <div class="top-row">
@@ -249,29 +249,27 @@
     </div>
 
     <script>
-        // Safe Fallback Data to prevent crash
-        const defaultBollywood = [
-            { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
-            { id: "VAdGW7QDJIs", title: "Chaleya", artist: "Anirudh Ravichander" }
-        ];
-        const defaultSadabahar = [
-            { id: "vS3_72h9-jg", title: "Tere Bina Zindagi Se", artist: "Lata Mangeshkar" }
-        ];
-        const defaultRetro = [
-            { id: "1m-H7-1Vn1A", title: "Tamma Tamma Loge", artist: "Bappi Lahiri" }
-        ];
-
+        // Directly Embedded Music Database
         const musicData = {
-            bollywood: (typeof bollywoodSongs !== 'undefined') ? bollywoodSongs : defaultBollywood,
-            sadabahar: (typeof sadabaharSongs !== 'undefined') ? sadabaharSongs : defaultSadabahar,
-            retro: (typeof retroSongs !== 'undefined') ? retroSongs : defaultRetro
+            bollywood: [
+                { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
+                { id: "VAdGW7QDJiU", title: "Chaleya", artist: "Anirudh Ravichander" },
+                { id: "UEvOsQBu1jY", title: "Apna Bana Le", artist: "Arijit Singh" }
+            ],
+            sadabahar: [
+                { id: "vS3_72h9-jg", title: "Tere Bina Zindagi Se", artist: "Lata Mangeshkar" },
+                { id: "85y1xP8bJ50", title: "Lag Ja Gale", artist: "Lata Mangeshkar" }
+            ],
+            retro: [
+                { id: "1m-H7-1Vn1A", title: "Tamma Tamma Loge", artist: "Bappi Lahiri" },
+                { id: "h1hV6l3T5wE", title: "Disco Dancer", artist: "Vijay Benedict" }
+            ]
         };
 
         const currentTracks = {};
         let activeCategory = null;
         let ytPlayer = null;
 
-        // Init YouTube API
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
                 height: '100',
@@ -293,6 +291,14 @@
             }
         }
 
+        function updateCardUI(cat) {
+            const card = document.getElementById(`card-${cat}`);
+            if (card && currentTracks[cat]) {
+                card.querySelector('.song-title').innerText = currentTracks[cat].title;
+                card.querySelector('.artist-name').innerText = currentTracks[cat].artist;
+            }
+        }
+
         function initApp() {
             ['bollywood', 'sadabahar', 'retro'].forEach(cat => {
                 if (musicData[cat] && musicData[cat].length > 0) {
@@ -304,7 +310,6 @@
             loadFavUI();
         }
 
-        // Live Seekbar Sync
         setInterval(() => {
             if (activeCategory && ytPlayer && typeof ytPlayer.getPlayerState === 'function') {
                 if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
@@ -325,14 +330,6 @@
                 if (duration > 0) {
                     ytPlayer.seekTo((val / 100) * duration, true);
                 }
-            }
-        }
-
-        function updateCardUI(cat) {
-            const card = document.getElementById(`card-${cat}`);
-            if (card && currentTracks[cat]) {
-                card.querySelector('.song-title').innerText = currentTracks[cat].title;
-                card.querySelector('.artist-name').innerText = currentTracks[cat].artist;
             }
         }
 
@@ -413,4 +410,9 @@
             updateCardUI(cat);
             if (activeCategory === cat && ytPlayer) {
                 ytPlayer.loadVideoById(song.id);
-           
+            }
+        }
+
+        function toggleFav(cat) {
+            const song = currentTracks[cat];
+            if (!song) return
