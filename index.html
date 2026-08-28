@@ -33,9 +33,8 @@
             text-align: center;
         }
 
-        /* Transparent Track Box with White Border */
         .card {
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.4);
             border: 1.5px solid #ffffff;
             backdrop-filter: blur(8px);
             border-radius: 20px;
@@ -154,7 +153,6 @@
         let ytPlayer = null;
         let isPlaying = false;
         let isEngineReady = false;
-        let playRequested = false;
 
         function getSongs() {
             if (window.sadabaharSongs && window.sadabaharSongs.length > 0) return window.sadabaharSongs;
@@ -175,14 +173,10 @@
             ytPlayer = new YT.Player('yt-player', {
                 height: '100',
                 width: '100',
-                playerVars: { 'autoplay': 1, 'controls': 0, 'playsinline': 1 },
+                playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
                 events: {
                     'onReady': function() {
                         isEngineReady = true;
-                        if (playRequested) {
-                            playRequested = false;
-                            playCurrentSong();
-                        }
                     },
                     'onStateChange': function(event) {
                         if (event.data === YT.PlayerState.PLAYING) {
@@ -201,7 +195,10 @@
                         }
                     },
                     'onError': function(event) {
-                        setTimeout(nextSong, 1000);
+                        // एरर आने पर लूप बंद करें और स्टॉप कर दें
+                        isPlaying = false;
+                        document.getElementById('play-btn').innerText = '▶';
+                        document.getElementById('cd-art').classList.remove('playing');
                     }
                 }
             });
@@ -217,19 +214,12 @@
         }
 
         function togglePlay() {
-            if (!isEngineReady || !ytPlayer || typeof ytPlayer.playVideo !== 'function') {
-                playRequested = true;
-                return;
-            }
+            if (!isEngineReady || !ytPlayer) return;
 
             if (isPlaying) {
                 ytPlayer.pauseVideo();
             } else {
-                if (ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PAUSED) {
-                    ytPlayer.playVideo();
-                } else {
-                    playCurrentSong();
-                }
+                playCurrentSong();
             }
         }
 
@@ -237,14 +227,14 @@
             const list = getSongs();
             currentIndex = (currentIndex + 1) % list.length;
             updateUI();
-            if (isEngineReady) playCurrentSong();
+            if (isPlaying) playCurrentSong();
         }
 
         function prevSong() {
             const list = getSongs();
             currentIndex = (currentIndex - 1 + list.length) % list.length;
             updateUI();
-            if (isEngineReady) playCurrentSong();
+            if (isPlaying) playCurrentSong();
         }
 
         function seekAudio(val) {
