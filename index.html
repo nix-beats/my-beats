@@ -1,261 +1,124 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-Beats - Sadabahar Test</title>
+// Fallback working songs if JS file fails to load
+const fallbackSongs = [
+    { id: "vS3_72h9-jg", title: "Tere Bina Zindagi Se", artist: "Lata & Kishore" },
+    { id: "h0L8iB8b-08", title: "Ek Ajnabee Haseena Se", artist: "Kishore Kumar" },
+    { id: "1V_394V8E1c", title: "Pal Pal Dil Ke Paas", artist: "Kishore Kumar" }
+];
 
-    <!-- सही फाइल का नाम (sadabahar.js) -->
-    <script src="sadabahar.js"></script>
+let currentIndex = 0;
+let ytPlayer = null;
+let isPlaying = false;
 
-    <!-- YouTube Engine API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+function getSongs() {
+    if (window.sadabaharSongs && window.sadabaharSongs.length > 0) return window.sadabaharSongs;
+    if (window.sadhabharSongs && window.sadhabharSongs.length > 0) return window.sadhabharSongs;
+    return fallbackSongs;
+}
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        
-        body { 
-            background: url('bg.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #ffffff; 
-            padding: 20px 10px; 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logo { 
-            font-size: 28px; 
-            font-weight: 900; 
-            color: #ffffff; 
-            margin-bottom: 25px;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            text-align: center;
-        }
+function updateUI() {
+    const list = getSongs();
+    if (list.length > 0) {
+        const song = list[currentIndex];
+        document.getElementById('song-title').innerText = song.title;
+        document.getElementById('artist-name').innerText = song.artist;
+    }
+}
 
-        .card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1.5px solid #ffffff;
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 22px;
-            width: 100%;
-            max-width: 340px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .category-title { 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            color: #ffffff; 
-            margin-bottom: 12px; 
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            opacity: 0.9;
-        }
-
-        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-        
-        .cd-art { 
-            width: 58px; 
-            height: 58px; 
-            border-radius: 50%; 
-            border: 2px solid #ffffff; 
-            object-fit: cover; 
-            animation: spin 8s linear infinite;
-            animation-play-state: paused;
-        }
-
-        .cd-art.playing { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .song-info { flex: 1; margin: 0 14px; overflow: hidden; }
-        .song-title { font-size: 16px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 13px; color: rgba(255, 255, 255, 0.8); margin-top: 2px; }
-
-        .seekbar-row { margin: 15px 0 12px 0; }
-        .seekbar {
-            width: 100%;
-            height: 4px;
-            accent-color: #ffffff;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .controls-row { 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            background: rgba(0,0,0,0.3); 
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 8px; 
-            border-radius: 14px; 
-        }
-        
-        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 20px; }
-        .play-btn { 
-            background: #ffffff; 
-            color: #000000;
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        #yt-player-container {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
-            pointer-events: none;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="logo">MY-BEATS</div>
-
-    <div id="yt-player-container">
-        <div id="yt-player"></div>
-    </div>
-
-    <div class="card">
-        <div class="category-title">SADA BAHAR</div>
-        <div class="top-row">
-            <img src="sadabahar.cd.jpg" class="cd-art" id="cd-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
-            <div class="song-info">
-                <div class="song-title" id="song-title">Loading...</div>
-                <div class="artist-name" id="artist-name">---</div>
-            </div>
-        </div>
-        <div class="seekbar-row">
-            <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
-        </div>
-        <div class="controls-row">
-            <button class="btn" onclick="prevSong()">⏮</button>
-            <button class="btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-            <button class="btn" onclick="nextSong()">⏭</button>
-        </div>
-    </div>
-
-    <script>
-        // Fallback working songs if JS fails to load
-        const fallbackSongs = [
-            { id: "vS3_72h9-jg", title: "Tere Bina Zindagi Se", artist: "Lata & Kishore" },
-            { id: "h0L8iB8b-08", title: "Ek Ajnabee Haseena Se", artist: "Kishore Kumar" }
-        ];
-
-        let currentIndex = 0;
-        let ytPlayer = null;
-        let isPlaying = false;
-        let isLoadedOnce = false;
-
-        function getSongs() {
-            if (window.sadabaharSongs && window.sadabaharSongs.length > 0) return window.sadabaharSongs;
-            if (window.sadhabharSongs && window.sadhabharSongs.length > 0) return window.sadhabharSongs;
-            return fallbackSongs;
-        }
-
-        function updateUI() {
-            const list = getSongs();
-            if (list.length > 0) {
-                const song = list[currentIndex];
-                document.getElementById('song-title').innerText = song.title;
-                document.getElementById('artist-name').innerText = song.artist;
-            }
-        }
-
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player', {
-                height: '100',
-                width: '100',
-                playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
-                events: {
-                    'onStateChange': function(event) {
-                        if (event.data === YT.PlayerState.PLAYING) {
-                            isPlaying = true;
-                            document.getElementById('play-btn').innerText = '❚❚';
-                            document.getElementById('cd-art').classList.add('playing');
-                        } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                            isPlaying = false;
-                            document.getElementById('play-btn').innerText = '▶';
-                            document.getElementById('cd-art').classList.remove('playing');
-                            if (event.data === YT.PlayerState.ENDED) nextSong();
-                        }
-                    }
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('yt-player', {
+        height: '100',
+        width: '100',
+        playerVars: { 
+            'autoplay': 1, 
+            'controls': 0, 
+            'playsinline': 1 
+        },
+        events: {
+            'onStateChange': function(event) {
+                if (event.data === YT.PlayerState.PLAYING) {
+                    isPlaying = true;
+                    document.getElementById('play-btn').innerText = '❚❚';
+                    document.getElementById('cd-art').classList.add('playing');
+                } else if (event.data === YT.PlayerState.PAUSED) {
+                    isPlaying = false;
+                    document.getElementById('play-btn').innerText = '▶';
+                    document.getElementById('cd-art').classList.remove('playing');
+                } else if (event.data === YT.PlayerState.ENDED) {
+                    isPlaying = false;
+                    document.getElementById('play-btn').innerText = '▶';
+                    document.getElementById('cd-art').classList.remove('playing');
+                    // गाना खत्म होने पर खुद अगला गाना चलाए
+                    nextSong();
                 }
-            });
-        }
-
-        function togglePlay() {
-            if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') {
-                return alert("Player initialization in progress, please click again in a second.");
-            }
-            
-            const list = getSongs();
-            const song = list[currentIndex];
-
-            if (isPlaying) {
-                ytPlayer.pauseVideo();
-            } else {
-                if (!isLoadedOnce) {
-                    ytPlayer.loadVideoById(song.id);
-                    isLoadedOnce = true;
-                } else {
-                    ytPlayer.playVideo();
-                }
+            },
+            // 🔥 अगर गाना ब्लॉक/खराब हो तो तुरंत अगला गाना चलाओ
+            'onError': function(event) {
+                console.log("YouTube Error Code:", event.data);
+                document.getElementById('song-title').innerText = "Skipping restricted song...";
+                setTimeout(() => {
+                    nextSong();
+                }, 1200);
             }
         }
+    });
+}
 
-        function nextSong() {
-            const list = getSongs();
-            currentIndex = (currentIndex + 1) % list.length;
-            updateUI();
-            if (ytPlayer) {
-                ytPlayer.loadVideoById(list[currentIndex].id);
-                isLoadedOnce = true;
-            }
+function playCurrentSong() {
+    const list = getSongs();
+    const song = list[currentIndex];
+    if (ytPlayer && ytPlayer.loadVideoById) {
+        ytPlayer.loadVideoById(song.id);
+        ytPlayer.playVideo();
+    }
+}
+
+function togglePlay() {
+    if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') {
+        return alert("Player loading, please try again in 2 seconds.");
+    }
+
+    if (isPlaying) {
+        ytPlayer.pauseVideo();
+    } else {
+        if (ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PAUSED) {
+            ytPlayer.playVideo();
+        } else {
+            playCurrentSong();
         }
+    }
+}
 
-        function prevSong() {
-            const list = getSongs();
-            currentIndex = (currentIndex - 1 + list.length) % list.length;
-            updateUI();
-            if (ytPlayer) {
-                ytPlayer.loadVideoById(list[currentIndex].id);
-                isLoadedOnce = true;
-            }
+function nextSong() {
+    const list = getSongs();
+    currentIndex = (currentIndex + 1) % list.length;
+    updateUI();
+    playCurrentSong();
+}
+
+function prevSong() {
+    const list = getSongs();
+    currentIndex = (currentIndex - 1 + list.length) % list.length;
+    updateUI();
+    playCurrentSong();
+}
+
+function seekAudio(val) {
+    if (ytPlayer && typeof ytPlayer.getDuration === 'function') {
+        const dur = ytPlayer.getDuration();
+        if (dur > 0) ytPlayer.seekTo((val / 100) * dur, true);
+    }
+}
+
+setInterval(() => {
+    if (ytPlayer && isPlaying && typeof ytPlayer.getDuration === 'function') {
+        const dur = ytPlayer.getDuration();
+        const cur = ytPlayer.getCurrentTime();
+        if (dur > 0) {
+            document.getElementById('seekbar').value = (cur / dur) * 100;
         }
+    }
+}, 500);
 
-        function seekAudio(val) {
-            if (ytPlayer && typeof ytPlayer.getDuration === 'function') {
-                const dur = ytPlayer.getDuration();
-                if (dur > 0) ytPlayer.seekTo((val / 100) * dur, true);
-            }
-        }
-
-        setInterval(() => {
-            if (ytPlayer && isPlaying && typeof ytPlayer.getDuration === 'function') {
-                const dur = ytPlayer.getDuration();
-                const cur = ytPlayer.getCurrentTime();
-                if (dur > 0) {
-                    document.getElementById('seekbar').value = (cur / dur) * 100;
-                }
-            }
-        }, 500);
-
-        // Run UI update
-        window.onload = function() {
-            updateUI();
-        };
-    </script>
-</body>
-</html>
+window.onload = function() {
+    updateUI();
+};
