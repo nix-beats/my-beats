@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-Beats Multi-Playlist Player</title>
+    <title>My-Beats Player</title>
 
-    <!-- गानों की डेटा फाइल -->
     <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
 
@@ -16,65 +15,65 @@
             background: url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #ffffff; 
-            padding: 15px 10px; 
+            padding: 10px; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         
-        /* 1. Welcome Logo (छोटा आकार) */
         .logo { 
-            font-size: 20px; 
+            font-size: 18px; 
             font-weight: 800; 
             color: #ffffff; 
+            margin-top: 10px;
             margin-bottom: 15px;
             letter-spacing: 2.5px;
             text-shadow: 0 2px 8px rgba(0,0,0,0.6);
             text-align: center;
         }
 
-        /* Active Main Player Card */
+        /* Compact Player Card (Height reduced & moved close to buttons) */
         .player-card {
             background: rgba(0, 0, 0, 0.45);
             border: 1.5px solid #ffffff;
             backdrop-filter: blur(10px);
-            border-radius: 18px;
-            padding: 18px;
+            border-radius: 14px;
+            padding: 12px;
             width: 100%;
             max-width: 350px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Reduced gap to fit right above buttons */
         }
 
         .active-tag {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
             color: #4cd137;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .active-tag::before {
             content: '';
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background-color: #4cd137;
             border-radius: 50%;
             display: inline-block;
         }
 
-        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         
         .cd-art { 
-            width: 52px; 
-            height: 52px; 
+            width: 44px; 
+            height: 44px; 
             border-radius: 50%; 
-            border: 2px solid #ffffff; 
+            border: 1.5px solid #ffffff; 
             object-fit: cover; 
             animation: spin 8s linear infinite;
             animation-play-state: paused;
@@ -83,17 +82,27 @@
         .cd-art.playing { animation-play-state: running; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .song-info { flex: 1; margin: 0 12px; overflow: hidden; }
-        .song-title { font-size: 15px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 12px; color: rgba(255, 255, 255, 0.8); margin-top: 2px; }
+        .song-info { flex: 1; margin: 0 10px; overflow: hidden; }
+        .song-title { font-size: 14px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .artist-name { font-size: 11px; color: rgba(255, 255, 255, 0.8); margin-top: 1px; }
 
-        .seekbar-row { margin: 12px 0 10px 0; }
+        .seekbar-row { margin: 6px 0 8px 0; }
         .seekbar {
             width: 100%;
-            height: 4px;
+            height: 3px;
             accent-color: #ffffff;
             cursor: pointer;
             border-radius: 5px;
+        }
+
+        /* Live Timer Display */
+        .time-box {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            margin-top: 3px;
         }
 
         .controls-row { 
@@ -102,30 +111,30 @@
             align-items: center; 
             background: rgba(0,0,0,0.3); 
             border: 1px solid rgba(255,255,255,0.3);
-            padding: 6px; 
-            border-radius: 12px; 
+            padding: 4px; 
+            border-radius: 10px; 
         }
         
-        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 18px; }
+        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 16px; }
         .play-btn { 
             background: #ffffff; 
             color: #000000;
-            width: 36px; 
-            height: 36px; 
+            width: 32px; 
+            height: 32px; 
             border-radius: 50%; 
             display: flex; 
             align-items: center; 
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        /* Category Sections List */
+        /* Categories Section */
         .category-container {
             width: 100%;
             max-width: 350px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
@@ -133,30 +142,27 @@
             background: rgba(0, 0, 0, 0.35);
             border: 1px solid rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(6px);
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 12px;
+            padding: 10px;
         }
 
         .cat-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             color: #ffffff;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
 
-        .cat-buttons {
-            display: flex;
-            gap: 6px;
-        }
+        .cat-buttons { display: flex; gap: 6px; }
 
         .mood-btn {
             flex: 1;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.4);
             color: #ffffff;
-            padding: 7px 4px;
+            padding: 6px 4px;
             border-radius: 8px;
             font-size: 11px;
             font-weight: 700;
@@ -168,17 +174,14 @@
             background: #ffffff;
             color: #000000;
             border: none;
-            padding: 7px 10px;
+            padding: 6px 8px;
             border-radius: 8px;
             font-size: 11px;
             font-weight: 800;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        /* Modal Playlist Popup Window */
+        /* Popup Playlist Modal */
         .modal {
             display: none;
             position: fixed;
@@ -194,56 +197,33 @@
         .modal-content {
             background: #181818;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
+            border-radius: 14px;
             width: 100%;
-            max-width: 360px;
-            max-height: 80vh;
+            max-width: 350px;
+            max-height: 75vh;
             display: flex;
             flex-direction: column;
-            padding: 15px;
+            padding: 12px;
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .modal-title { font-size: 14px; font-weight: 800; color: #fff; }
-        .close-btn { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .modal-title { font-size: 13px; font-weight: 800; color: #fff; }
+        .close-btn { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
 
         .search-box {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             background: #282828;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            margin-bottom: 10px;
-        }
-
-        .playlist-items {
-            overflow-y: auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .song-item {
-            padding: 8px 10px;
-            background: #222;
             border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: #fff;
+            font-size: 12px;
+            outline: none;
+            margin-bottom: 8px;
         }
 
-        .song-item:hover { background: #333; }
+        .playlist-items { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .song-item { padding: 6px 8px; background: #222; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .item-name { font-size: 12px; font-weight: 700; color: #fff; }
         .item-artist { font-size: 10px; color: #aaa; }
 
@@ -252,10 +232,9 @@
 </head>
 <body>
 
-    <!-- 1. Small Welcome Logo -->
     <div class="logo">MY-BEATS</div>
 
-    <!-- Active Player Window -->
+    <!-- 1. Player Card (Fitted just above buttons) -->
     <div class="player-card">
         <div class="active-tag" id="active-category-name">BOLLYWOOD POP - ROMANTIC</div>
         <div class="top-row">
@@ -267,6 +246,10 @@
         </div>
         <div class="seekbar-row">
             <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
+            <div class="time-box">
+                <span id="curr-time">0:00</span>
+                <span id="dur-time">0:00</span>
+            </div>
         </div>
         <div class="controls-row">
             <button class="btn" onclick="prevSong()">⏮</button>
@@ -275,10 +258,9 @@
         </div>
     </div>
 
-    <!-- 2. Categories Hierarchy List -->
+    <!-- 2. Navigation / Category Buttons -->
     <div class="category-container">
         
-        <!-- 90's POP -->
         <div class="category-box">
             <div class="cat-title">1. 90's POP</div>
             <div class="cat-buttons">
@@ -288,7 +270,6 @@
             </div>
         </div>
 
-        <!-- BOLLYWOOD POP -->
         <div class="category-box">
             <div class="cat-title">2. BOLLYWOOD POP</div>
             <div class="cat-buttons">
@@ -298,7 +279,6 @@
             </div>
         </div>
 
-        <!-- SADA BAHAR (RETRO) -->
         <div class="category-box">
             <div class="cat-title">3. SADA BAHAR (RETRO)</div>
             <div class="cat-buttons">
@@ -308,7 +288,6 @@
             </div>
         </div>
 
-        <!-- PUNJABI SONGS FOR LONG DRIVE -->
         <div class="category-box">
             <div class="cat-title">4. PUNJABI (LONG DRIVE)</div>
             <div class="cat-buttons">
@@ -320,17 +299,15 @@
 
     </div>
 
-    <!-- 3. Playlist Popup Modal Window -->
+    <!-- Modal Playlist Window -->
     <div class="modal" id="playlistModal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title" id="modalCategoryTitle">PLAYLIST</div>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            <input type="text" class="search-box" id="searchInput" placeholder="Search song or artist..." oninput="filterSongs()">
-            <div class="playlist-items" id="playlistList">
-                <!-- Dynamic Items Inserted via JS -->
-            </div>
+            <input type="text" class="search-box" id="searchInput" placeholder="Search song..." oninput="filterSongs()">
+            <div class="playlist-items" id="playlistList"></div>
         </div>
     </div>
 
@@ -347,9 +324,15 @@
         let isEngineReady = false;
         let modalActiveKey = '';
 
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) return "0:00";
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
         function loadList(key) {
             if (window.musicData && window.musicData[key]) {
-                // Filter out unconfigured placeholders
                 return window.musicData[key].filter(song => song.id !== "...id..." && song.id !== "");
             }
             return [];
@@ -365,8 +348,10 @@
                 updateUI();
                 if (isPlaying) playCurrentSong();
             } else {
-                document.getElementById('song-title').innerText = "No Songs Added Yet";
-                document.getElementById('artist-name').innerText = "Fill 'songs.js' file";
+                document.getElementById('song-title').innerText = "No Songs Added";
+                document.getElementById('artist-name').innerText = "Fill 'songs.js'";
+                document.getElementById('curr-time').innerText = "0:00";
+                document.getElementById('dur-time').innerText = "0:00";
             }
         }
 
@@ -437,7 +422,6 @@
             }
         }
 
-        /* Modal Playlist logic */
         function openPlaylistModal(categoryPrefix, title) {
             modalActiveKey = categoryPrefix;
             document.getElementById('modalCategoryTitle').innerText = title + " Playlist";
@@ -455,7 +439,6 @@
             const container = document.getElementById('playlistList');
             container.innerHTML = '';
 
-            // Combine both romantic & sad playlists of selected category for popup
             const romList = window.musicData[modalActiveKey + '_romantic'] || [];
             const sadList = window.musicData[modalActiveKey + '_sad'] || [];
             const combined = [
@@ -469,7 +452,7 @@
             );
 
             if(filtered.length === 0) {
-                container.innerHTML = '<div style="color:#aaa; text-align:center; padding:15px; font-size:12px;">No songs found or IDs empty</div>';
+                container.innerHTML = '<div style="color:#aaa; text-align:center; padding:10px; font-size:11px;">No songs found</div>';
                 return;
             }
 
@@ -496,11 +479,16 @@
             });
         }
 
+        /* Timer Update Interval */
         setInterval(() => {
             if (ytPlayer && isPlaying && typeof ytPlayer.getDuration === 'function') {
                 const dur = ytPlayer.getDuration();
                 const cur = ytPlayer.getCurrentTime();
-                if (dur > 0) document.getElementById('seekbar').value = (cur / dur) * 100;
+                if (dur > 0) {
+                    document.getElementById('seekbar').value = (cur / dur) * 100;
+                    document.getElementById('curr-time').innerText = formatTime(cur);
+                    document.getElementById('dur-time').innerText = formatTime(dur);
+                }
             }
         }, 500);
 
