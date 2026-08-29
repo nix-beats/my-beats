@@ -1,5 +1,62 @@
 window.bollywoodSongs = [
+    // 💥 Latest Hits & Trending
     { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
     { id: "VAdGW7QDJiU", title: "Chaleya", artist: "Anirudh Ravichander" },
-    { id: "UEvOsQBu1jY", title: "Apna Bana Le", artist: "Arijit Singh" }
+    { id: "UEvOsQBu1jY", title: "Apna Bana Le", artist: "Arijit Singh" },
+    { id: "gvyUuxdRdR4", title: "Raataan Lambiyan", artist: "Jubin Nautiyal & Tanishk" },
+    { id: "mNuhKUOD_A0", title: "Deva Deva", artist: "Arijit Singh & Pritam" },
+    { id: "2E_3uXoZlJ8", title: "O Bedardeya", artist: "Arijit Singh" },
+    { id: "vhJ2wT-_wvg", title: "Tere Pyaar Mein", artist: "Arijit Singh" },
+    { id: "RLzC55ai0eo", title: "Heeriye", artist: "Jasleen Royal & Arijit Singh" },
+    { id: "N7c00vJzRj4", title: "Ve Kamleya", artist: "Arijit Singh & Shreya Ghoshal" },
+    { id: "caT-H0T4k8M", title: "Satranga", artist: "Arijit Singh" },
+    { id: "iAib15a77hM", title: "Pehle Bhi Main", artist: "Vishal Mishra" },
+    { id: "fn3K91tH6sk", title: "Arjan Vailly", artist: "Bhupinder Babbal" },
+    { id: "8sLS2knUa6c", title: "Phir Aur Kya Chahiye", artist: "Arijit Singh" },
+    { id: "9Q8_JcZq5iU", title: "Tere Vaaste", artist: "Varun Jain & Sachin-Jigar" },
+    { id: "87JIOAX3Sub", title: "What Jhumka?", artist: "Arijit Singh & Jonita Gandhi" },
+    { id: "h1e5a5nQ154", title: "Tauba Tauba", artist: "Karan Aujla" },
+    { id: "y1oR8306JbY", title: "Aaj Ki Raat", artist: "Sachin-Jigar & Madhubanti" },
+    { id: "_f41j3L-4qU", title: "Tainu Khabar Nahi", artist: "Arijit Singh" },
+
+    // 💖 Romantic Classics & All-Time Hits
+    { id: "UN3uLFi7350", title: "Tum Hi Ho", artist: "Arijit Singh" },
+    { id: "sK7riqg2mr4", title: "Agar Tum Saath Ho", artist: "Arijit Singh & Alka Yagnik" },
+    { id: "284Ov7ysmfA", title: "Channa Mereya", artist: "Arijit Singh" },
+    { id: "vTIIMJz3680", title: "Shayad", artist: "Arijit Singh" },
+    { id: "dTUuN3j2RkY", title: "Tujhe Kitna Chahne Lage", artist: "Arijit Singh" },
+    { id: "VOLKJJvfCgA", title: "Bekhayali", artist: "Sachet Tandon" },
+    { id: "J41k42xW7k8", title: "Tera Ban Jaunga", artist: "Akhil Sachdeva & Tulsi Kumar" },
+    { id: "cUM6D81uS18", title: "Hawaayein", artist: "Arijit Singh" },
+    { id: "k3g_WjL10y4", title: "Kalank Title Track", artist: "Arijit Singh" },
+    { id: "hhdSyqTCscA", title: "Zaalima", artist: "Arijit Singh & Harshdeep Kaur" },
+    { id: "AEIVhBSMDWM", title: "Gerua", artist: "Arijit Singh & Antara Mitra" },
+    { id: "SAcpESN_Fk4", title: "Dil Diyan Gallan", artist: "Atif Aslam" },
+    { id: "DK_UsATwoxI", title: "Nazm Nazm", artist: "Arko" },
+    { id: "VjN4yXh7A70", title: "Tum Se Hi", artist: "Mohit Chauhan" },
+    { id: "T94PHkuydcw", title: "Kun Faya Kun", artist: "A.R. Rahman & Javed Ali" },
+    { id: "jHNNMj5bNQw", title: "Kabira", artist: "Tochi Raina & Rekha Bhardwaj" },
+
+    // 🔥 Party & Upbeat Hits
+    { id: "II2EO3Nw4m0", title: "Badtameez Dil", artist: "Beni Dayal" },
+    { id: "0WtRNGubWnA", title: "Balam Pichkari", artist: "Vishal Dadlani & Shalmali" },
+    { id: "E1pM-J7X07M", title: "Tera Yaar Hoon Main", artist: "Arijit Singh" },
+    { id: "yIIGQB6EMAM", title: "Bom Diggy Diggy", artist: "Zack Knight & Jasmin Walia" },
+    { id: "139wM_x18n0", title: "Dil Chori", artist: "Yo Yo Honey Singh" },
+    { id: "hW4010aJ7Y8", title: "Chhote Chhote Peg", artist: "Yo Yo Honey Singh & Neha Kakkar" },
+    { id: "1w5OqS124uE", title: "Ban Ja Rani", artist: "Guru Randhawa" },
+    { id: "h03N3L41j10", title: "High Rated Gabru", artist: "Guru Randhawa" },
+    { id: "N4Z6M732z3E", title: "Lahore", artist: "Guru Randhawa" },
+
+    // 🌧️ Melodious & Soulful Tracks
+    { id: "_62kL1J37j0", title: "Tum Hi Aana", artist: "Jubin Nautiyal" },
+    { id: "PVxc5fH9ZVw", title: "Pachtaoge", artist: "Arijit Singh" },
+    { id: "Z1BCujX3pw8", title: "Qaafirana", artist: "Arijit Singh & Nikhita" },
+    { id: "v_43p4mJ5Y4", title: "Jaan Nisaar", artist: "Arijit Singh" },
+    { id: "dx4Teh-n1b4", title: "Namo Namo", artist: "Amit Trivedi" },
+    { id: "a8A7sJ1vG00", title: "Galliyan", artist: "Ankit Tiwari" },
+    { id: "W4dM46U7o14", title: "Banjaara", artist: "Mohammed Irfan" },
+    { id: "83_6Jj2389o", title: "Hamari Adhuri Kahani", artist: "Arijit Singh" },
+    { id: "11v5v9V4m0w", title: "Jeena Jeena", artist: "Atif Aslam" },
+    { id: "P2S-u2mF6Y8", title: "Matargashti", artist: "Mohit Chauhan" }
 ];
