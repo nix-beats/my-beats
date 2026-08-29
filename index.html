@@ -33,109 +33,14 @@
             text-align: center;
         }
 
-        /* Compact Player Card (Height reduced & moved close to buttons) */
-        .player-card {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1.5px solid #ffffff;
-            backdrop-filter: blur(10px);
-            border-radius: 14px;
-            padding: 12px;
-            width: 100%;
-            max-width: 350px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            margin-bottom: 10px; /* Reduced gap to fit right above buttons */
-        }
-
-        .active-tag {
-            font-size: 10px;
-            font-weight: 800;
-            color: #4cd137;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .active-tag::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background-color: #4cd137;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-        
-        .cd-art { 
-            width: 44px; 
-            height: 44px; 
-            border-radius: 50%; 
-            border: 1.5px solid #ffffff; 
-            object-fit: cover; 
-            animation: spin 8s linear infinite;
-            animation-play-state: paused;
-        }
-
-        .cd-art.playing { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .song-info { flex: 1; margin: 0 10px; overflow: hidden; }
-        .song-title { font-size: 14px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 11px; color: rgba(255, 255, 255, 0.8); margin-top: 1px; }
-
-        .seekbar-row { margin: 6px 0 8px 0; }
-        .seekbar {
-            width: 100%;
-            height: 3px;
-            accent-color: #ffffff;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        /* Live Timer Display */
-        .time-box {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 600;
-            margin-top: 3px;
-        }
-
-        .controls-row { 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            background: rgba(0,0,0,0.3); 
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 4px; 
-            border-radius: 10px; 
-        }
-        
-        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 16px; }
-        .play-btn { 
-            background: #ffffff; 
-            color: #000000;
-            width: 32px; 
-            height: 32px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-size: 13px;
-        }
-
-        /* Categories Section */
+        /* 1. Categories Section (Top Side) */
         .category-container {
             width: 100%;
             max-width: 350px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .category-box {
@@ -179,6 +84,102 @@
             font-size: 11px;
             font-weight: 800;
             cursor: pointer;
+        }
+
+        /* 2. Compact Player Card (Moved to the VERY BOTTOM) */
+        .player-card {
+            background: rgba(0, 0, 0, 0.55);
+            border: 1.5px solid #ffffff;
+            backdrop-filter: blur(10px);
+            border-radius: 14px;
+            padding: 12px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            margin-top: auto; /* Push to absolute bottom */
+            margin-bottom: 10px;
+        }
+
+        .active-tag {
+            font-size: 10px;
+            font-weight: 800;
+            color: #4cd137;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .active-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: #4cd137;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        
+        .cd-art { 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 50%; 
+            border: 1.5px solid #ffffff; 
+            object-fit: cover; 
+            animation: spin 8s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .cd-art.playing { animation-play-state: running; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .song-info { flex: 1; margin: 0 10px; overflow: hidden; }
+        .song-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .artist-name { font-size: 11px; color: rgba(255, 255, 255, 0.8); margin-top: 1px; }
+
+        .seekbar-row { margin: 6px 0 8px 0; }
+        .seekbar {
+            width: 100%;
+            height: 3px;
+            accent-color: #ffffff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Live Timer Display */
+        .time-box {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .controls-row { 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            background: rgba(0,0,0,0.3); 
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 4px; 
+            border-radius: 10px; 
+        }
+        
+        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 16px; }
+        .play-btn { 
+            background: #ffffff; 
+            color: #000000;
+            width: 30px; 
+            height: 30px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 12px;
         }
 
         /* Popup Playlist Modal */
@@ -234,31 +235,7 @@
 
     <div class="logo">MY-BEATS</div>
 
-    <!-- 1. Player Card (Fitted just above buttons) -->
-    <div class="player-card">
-        <div class="active-tag" id="active-category-name">BOLLYWOOD POP - ROMANTIC</div>
-        <div class="top-row">
-            <img src="cd.jpg" class="cd-art" id="cd-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
-            <div class="song-info">
-                <div class="song-title" id="song-title">Select a Song</div>
-                <div class="artist-name" id="artist-name">---</div>
-            </div>
-        </div>
-        <div class="seekbar-row">
-            <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
-            <div class="time-box">
-                <span id="curr-time">0:00</span>
-                <span id="dur-time">0:00</span>
-            </div>
-        </div>
-        <div class="controls-row">
-            <button class="btn" onclick="prevSong()">⏮</button>
-            <button class="btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-            <button class="btn" onclick="nextSong()">⏭</button>
-        </div>
-    </div>
-
-    <!-- 2. Navigation / Category Buttons -->
+    <!-- 1. Category Buttons Section -->
     <div class="category-container">
         
         <div class="category-box">
@@ -297,6 +274,30 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- 2. Player Card Box (Now at the VERY BOTTOM) -->
+    <div class="player-card">
+        <div class="active-tag" id="active-category-name">BOLLYWOOD POP - ROMANTIC</div>
+        <div class="top-row">
+            <img src="cd.jpg" class="cd-art" id="cd-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
+            <div class="song-info">
+                <div class="song-title" id="song-title">Select a Song</div>
+                <div class="artist-name" id="artist-name">---</div>
+            </div>
+        </div>
+        <div class="seekbar-row">
+            <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
+            <div class="time-box">
+                <span id="curr-time">0:00</span>
+                <span id="dur-time">0:00</span>
+            </div>
+        </div>
+        <div class="controls-row">
+            <button class="btn" onclick="prevSong()">⏮</button>
+            <button class="btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+            <button class="btn" onclick="nextSong()">⏭</button>
+        </div>
     </div>
 
     <!-- Modal Playlist Window -->
