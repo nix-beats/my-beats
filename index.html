@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-Beats - Bollywood Pop</title>
+    <title>My-Beats - T-Series Special</title>
 
-    <!-- सिर्फ Bollywood वाली फाइल -->
+    <!-- T-Series Bollywood Songs Script -->
     <script src="bollywood.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
 
@@ -28,10 +28,43 @@
             font-size: 28px; 
             font-weight: 900; 
             color: #ffffff; 
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             letter-spacing: 3px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
             text-align: center;
+        }
+
+        /* Category Tabs (Sad / Romantic) Top of Track Box */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 340px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
         }
 
         /* Transparent Track Box with White Outline */
@@ -122,12 +155,19 @@
 
     <div class="logo">MY-BEATS</div>
 
+    <!-- Category Selector Tabs -->
+    <div class="category-tabs">
+        <button class="tab-btn active" id="tab-romantic" onclick="switchCategory('romantic')">❤️ ROMANTIC</button>
+        <button class="tab-btn" id="tab-sad" onclick="switchCategory('sad')">💔 SAD</button>
+    </div>
+
     <div id="yt-player-container">
         <div id="yt-player"></div>
     </div>
 
+    <!-- Track Card Box -->
     <div class="card">
-        <div class="category-title">BOLLYWOOD POP</div>
+        <div class="category-title" id="playlist-tag">T-SERIES ROMANTIC</div>
         <div class="top-row">
             <img src="bollywood.cd.jpg" class="cd-art" id="cd-art">
             <div class="song-info">
@@ -146,18 +186,34 @@
     </div>
 
     <script>
-        const defaultBollywood = [
-            { id: "6mr4cYJ7yew", title: "Kesariya", artist: "Arijit Singh" },
-            { id: "VAdGW7QDJiU", title: "Chaleya", artist: "Anirudh Ravichander" }
-        ];
-
+        let currentCategory = 'romantic';
         let currentIndex = 0;
         let ytPlayer = null;
         let isPlaying = false;
         let isEngineReady = false;
 
         function getSongs() {
-            return (window.bollywoodSongs && window.bollywoodSongs.length > 0) ? window.bollywoodSongs : defaultBollywood;
+            if (window.bollywoodSongs && window.bollywoodSongs.length > 0) {
+                return window.bollywoodSongs.filter(song => song.category === currentCategory);
+            }
+            return [];
+        }
+
+        function switchCategory(category) {
+            if (currentCategory === category) return;
+            currentCategory = category;
+            currentIndex = 0;
+
+            // Update UI Tabs
+            document.getElementById('tab-romantic').classList.toggle('active', category === 'romantic');
+            document.getElementById('tab-sad').classList.toggle('active', category === 'sad');
+            document.getElementById('playlist-tag').innerText = 'T-SERIES ' + category.toUpperCase();
+
+            updateUI();
+
+            if (isPlaying) {
+                playCurrentSong();
+            }
         }
 
         function updateUI() {
@@ -205,6 +261,7 @@
 
         function playCurrentSong() {
             const list = getSongs();
+            if (list.length === 0) return;
             const song = list[currentIndex];
             if (ytPlayer && ytPlayer.loadVideoById) {
                 ytPlayer.loadVideoById(song.id);
@@ -224,6 +281,7 @@
 
         function nextSong() {
             const list = getSongs();
+            if (list.length === 0) return;
             currentIndex = (currentIndex + 1) % list.length;
             updateUI();
             if (isPlaying) playCurrentSong();
@@ -231,6 +289,7 @@
 
         function prevSong() {
             const list = getSongs();
+            if (list.length === 0) return;
             currentIndex = (currentIndex - 1 + list.length) % list.length;
             updateUI();
             if (isPlaying) playCurrentSong();
