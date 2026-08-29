@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-Beats - T-Series Special</title>
+    <title>My-Beats Multi-Playlist Player</title>
 
-    <!-- T-Series Bollywood Songs Script -->
-    <script src="bollywood.js"></script>
+    <!-- गानों की डेटा फाइल -->
+    <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
@@ -16,84 +16,63 @@
             background: url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #ffffff; 
-            padding: 20px 10px; 
+            padding: 15px 10px; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
         
+        /* 1. Welcome Logo (छोटा आकार) */
         .logo { 
-            font-size: 28px; 
-            font-weight: 900; 
+            font-size: 20px; 
+            font-weight: 800; 
             color: #ffffff; 
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            text-align: center;
-        }
-
-        /* Category Tabs (Sad / Romantic) Top of Track Box */
-        .category-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
             margin-bottom: 15px;
-            width: 100%;
-            max-width: 340px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
-            color: #ffffff;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
-            letter-spacing: 1px;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
+            letter-spacing: 2.5px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
             text-align: center;
         }
 
-        .tab-btn.active {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
-        }
-
-        /* Transparent Track Box with White Outline */
-        .card {
-            background: rgba(0, 0, 0, 0.35);
+        /* Active Main Player Card */
+        .player-card {
+            background: rgba(0, 0, 0, 0.45);
             border: 1.5px solid #ffffff;
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 22px;
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 18px;
             width: 100%;
-            max-width: 340px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 350px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            margin-bottom: 20px;
         }
 
-        .category-title { 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            color: #ffffff; 
-            margin-bottom: 12px; 
+        .active-tag {
+            font-size: 11px;
             font-weight: 800;
-            letter-spacing: 1.5px;
-            opacity: 0.9;
+            color: #4cd137;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .active-tag::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background-color: #4cd137;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         
         .cd-art { 
-            width: 58px; 
-            height: 58px; 
+            width: 52px; 
+            height: 52px; 
             border-radius: 50%; 
             border: 2px solid #ffffff; 
             object-fit: cover; 
@@ -104,11 +83,11 @@
         .cd-art.playing { animation-play-state: running; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .song-info { flex: 1; margin: 0 14px; overflow: hidden; }
-        .song-title { font-size: 16px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 13px; color: rgba(255, 255, 255, 0.8); margin-top: 2px; }
+        .song-info { flex: 1; margin: 0 12px; overflow: hidden; }
+        .song-title { font-size: 15px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .artist-name { font-size: 12px; color: rgba(255, 255, 255, 0.8); margin-top: 2px; }
 
-        .seekbar-row { margin: 15px 0 12px 0; }
+        .seekbar-row { margin: 12px 0 10px 0; }
         .seekbar {
             width: 100%;
             height: 4px;
@@ -122,56 +101,167 @@
             justify-content: space-around; 
             align-items: center; 
             background: rgba(0,0,0,0.3); 
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 8px; 
-            border-radius: 14px; 
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px; 
+            border-radius: 12px; 
         }
         
-        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 20px; }
+        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 18px; }
         .play-btn { 
             background: #ffffff; 
             color: #000000;
-            width: 40px; 
-            height: 40px; 
+            width: 36px; 
+            height: 36px; 
             border-radius: 50%; 
             display: flex; 
             align-items: center; 
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
         }
 
-        #yt-player-container {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
-            pointer-events: none;
+        /* Category Sections List */
+        .category-container {
+            width: 100%;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
         }
+
+        .category-box {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(6px);
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        .cat-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .cat-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .mood-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            padding: 7px 4px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .playlist-btn {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Modal Playlist Popup Window */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background: #181818;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 360px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .modal-title { font-size: 14px; font-weight: 800; color: #fff; }
+        .close-btn { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            background: #282828;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .playlist-items {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .song-item {
+            padding: 8px 10px;
+            background: #222;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .song-item:hover { background: #333; }
+        .item-name { font-size: 12px; font-weight: 700; color: #fff; }
+        .item-artist { font-size: 10px; color: #aaa; }
+
+        #yt-player-container { position: fixed; bottom: 0; right: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
 <body>
 
+    <!-- 1. Small Welcome Logo -->
     <div class="logo">MY-BEATS</div>
 
-    <!-- Category Selector Tabs -->
-    <div class="category-tabs">
-        <button class="tab-btn active" id="tab-romantic" onclick="switchCategory('romantic')">❤️ ROMANTIC</button>
-        <button class="tab-btn" id="tab-sad" onclick="switchCategory('sad')">💔 SAD</button>
-    </div>
-
-    <div id="yt-player-container">
-        <div id="yt-player"></div>
-    </div>
-
-    <!-- Track Card Box -->
-    <div class="card">
-        <div class="category-title" id="playlist-tag">T-SERIES ROMANTIC</div>
+    <!-- Active Player Window -->
+    <div class="player-card">
+        <div class="active-tag" id="active-category-name">BOLLYWOOD POP - ROMANTIC</div>
         <div class="top-row">
-            <img src="bollywood.cd.jpg" class="cd-art" id="cd-art">
+            <img src="cd.jpg" class="cd-art" id="cd-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
             <div class="song-info">
-                <div class="song-title" id="song-title">Loading...</div>
+                <div class="song-title" id="song-title">Select a Song</div>
                 <div class="artist-name" id="artist-name">---</div>
             </div>
         </div>
@@ -185,41 +275,104 @@
         </div>
     </div>
 
+    <!-- 2. Categories Hierarchy List -->
+    <div class="category-container">
+        
+        <!-- 90's POP -->
+        <div class="category-box">
+            <div class="cat-title">1. 90's POP</div>
+            <div class="cat-buttons">
+                <button class="mood-btn" onclick="setPlaylist('nineties_romantic', '90s Pop - Romantic')">❤️ Romantic</button>
+                <button class="mood-btn" onclick="setPlaylist('nineties_sad', '90s Pop - Sad')">💔 Sad</button>
+                <button class="playlist-btn" onclick="openPlaylistModal('nineties', '90s Pop')">📜 Playlist</button>
+            </div>
+        </div>
+
+        <!-- BOLLYWOOD POP -->
+        <div class="category-box">
+            <div class="cat-title">2. BOLLYWOOD POP</div>
+            <div class="cat-buttons">
+                <button class="mood-btn" onclick="setPlaylist('bollywood_romantic', 'Bollywood Pop - Romantic')">❤️ Romantic</button>
+                <button class="mood-btn" onclick="setPlaylist('bollywood_sad', 'Bollywood Pop - Sad')">💔 Sad</button>
+                <button class="playlist-btn" onclick="openPlaylistModal('bollywood', 'Bollywood Pop')">📜 Playlist</button>
+            </div>
+        </div>
+
+        <!-- SADA BAHAR (RETRO) -->
+        <div class="category-box">
+            <div class="cat-title">3. SADA BAHAR (RETRO)</div>
+            <div class="cat-buttons">
+                <button class="mood-btn" onclick="setPlaylist('sadabahar_romantic', 'Sada Bahar - Romantic')">❤️ Romantic</button>
+                <button class="mood-btn" onclick="setPlaylist('sadabahar_sad', 'Sada Bahar - Sad')">💔 Sad</button>
+                <button class="playlist-btn" onclick="openPlaylistModal('sadabahar', 'Sada Bahar')">📜 Playlist</button>
+            </div>
+        </div>
+
+        <!-- PUNJABI SONGS FOR LONG DRIVE -->
+        <div class="category-box">
+            <div class="cat-title">4. PUNJABI (LONG DRIVE)</div>
+            <div class="cat-buttons">
+                <button class="mood-btn" onclick="setPlaylist('punjabi_romantic', 'Punjabi - Romantic')">❤️ Romantic</button>
+                <button class="mood-btn" onclick="setPlaylist('punjabi_sad', 'Punjabi - Sad')">💔 Sad</button>
+                <button class="playlist-btn" onclick="openPlaylistModal('punjabi', 'Punjabi Long Drive')">📜 Playlist</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 3. Playlist Popup Modal Window -->
+    <div class="modal" id="playlistModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalCategoryTitle">PLAYLIST</div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <input type="text" class="search-box" id="searchInput" placeholder="Search song or artist..." oninput="filterSongs()">
+            <div class="playlist-items" id="playlistList">
+                <!-- Dynamic Items Inserted via JS -->
+            </div>
+        </div>
+    </div>
+
+    <div id="yt-player-container">
+        <div id="yt-player"></div>
+    </div>
+
     <script>
-        let currentCategory = 'romantic';
+        let currentPlaylistKey = 'bollywood_romantic';
+        let currentList = [];
         let currentIndex = 0;
         let ytPlayer = null;
         let isPlaying = false;
         let isEngineReady = false;
+        let modalActiveKey = '';
 
-        function getSongs() {
-            if (window.bollywoodSongs && window.bollywoodSongs.length > 0) {
-                return window.bollywoodSongs.filter(song => song.category === currentCategory);
+        function loadList(key) {
+            if (window.musicData && window.musicData[key]) {
+                // Filter out unconfigured placeholders
+                return window.musicData[key].filter(song => song.id !== "...id..." && song.id !== "");
             }
             return [];
         }
 
-        function switchCategory(category) {
-            if (currentCategory === category) return;
-            currentCategory = category;
+        function setPlaylist(key, titleName) {
+            currentPlaylistKey = key;
+            currentList = loadList(key);
             currentIndex = 0;
-
-            // Update UI Tabs
-            document.getElementById('tab-romantic').classList.toggle('active', category === 'romantic');
-            document.getElementById('tab-sad').classList.toggle('active', category === 'sad');
-            document.getElementById('playlist-tag').innerText = 'T-SERIES ' + category.toUpperCase();
-
-            updateUI();
-
-            if (isPlaying) {
-                playCurrentSong();
+            document.getElementById('active-category-name').innerText = titleName;
+            
+            if (currentList.length > 0) {
+                updateUI();
+                if (isPlaying) playCurrentSong();
+            } else {
+                document.getElementById('song-title').innerText = "No Songs Added Yet";
+                document.getElementById('artist-name').innerText = "Fill 'songs.js' file";
             }
         }
 
         function updateUI() {
-            const list = getSongs();
-            if (list.length > 0) {
-                const song = list[currentIndex];
+            if (currentList.length > 0) {
+                const song = currentList[currentIndex];
                 document.getElementById('song-title').innerText = song.title;
                 document.getElementById('artist-name').innerText = song.artist;
             }
@@ -227,42 +380,30 @@
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                height: '100',
-                width: '100',
+                height: '100', width: '100',
                 playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
                 events: {
-                    'onReady': function() {
-                        isEngineReady = true;
-                    },
-                    'onStateChange': function(event) {
-                        if (event.data === YT.PlayerState.PLAYING) {
+                    'onReady': () => { isEngineReady = true; },
+                    'onStateChange': (e) => {
+                        if (e.data === YT.PlayerState.PLAYING) {
                             isPlaying = true;
                             document.getElementById('play-btn').innerText = '❚❚';
                             document.getElementById('cd-art').classList.add('playing');
-                        } else if (event.data === YT.PlayerState.PAUSED) {
+                        } else if (e.data === YT.PlayerState.PAUSED) {
                             isPlaying = false;
                             document.getElementById('play-btn').innerText = '▶';
                             document.getElementById('cd-art').classList.remove('playing');
-                        } else if (event.data === YT.PlayerState.ENDED) {
-                            isPlaying = false;
-                            document.getElementById('play-btn').innerText = '▶';
-                            document.getElementById('cd-art').classList.remove('playing');
+                        } else if (e.data === YT.PlayerState.ENDED) {
                             nextSong();
                         }
-                    },
-                    'onError': function(event) {
-                        isPlaying = false;
-                        document.getElementById('play-btn').innerText = '▶';
-                        document.getElementById('cd-art').classList.remove('playing');
                     }
                 }
             });
         }
 
         function playCurrentSong() {
-            const list = getSongs();
-            if (list.length === 0) return;
-            const song = list[currentIndex];
+            if (currentList.length === 0) return;
+            const song = currentList[currentIndex];
             if (ytPlayer && ytPlayer.loadVideoById) {
                 ytPlayer.loadVideoById(song.id);
                 ytPlayer.playVideo();
@@ -271,26 +412,20 @@
 
         function togglePlay() {
             if (!isEngineReady || !ytPlayer) return;
-
-            if (isPlaying) {
-                ytPlayer.pauseVideo();
-            } else {
-                playCurrentSong();
-            }
+            if (isPlaying) { ytPlayer.pauseVideo(); } 
+            else { playCurrentSong(); }
         }
 
         function nextSong() {
-            const list = getSongs();
-            if (list.length === 0) return;
-            currentIndex = (currentIndex + 1) % list.length;
+            if (currentList.length === 0) return;
+            currentIndex = (currentIndex + 1) % currentList.length;
             updateUI();
             if (isPlaying) playCurrentSong();
         }
 
         function prevSong() {
-            const list = getSongs();
-            if (list.length === 0) return;
-            currentIndex = (currentIndex - 1 + list.length) % list.length;
+            if (currentList.length === 0) return;
+            currentIndex = (currentIndex - 1 + currentList.length) % currentList.length;
             updateUI();
             if (isPlaying) playCurrentSong();
         }
@@ -302,18 +437,75 @@
             }
         }
 
+        /* Modal Playlist logic */
+        function openPlaylistModal(categoryPrefix, title) {
+            modalActiveKey = categoryPrefix;
+            document.getElementById('modalCategoryTitle').innerText = title + " Playlist";
+            document.getElementById('searchInput').value = '';
+            document.getElementById('playlistModal').style.display = 'flex';
+            filterSongs();
+        }
+
+        function closeModal() {
+            document.getElementById('playlistModal').style.display = 'none';
+        }
+
+        function filterSongs() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const container = document.getElementById('playlistList');
+            container.innerHTML = '';
+
+            // Combine both romantic & sad playlists of selected category for popup
+            const romList = window.musicData[modalActiveKey + '_romantic'] || [];
+            const sadList = window.musicData[modalActiveKey + '_sad'] || [];
+            const combined = [
+                ...romList.map(s => ({...s, key: modalActiveKey + '_romantic', tag: 'Romantic'})),
+                ...sadList.map(s => ({...s, key: modalActiveKey + '_sad', tag: 'Sad'}))
+            ].filter(s => s.id !== "...id..." && s.id !== "");
+
+            const filtered = combined.filter(song => 
+                song.title.toLowerCase().includes(query) || 
+                song.artist.toLowerCase().includes(query)
+            );
+
+            if(filtered.length === 0) {
+                container.innerHTML = '<div style="color:#aaa; text-align:center; padding:15px; font-size:12px;">No songs found or IDs empty</div>';
+                return;
+            }
+
+            filtered.forEach((song) => {
+                const div = document.createElement('div');
+                div.className = 'song-item';
+                div.innerHTML = `
+                    <div>
+                        <div class="item-name">${song.title}</div>
+                        <div class="item-artist">${song.artist} • [${song.tag}]</div>
+                    </div>
+                    <span style="font-size:10px; color:#4cd137;">▶ Play</span>
+                `;
+                div.onclick = () => {
+                    currentPlaylistKey = song.key;
+                    currentList = loadList(song.key);
+                    currentIndex = currentList.findIndex(s => s.id === song.id);
+                    document.getElementById('active-category-name').innerText = song.tag + " - " + song.title;
+                    updateUI();
+                    playCurrentSong();
+                    closeModal();
+                };
+                container.appendChild(div);
+            });
+        }
+
         setInterval(() => {
             if (ytPlayer && isPlaying && typeof ytPlayer.getDuration === 'function') {
                 const dur = ytPlayer.getDuration();
                 const cur = ytPlayer.getCurrentTime();
-                if (dur > 0) {
-                    document.getElementById('seekbar').value = (cur / dur) * 100;
-                }
+                if (dur > 0) document.getElementById('seekbar').value = (cur / dur) * 100;
             }
         }, 500);
 
         window.onload = function() {
-            updateUI();
+            setPlaylist('bollywood_romantic', 'BOLLYWOOD POP - ROMANTIC');
         };
     </script>
 </body>
