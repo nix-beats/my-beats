@@ -2,14 +2,19 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 2 - Glass Player UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Project 2 - Transparent Glass Player</title>
+    
+    <script src="songs.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -17,29 +22,32 @@
             width: 100vw;
             display: flex;
             justify-content: center;
-            align-items: center;
-            background: #090a0f url('bg.jpg') no-repeat center center/cover;
+            align-items: flex-end; /* Bottom alignment */
+            background: #000000 url('bg.jpg') no-repeat center center/cover;
             overflow: hidden;
+            padding-bottom: 45px; /* Positioned right above bottom navigation */
         }
 
-        /* 25% Visible, 75% Blur Glass Box */
+        /* Fully Transparent Glass Box (100% Glassmorphism) */
         .glass-player-box {
-            width: 90%;
-            max-width: 360px;
-            background: rgba(255, 255, 255, 0.25);
+            width: 92%;
+            max-width: 390px;
+            background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid #ffffff;
-            border-radius: 28px;
-            padding: 24px 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 32px;
+            padding: 22px 20px 18px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             color: #ffffff;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
+            position: relative;
+            z-index: 10;
         }
 
-        /* Track Info Row */
+        /* Top Track Info Row */
         .track-info-row {
             display: flex;
             align-items: center;
@@ -55,32 +63,45 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.9;
-            transition: opacity 0.2s;
+            transition: all 0.2s ease;
+            outline: none;
+            padding: 4px;
         }
 
-        .icon-btn:hover {
-            opacity: 1;
+        /* Green Highlight for Active Buttons */
+        .icon-btn.active {
+            color: #22c55e !important; /* Vibrant Green */
+            filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.8));
         }
 
         .song-details {
             text-align: center;
+            overflow: hidden;
+            padding: 0 10px;
         }
 
         .song-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 17px;
+            font-weight: 800; /* Extra Bold */
             color: #ffffff;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
 
         .artist-name {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
             margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Seekbar & Time Row */
+        /* Progress Seekbar Row */
         .progress-container {
             display: flex;
             align-items: center;
@@ -89,7 +110,7 @@
 
         .time-text {
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             color: #ffffff;
             min-width: 38px;
         }
@@ -98,7 +119,7 @@
             flex: 1;
             height: 4px;
             appearance: none;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.35);
             border-radius: 4px;
             outline: none;
             cursor: pointer;
@@ -106,105 +127,403 @@
 
         .seekbar::-webkit-slider-thumb {
             appearance: none;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: #ffffff;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
             cursor: pointer;
         }
 
-        /* Controls Row */
+        /* Perfectly Aligned Controls Row */
         .controls-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 6px 0 2px 0;
+            padding: 2px 2px 0 2px;
         }
 
+        /* Center Play Button - Removed Pink Color */
         .play-btn-main {
-            width: 52px;
-            height: 52px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: #e91e63;
+            background: rgba(255, 255, 255, 0.2);
             border: 2px solid #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
-            transition: transform 0.1s;
+            transition: transform 0.15s ease, background 0.2s;
+            backdrop-filter: blur(10px);
         }
 
         .play-btn-main:active {
-            transform: scale(0.95);
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .play-btn-main svg {
+            fill: #ffffff;
+        }
+
+        /* Playlist Glass Popup Window */
+        .playlist-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .playlist-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .playlist-box {
+            width: 90%;
+            max-width: 380px;
+            max-height: 70vh;
+            background: rgba(20, 24, 35, 0.85);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+        }
+
+        .playlist-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 10px;
+        }
+
+        .playlist-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .playlist-list {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .playlist-list::-webkit-scrollbar { display: none; }
+
+        .playlist-item {
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .playlist-item.active {
+            background: rgba(34, 197, 94, 0.25);
+            border: 1px solid #22c55e;
+        }
+
+        .item-info {
+            overflow: hidden;
+        }
+        .item-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-artist { font-size: 10.5px; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
+
+        #yt-player-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0.001;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
+    <!-- Main Glass Player Box -->
     <div class="glass-player-box">
         
-        <!-- Top Row: Heart, Title, Plus -->
+        <!-- Top Row: Heart, Title, Playlist Button -->
         <div class="track-info-row">
-            <button class="icon-btn">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <button class="icon-btn" id="btn-heart" onclick="toggleHeart()" title="Like">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
             </button>
+
             <div class="song-details">
-                <div class="song-title">Track Name</div>
-                <div class="artist-name">Artist Name</div>
+                <div class="song-title" id="song-title">Tujhe Dekha Toh</div>
+                <div class="artist-name" id="artist-name">Kumar Sanu, Lata Mangeshkar</div>
             </div>
-            <button class="icon-btn">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+
+            <!-- Playlist Icon -->
+            <button class="icon-btn" onclick="openPlaylistModal()" title="Playlist">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
             </button>
         </div>
 
         <!-- Progress Seekbar Row -->
         <div class="progress-container">
-            <span class="time-text">00:29</span>
-            <input type="range" class="seekbar" value="25" min="0" max="100">
-            <span class="time-text" style="text-align: right;">04:40</span>
+            <span class="time-text" id="curr-time">00:00</span>
+            <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
+            <span class="time-text" id="dur-time" style="text-align: right;">00:00</span>
         </div>
 
-        <!-- Main Media Controls Row -->
+        <!-- Aligned Controls Row -->
         <div class="controls-row">
             <!-- Rewind 10s -->
-            <button class="icon-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6"></path><path d="M2.66 15.57a10 10 0 1 0 .57-8.38L2.5 8"></path><text x="9" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
+            <button class="icon-btn" onclick="skipTime(-10)" title="Rewind 10s">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6"></path><path d="M2.66 15.57a10 10 0 1 0 .57-8.38L2.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
 
             <!-- Shuffle -->
-            <button class="icon-btn">
+            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
             </button>
 
             <!-- Previous Track -->
-            <button class="icon-btn">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"></line></svg>
+            <button class="icon-btn" onclick="prevTrack()" title="Previous">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
-            <!-- Play / Pause Center Button -->
-            <button class="play-btn-main">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>
+            <!-- Center Play/Pause Button (No Pink) -->
+            <button class="play-btn-main" id="play-btn" onclick="togglePlay()" title="Play / Pause">
+                <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24"><polygon points="7,5 19,12 7,19"></polygon></svg>
             </button>
 
             <!-- Next Track -->
-            <button class="icon-btn">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line></svg>
+            <button class="icon-btn" onclick="nextTrack()" title="Next">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
             <!-- Repeat -->
-            <button class="icon-btn">
+            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()" title="Repeat">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
             </button>
 
             <!-- Forward 10s -->
-            <button class="icon-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38L21.5 8"></path><text x="9" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
+            <button class="icon-btn" onclick="skipTime(10)" title="Forward 10s">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38L21.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
         </div>
 
     </div>
 
+    <!-- 50 Songs Glass Playlist Popup Modal -->
+    <div class="playlist-modal" id="playlistModal" onclick="closePlaylistOnOutside(event)">
+        <div class="playlist-box">
+            <div class="playlist-header">
+                <h3>90's Sadabahar Songs (50)</h3>
+                <button class="icon-btn" onclick="closePlaylistModal()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="playlist-list" id="playlistItemsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Hidden YT Player -->
+    <div id="yt-player-hidden">
+        <div id="yt-player"></div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        let ytPlayer = null;
+        let isPlaying = false;
+        let isShuffle = false;
+        let isRepeat = false;
+        let isHeart = false;
+        let isReady = false;
+
+        function formatTime(sec) {
+            if (isNaN(sec) || sec < 0) return "00:00";
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function loadSong(index) {
+            if (!window.songsList || window.songsList.length === 0) return;
+            currentIndex = index;
+            const song = window.songsList[currentIndex];
+
+            document.getElementById('song-title').innerText = song.title;
+            document.getElementById('artist-name').innerText = song.artist;
+
+            if (ytPlayer && ytPlayer.loadVideoById) {
+                ytPlayer.loadVideoById(song.id);
+                ytPlayer.playVideo();
+            }
+            renderPlaylist();
+        }
+
+        function togglePlay() {
+            if (!ytPlayer || !isReady) return;
+            if (isPlaying) {
+                ytPlayer.pauseVideo();
+            } else {
+                if (!ytPlayer.getVideoData || !ytPlayer.getVideoData().video_id) {
+                    loadSong(currentIndex);
+                } else {
+                    ytPlayer.playVideo();
+                }
+            }
+        }
+
+        function nextTrack() {
+            if (!window.songsList) return;
+            if (isShuffle) {
+                currentIndex = Math.floor(Math.random() * window.songsList.length);
+            } else {
+                currentIndex = (currentIndex + 1) % window.songsList.length;
+            }
+            loadSong(currentIndex);
+        }
+
+        function prevTrack() {
+            if (!window.songsList) return;
+            currentIndex = (currentIndex - 1 + window.songsList.length) % window.songsList.length;
+            loadSong(currentIndex);
+        }
+
+        function skipTime(seconds) {
+            if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
+                const cur = ytPlayer.getCurrentTime();
+                ytPlayer.seekTo(cur + seconds, true);
+            }
+        }
+
+        function seekAudio(val) {
+            if (ytPlayer && typeof ytPlayer.getDuration === 'function') {
+                const dur = ytPlayer.getDuration();
+                if (dur > 0) ytPlayer.seekTo((val / 100) * dur, true);
+            }
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            document.getElementById('btn-shuffle').classList.toggle('active', isShuffle);
+        }
+
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            document.getElementById('btn-repeat').classList.toggle('active', isRepeat);
+        }
+
+        function toggleHeart() {
+            isHeart = !isHeart;
+            document.getElementById('btn-heart').classList.toggle('active', isHeart);
+        }
+
+        /* Playlist Popup Controls */
+        function openPlaylistModal() {
+            renderPlaylist();
+            document.getElementById('playlistModal').classList.add('open');
+        }
+
+        function closePlaylistModal() {
+            document.getElementById('playlistModal').classList.remove('open');
+        }
+
+        function closePlaylistOnOutside(e) {
+            if (e.target.id === 'playlistModal') {
+                closePlaylistModal();
+            }
+        }
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlistItemsContainer');
+            if (!container || !window.songsList) return;
+            container.innerHTML = '';
+
+            window.songsList.forEach((song, idx) => {
+                const isCurrent = idx === currentIndex;
+                const div = document.createElement('div');
+                div.className = `playlist-item ${isCurrent ? 'active' : ''}`;
+                div.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${idx + 1}. ${song.title}</div>
+                        <div class="item-artist">${song.artist}</div>
+                    </div>
+                    <span style="font-size:12px; color: ${isCurrent ? '#22c55e' : 'rgba(255,255,255,0.5)'};">
+                        ${isCurrent && isPlaying ? '❚❚' : '▶'}
+                    </span>
+                `;
+                div.onclick = () => {
+                    loadSong(idx);
+                    closePlaylistModal();
+                };
+                container.appendChild(div);
+            });
+        }
+
+        /* YouTube API Callback */
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-player', {
+                height: '100', width: '100',
+                playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
+                events: {
+                    'onReady': () => { isReady = true; },
+                    'onStateChange': (e) => {
+                        const playIcon = document.getElementById('play-icon');
+                        if (e.data === YT.PlayerState.PLAYING) {
+                            isPlaying = true;
+                            playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>';
+                        } else if (e.data === YT.PlayerState.PAUSED) {
+                            isPlaying = false;
+                            playIcon.innerHTML = '<polygon points="7,5 19,12 7,19"></polygon>';
+                        } else if (e.data === YT.PlayerState.ENDED) {
+                            if (isRepeat) {
+                                ytPlayer.playVideo();
+                            } else {
+                                nextTrack();
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        /* Live Progress Bar Update */
+        setInterval(() => {
+            if (ytPlayer && isPlaying && typeof ytPlayer.getDuration === 'function') {
+                const dur = ytPlayer.getDuration();
+                const cur = ytPlayer.getCurrentTime();
+                if (dur > 0) {
+                    document.getElementById('seekbar').value = (cur / dur) * 100;
+                    document.getElementById('curr-time').innerText = formatTime(cur);
+                    document.getElementById('dur-time').innerText = formatTime(dur);
+                }
+            }
+        }, 500);
+
+        window.onload = function() {
+            renderPlaylist();
+        };
+    </script>
 </body>
 </html>
