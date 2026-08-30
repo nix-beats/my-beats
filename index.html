@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Transparent Glass Player</title>
     
+    <!-- YouTube IFrame API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
@@ -24,7 +25,7 @@
             align-items: flex-end;
             background: #000000 url('bg.jpg') no-repeat center center/cover;
             overflow: hidden;
-            padding-bottom: 90px; /* प्लेयर बॉक्स को ऊपर उठाया गया है */
+            padding-bottom: 90px;
         }
 
         /* Fully Transparent Glass Box */
@@ -41,12 +42,12 @@
             color: #ffffff;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
             position: relative;
             z-index: 10;
         }
 
-        /* Top Track Info Row */
+        /* Track Info Row */
         .track-info-row {
             display: flex;
             align-items: center;
@@ -70,7 +71,7 @@
 
         .icon-btn:active {
             transform: scale(0.85);
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .icon-btn.active {
@@ -106,7 +107,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Progress Seekbar Row */
+        /* Seekbar Row */
         .progress-container {
             display: flex;
             align-items: center;
@@ -172,7 +173,7 @@
             fill: #ffffff;
         }
 
-        /* Playlist Glass Modal Popup */
+        /* Playlist Modal */
         .playlist-modal {
             position: fixed;
             top: 0;
@@ -307,40 +308,40 @@
             <span class="time-text" id="dur-time" style="text-align: right;">00:00</span>
         </div>
 
-        <!-- Aligned Controls Row -->
+        <!-- Controls Row -->
         <div class="controls-row">
             <!-- 1. Rewind 10s -->
-            <button class="icon-btn" onclick="skipTime(-10)" title="Rewind 10 seconds">
+            <button class="icon-btn" onclick="skipTime(-10)" title="Rewind 10s">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6"></path><path d="M2.66 15.57a10 10 0 1 0 .57-8.38L2.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
 
             <!-- 2. Shuffle -->
-            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle Play">
+            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
             </button>
 
-            <!-- 3. Previous Track -->
+            <!-- 3. Previous -->
             <button class="icon-btn" onclick="prevTrack()" title="Previous Song">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
-            <!-- 4. Main Play/Pause Button -->
+            <!-- 4. Play/Pause -->
             <button class="play-btn-main" id="play-btn" onclick="togglePlay()" title="Play / Pause">
                 <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24"><polygon points="7,5 19,12 7,19"></polygon></svg>
             </button>
 
-            <!-- 5. Next Track -->
+            <!-- 5. Next -->
             <button class="icon-btn" onclick="nextTrack()" title="Next Song">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
             <!-- 6. Repeat -->
-            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()" title="Repeat Song">
+            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()" title="Repeat">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
             </button>
 
             <!-- 7. Forward 10s -->
-            <button class="icon-btn" onclick="skipTime(10)" title="Forward 10 seconds">
+            <button class="icon-btn" onclick="skipTime(10)" title="Forward 10s">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38L21.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
         </div>
@@ -351,7 +352,7 @@
     <div class="playlist-modal" id="playlistModal" onclick="closePlaylistOnOutside(event)">
         <div class="playlist-box">
             <div class="playlist-header">
-                <h3>90's Sadabahar Songs (50)</h3>
+                <h3>90's Sadabahar Songs</h3>
                 <button class="icon-btn" onclick="closePlaylistModal()">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
@@ -366,67 +367,30 @@
     </div>
 
     <script>
-        // Tested Working 90s Songs
+        // Working YouTube Video IDs for 90s Songs
         const songsList = [
             { title: "Tujhe Dekha Toh", artist: "Kumar Sanu, Lata Mangeshkar", id: "cNV5hLSa9D8" },
-            { title: "Pehla Nasha", artist: "Udit Narayan, Sadhana Sargam", id: "v64E3bJ0_9g" },
-            { title: "Chura Ke Dil Mera", artist: "Kumar Sanu, Alka Yagnik", id: "8RkMvA1J9a4" },
-            { title: "Mera Dil Bhi Kitna Pagal Hai", artist: "Kumar Sanu, Alka Yagnik", id: "Vd_F4mZ_89k" },
-            { title: "Dheere Dheere Se Meri Zindagi", artist: "Kumar Sanu", id: "nE2Q9d-W6h0" },
-            { title: "Dil Hai Ke Manta Nahin", artist: "Kumar Sanu, Anuradha Paudwal", id: "M49W1G1a9_g" },
-            { title: "Bahut Pyar Karte Hain", artist: "Anuradha Paudwal", id: "bVp2K0_S8q0" },
-            { title: "Tip Tip Barsa Phani", artist: "Udit Narayan, Alka Yagnik", id: "W7a_b34g6g0" },
-            { title: "Pardesi Pardesi", artist: "Udit Narayan, Alka Yagnik", id: "w_M-09V3Tf8" },
-            { title: "Aaye Ho Meri Zindagi Mein", artist: "Udit Narayan", id: "7r_L8m1W0y0" },
-            { title: "Jeeta Tha Jiske Liye", artist: "Kumar Sanu, Alka Yagnik", id: "K9g0l1X9v8M" },
-            { title: "Sochenge Tumhe Pyaar", artist: "Kumar Sanu", id: "M79X2b1V0kL" },
-            { title: "Kitna Pyaara Tujhe Rab Ne", artist: "Udit Narayan, Alka Yagnik", id: "P9X1l0V8m3K" },
-            { title: "Tumse Milne Ki Tamanna Hai", artist: "S.P. Balasubrahmanyam", id: "L8V2m9K1x0P" },
-            { title: "Pehli Pehli Baar Mohabbat Ki Hai", artist: "Kumar Sanu, Alka Yagnik", id: "X0m9V8L1k2P" },
-            { title: "Ek Ladki Ko Dekha Toh Aisa Laga", artist: "Kumar Sanu", id: "K2m1V9X0l8P" },
-            { title: "Rooth Na Jana Tumse Kaho Toh", artist: "Kumar Sanu", id: "P1m0V9L8k2X" },
-            { title: "Do Dil Mil Rahe Hain", artist: "Kumar Sanu", id: "V9m0L8K1x2P" },
-            { title: "Ho Gaya Hai Tujhko Toh Pyar", artist: "Udit Narayan, Lata Mangeshkar", id: "L9m0V8K1x2P" },
-            { title: "Mehndi Laga Ke Rakhna", artist: "Udit Narayan, Lata Mangeshkar", id: "K8m1V0L9x2P" },
-            { title: "Kuch Kuch Hota Hai", artist: "Udit Narayan, Alka Yagnik", id: "X8m1V0L9k2P" },
-            { title: "Ladki Badi Anjani Hai", artist: "Kumar Sanu, Alka Yagnik", id: "P8m1V0L9k2X" },
-            { title: "Koi Mil Gaya", artist: "Udit Narayan, Alka Yagnik", id: "V8m1L0P9k2X" },
-            { title: "Tujhe Yaad Na Meri Aayee", artist: "Alka Yagnik, Manpreet Akhtar", id: "L8m1V0P9k2X" },
-            { title: "Suraj Hua Roshan", artist: "Sonu Nigam, Alka Yagnik", id: "K8m1V0P9x2L" },
-            { title: "Kabhi Khushi Kabhie Gham", artist: "Lata Mangeshkar", id: "X8m1P0V9k2L" },
-            { title: "You Are My Soniya", artist: "Sonu Nigam, Alka Yagnik", id: "P8m1X0V9k2L" },
-            { title: "Bole Chudiyan", artist: "Amit Kumar, Sonu Nigam, Alka Yagnik", id: "V8m1X0P9k2L" },
-            { title: "Tum Dil Ki Dhadkan Mein", artist: "Abhijeet, Alka Yagnik", id: "L8m1X0P9k2V" },
-            { title: "Dil Ne Yeh Kaha Hai Dil Se", artist: "Udit Narayan, Alka Yagnik", id: "K8m1X0P9v2L" },
-            { title: "Na Tum Jaano Na Hum", artist: "Lucky Ali", id: "X8m1K0P9v2L" },
-            { title: "Kaho Naa Pyaar Hai", artist: "Udit Narayan, Alka Yagnik", id: "P8m1K0V9x2L" },
-            { title: "Ek Pal Ka Jeena", artist: "Lucky Ali", id: "V8m1K0P9x2L" },
-            { title: "Chand Chupa Badal Mein", artist: "Udit Narayan, Alka Yagnik", id: "L8m1K0P9x2V" },
-            { title: "Aankhon Ki Gustakhiyan", artist: "Kumar Sanu, Kavita Krishnamurthy", id: "K8m1L0P9x2V" },
-            { title: "Hum Dil De Chuke Sanam", artist: "Kavita Krishnamurthy, Udit Narayan", id: "X8m1L0P9x2V" },
-            { title: "Tadap Tadap Ke", artist: "KK, Dominique Cerejo", id: "P8m1L0X9v2K" },
-            { title: "Nimbooda Nimbooda", artist: "Kavita Krishnamurthy", id: "V8m1L0X9p2K" },
-            { title: "Taal Se Taal Mila", artist: "Alka Yagnik, Udit Narayan", id: "L8m1K0X9p2V" },
-            { title: "Ishq Bina Kya Jeena Yaaro", artist: "Sujatha, Sonu Nigam", id: "K8m1L0X9p2V" },
-            { title: "Nahin Samne Tu", artist: "Hariharan, Sukhwinder Singh", id: "X8m1L0K9p2V" },
-            { title: "Ramta Jogi", artist: "Sukhwinder Singh, Alka Yagnik", id: "P8m1L0K9v2X" },
-            { title: "Kahin Deep Jale Kahin Dil", artist: "Lata Mangeshkar", id: "V8m1L0K9p2X" },
-            { title: "Awaara Paagal Deewana", artist: "Shaan, Sunidhi Chauhan", id: "L8m1P0K9v2X" },
-            { title: "Baazigar O Baazigar", artist: "Kumar Sanu, Alka Yagnik", id: "K8m1P0L9v2X" },
-            { title: "Yeh Kaali Kaali Aankhen", artist: "Kumar Sanu, Anu Malik", id: "X8m1P0L9v2K" },
-            { title: "Jaati Hoon Main", artist: "Kumar Sanu, Alka Yagnik", id: "P8m1X0L9v2K" },
-            { title: "Rana Ji Maaf Karna", artist: "Alka Yagnik, Ila Arun", id: "V8m1X0L9p2K" },
-            { title: "Ghar Se Nikalte Hi", artist: "Udit Narayan", id: "L8m1X0K9p2V" },
-            { title: "Aisi Deewangi Dekhi Nahi Kahi", artist: "Alka Yagnik, Vinod Rathod", id: "K8m1X0L9p2V" }
+            { title: "Pehla Nasha", artist: "Udit Narayan, Sadhana Sargam", id: "_l9mZkQd6g8" },
+            { title: "Chura Ke Dil Mera", artist: "Kumar Sanu, Alka Yagnik", id: "dZp89fK1N_E" },
+            { title: "Mera Dil Bhi Kitna Pagal Hai", artist: "Kumar Sanu, Alka Yagnik", id: "8_C1Q12S6yU" },
+            { title: "Dheere Dheere Se Meri Zindagi", artist: "Kumar Sanu", id: "nF7yu66gqE4" },
+            { title: "Bahut Pyar Karte Hain", artist: "Anuradha Paudwal", id: "d-B4bE7Pq5g" },
+            { title: "Tip Tip Barsa Phani", artist: "Udit Narayan, Alka Yagnik", id: "2218w4c3xXg" },
+            { title: "Pardesi Pardesi", artist: "Udit Narayan, Alka Yagnik", id: "W6qR1yW_rXU" },
+            { title: "Aaye Ho Meri Zindagi Mein", artist: "Udit Narayan", id: "xJ1gC2L9n-0" },
+            { title: "Do Dil Mil Rahe Hain", artist: "Kumar Sanu", id: "p4b07P71F_s" },
+            { title: "Kuch Kuch Hota Hai", artist: "Udit Narayan, Alka Yagnik", id: "L6gO20m7Xn4" },
+            { title: "Chand Chupa Badal Mein", artist: "Udit Narayan, Alka Yagnik", id: "y9E8fJg3P2Q" }
         ];
 
         let currentIndex = 0;
         let ytPlayer = null;
+        let isPlayerReady = false;
         let isPlaying = false;
         let isShuffle = false;
         let isRepeat = false;
         let isHeart = false;
-        let isReady = false;
+        let errorCount = 0;
 
         function formatTime(sec) {
             if (isNaN(sec) || sec < 0) return "00:00";
@@ -435,34 +399,138 @@
             return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        function loadSong(index) {
-            currentIndex = index;
-            const song = songsList[currentIndex];
+        /* YouTube iFrame Setup */
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-player', {
+                height: '100',
+                width: '100',
+                videoId: songsList[currentIndex].id,
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'playsinline': 1,
+                    'enablejsapi': 1,
+                    'origin': window.location.origin || '*'
+                },
+                events: {
+                    'onReady': () => {
+                        isPlayerReady = true;
+                        updateUI();
+                    },
+                    'onError': (e) => {
+                        console.warn("Song ID Error (Auto-skipping):", e.data);
+                        // IF SONG FAILS/BLOCKED (Error 2, 5, 100, 101, 150) -> AUTO SKIP TO NEXT
+                        errorCount++;
+                        if (errorCount < songsList.length) {
+                            setTimeout(nextTrack, 600);
+                        }
+                    },
+                    'onStateChange': (e) => {
+                        if (e.data === YT.PlayerState.PLAYING) {
+                            isPlaying = true;
+                            errorCount = 0; // Reset error count on successful playback
+                            updatePlayUI(true);
+                        } else if (e.data === YT.PlayerState.PAUSED) {
+                            isPlaying = false;
+                            updatePlayUI(false);
+                        } else if (e.data === YT.PlayerState.ENDED) {
+                            if (isRepeat) {
+                                ytPlayer.playVideo();
+                            } else {
+                                nextTrack();
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
+        function updateUI() {
+            const song = songsList[currentIndex];
             document.getElementById('song-title').innerText = song.title;
             document.getElementById('artist-name').innerText = song.artist;
+            renderPlaylist();
+        }
 
-            if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
-                ytPlayer.loadVideoById(song.id);
+        function loadSong(index) {
+            currentIndex = index;
+            updateUI();
+
+            if (ytPlayer && isPlayerReady && typeof ytPlayer.loadVideoById === 'function') {
+                ytPlayer.loadVideoById(songsList[currentIndex].id);
                 ytPlayer.playVideo();
                 isPlaying = true;
                 updatePlayUI(true);
             }
-            renderPlaylist();
         }
 
         function togglePlay() {
-            if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') {
-                // If API is still loading, initialize current song directly
-                isPlaying = true;
-                updatePlayUI(true);
+            if (!ytPlayer || !isPlayerReady) {
+                // If API is still connecting, force play status UI
+                isPlaying = !isPlaying;
+                updatePlayUI(isPlaying);
                 return;
             }
 
-            const state = ytPlayer.getPlayerState();
-            if (isPlaying || state === YT.PlayerState.PLAYING) {
+            if (isPlaying) {
                 ytPlayer.pauseVideo();
-                isPlaying = false;
-                updatePlayUI(false);
             } else {
-              
+                ytPlayer.playVideo();
+            }
+        }
+
+        function updatePlayUI(playing) {
+            const playIcon = document.getElementById('play-icon');
+            if (playing) {
+                playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>';
+            } else {
+                playIcon.innerHTML = '<polygon points="7,5 19,12 7,19"></polygon>';
+            }
+        }
+
+        function nextTrack() {
+            if (isShuffle) {
+                currentIndex = Math.floor(Math.random() * songsList.length);
+            } else {
+                currentIndex = (currentIndex + 1) % songsList.length;
+            }
+            loadSong(currentIndex);
+        }
+
+        function prevTrack() {
+            currentIndex = (currentIndex - 1 + songsList.length) % songsList.length;
+            loadSong(currentIndex);
+        }
+
+        function skipTime(seconds) {
+            if (ytPlayer && isPlayerReady && typeof ytPlayer.getCurrentTime === 'function') {
+                const cur = ytPlayer.getCurrentTime();
+                ytPlayer.seekTo(cur + seconds, true);
+            }
+        }
+
+        function seekAudio(val) {
+            if (ytPlayer && isPlayerReady && typeof ytPlayer.getDuration === 'function') {
+                const dur = ytPlayer.getDuration();
+                if (dur > 0) ytPlayer.seekTo((val / 100) * dur, true);
+            }
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            document.getElementById('btn-shuffle').classList.toggle('active', isShuffle);
+        }
+
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            document.getElementById('btn-repeat').classList.toggle('active', isRepeat);
+        }
+
+        function toggleHeart() {
+            isHeart = !isHeart;
+            document.getElementById('btn-heart').classList.toggle('active', isHeart);
+        }
+
+        /* Playlist Logic */
+        function openPlaylistModal() {
+            rend
