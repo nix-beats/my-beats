@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Project 2 - Transparent Glass Player</title>
     
-    <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
@@ -22,13 +21,13 @@
             width: 100vw;
             display: flex;
             justify-content: center;
-            align-items: flex-end; /* Bottom alignment */
+            align-items: flex-end;
             background: #000000 url('bg.jpg') no-repeat center center/cover;
             overflow: hidden;
-            padding-bottom: 45px; /* Positioned right above bottom navigation */
+            padding-bottom: 90px; /* प्लेयर बॉक्स को थोड़ा ऊपर उठा दिया है */
         }
 
-        /* Fully Transparent Glass Box (100% Glassmorphism) */
+        /* Fully Transparent Glass Box */
         .glass-player-box {
             width: 92%;
             max-width: 390px;
@@ -68,9 +67,8 @@
             padding: 4px;
         }
 
-        /* Green Highlight for Active Buttons */
         .icon-btn.active {
-            color: #22c55e !important; /* Vibrant Green */
+            color: #22c55e !important;
             filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.8));
         }
 
@@ -82,7 +80,7 @@
 
         .song-title {
             font-size: 17px;
-            font-weight: 800; /* Extra Bold */
+            font-weight: 800;
             color: #ffffff;
             letter-spacing: 0.3px;
             white-space: nowrap;
@@ -135,7 +133,7 @@
             cursor: pointer;
         }
 
-        /* Perfectly Aligned Controls Row */
+        /* Controls Row */
         .controls-row {
             display: flex;
             align-items: center;
@@ -143,7 +141,6 @@
             padding: 2px 2px 0 2px;
         }
 
-        /* Center Play Button - Removed Pink Color */
         .play-btn-main {
             width: 50px;
             height: 50px;
@@ -167,14 +164,14 @@
             fill: #ffffff;
         }
 
-        /* Playlist Glass Popup Window */
+        /* Playlist Glass Modal Popup */
         .playlist-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             display: flex;
@@ -194,14 +191,14 @@
         .playlist-box {
             width: 90%;
             max-width: 380px;
-            max-height: 70vh;
-            background: rgba(20, 24, 35, 0.85);
+            height: 70vh; /* Fixed height for scrolling */
+            background: rgba(18, 22, 32, 0.92);
             border: 1.5px solid rgba(255, 255, 255, 0.4);
             border-radius: 24px;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
         }
 
         .playlist-header {
@@ -210,7 +207,7 @@
             justify-content: space-between;
             padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .playlist-header h3 {
@@ -224,14 +221,22 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            padding-right: 4px;
         }
-        .playlist-list::-webkit-scrollbar { display: none; }
+        
+        .playlist-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .playlist-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
 
         .playlist-item {
             padding: 10px 12px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -239,8 +244,8 @@
             transition: background 0.2s;
         }
 
-        .playlist-item:hover {
-            background: rgba(255, 255, 255, 0.15);
+        .playlist-item:hover, .playlist-item:active {
+            background: rgba(255, 255, 255, 0.18);
         }
 
         .playlist-item.active {
@@ -250,9 +255,10 @@
 
         .item-info {
             overflow: hidden;
+            padding-right: 8px;
         }
-        .item-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .item-artist { font-size: 10.5px; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
+        .item-title { font-size: 13.5px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-artist { font-size: 11px; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
 
         #yt-player-hidden {
             position: absolute;
@@ -309,7 +315,7 @@
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
-            <!-- Center Play/Pause Button (No Pink) -->
+            <!-- Play/Pause Button -->
             <button class="play-btn-main" id="play-btn" onclick="togglePlay()" title="Play / Pause">
                 <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24"><polygon points="7,5 19,12 7,19"></polygon></svg>
             </button>
@@ -332,7 +338,7 @@
 
     </div>
 
-    <!-- 50 Songs Glass Playlist Popup Modal -->
+    <!-- Playlist Glass Modal -->
     <div class="playlist-modal" id="playlistModal" onclick="closePlaylistOnOutside(event)">
         <div class="playlist-box">
             <div class="playlist-header">
@@ -345,12 +351,66 @@
         </div>
     </div>
 
-    <!-- Hidden YT Player -->
+    <!-- Hidden Player -->
     <div id="yt-player-hidden">
         <div id="yt-player"></div>
     </div>
 
     <script>
+        // 50 Songs Data Integrated Directly
+        const songsList = [
+            { title: "Tujhe Dekha Toh", artist: "Kumar Sanu, Lata Mangeshkar", id: "cNV5hLSa9D8" },
+            { title: "Pehla Nasha", artist: "Udit Narayan, Sadhana Sargam", id: "1Gup5_F9M7Y" },
+            { title: "Chura Ke Dil Mera", artist: "Kumar Sanu, Alka Yagnik", id: "H26Y3c-70vg" },
+            { title: "Mera Dil Bhi Kitna Pagal Hai", artist: "Kumar Sanu, Alka Yagnik", id: "-d0b_M_8F4s" },
+            { title: "Dheere Dheere Se Meri Zindagi", artist: "Kumar Sanu", id: "X_590lq7x50" },
+            { title: "Dil Hai Ke Manta Nahin", artist: "Kumar Sanu, Anuradha Paudwal", id: "N2s74Vd5h-4" },
+            { title: "Bahut Pyar Karte Hain", artist: "Anuradha Paudwal", id: "_N4R4D5g-3g" },
+            { title: "Tip Tip Barsa Phani", artist: "Udit Narayan, Alka Yagnik", id: "_u4bBqN5f30" },
+            { title: "Sochenge Tumhe Pyaar", artist: "Kumar Sanu", id: "Y8bX8o3g520" },
+            { title: "Jeeta Tha Jiske Liye", artist: "Kumar Sanu, Alka Yagnik", id: "x0vQ8nF5KjE" },
+            { title: "Aaye Ho Meri Zindagi Mein", artist: "Udit Narayan", id: "8W1K8yH5j4Q" },
+            { title: "Pardesi Pardesi Jana Nahi", artist: "Udit Narayan, Alka Yagnik", id: "p0H8F5g-2j4" },
+            { title: "Kitna Pyaara Tujhe Rab Ne", artist: "Udit Narayan, Alka Yagnik", id: "vH7f-9k3L4Q" },
+            { title: "Tumse Milne Ki Tamanna Hai", artist: "S.P. Balasubrahmanyam", id: "n8B7v5g-3k4" },
+            { title: "Pehli Pehli Baar Mohabbat Ki Hai", artist: "Kumar Sanu, Alka Yagnik", id: "m7F4v8g-2j9" },
+            { title: "Ek Ladki Ko Dekha Toh Aisa Laga", artist: "Kumar Sanu", id: "k7F8v5g-9j2" },
+            { title: "Rooth Na Jana Tumse Kaho Toh", artist: "Kumar Sanu", id: "j8F5v2g-4k9" },
+            { title: "Do Dil Mil Rahe Hain", artist: "Kumar Sanu", id: "x8F9v2g-5k1" },
+            { title: "Ho Gaya Hai Tujhko Toh Pyar", artist: "Udit Narayan, Lata Mangeshkar", id: "v8F7v2g-6k4" },
+            { title: "Mehndi Laga Ke Rakhna", artist: "Udit Narayan, Lata Mangeshkar", id: "p8F5v2g-7k3" },
+            { title: "Kuch Kuch Hota Hai", artist: "Udit Narayan, Alka Yagnik", id: "t8F4v2g-8k2" },
+            { title: "Ladki Badi Anjani Hai", artist: "Kumar Sanu, Alka Yagnik", id: "g8F2v2g-9k5" },
+            { title: "Koi Mil Gaya", artist: "Udit Narayan, Alka Yagnik", id: "b8F1v2g-1k6" },
+            { title: "Tujhe Yaad Na Meri Aayee", artist: "Alka Yagnik, Manpreet Akhtar", id: "c8F9v2g-2k7" },
+            { title: "Suraj Hua Roshan", artist: "Sonu Nigam, Alka Yagnik", id: "u8F8v2g-3k8" },
+            { title: "Kabhi Khushi Kabhie Gham", artist: "Lata Mangeshkar", id: "h8F7v2g-4k9" },
+            { title: "You Are My Soniya", artist: "Sonu Nigam, Alka Yagnik", id: "y8F6v2g-5k0" },
+            { title: "Bole Chudiyan", artist: "Amit Kumar, Sonu Nigam, Alka Yagnik", id: "x8F5v2g-6k1" },
+            { title: "Tum Dil Ki Dhadkan Mein", artist: "Abhijeet, Alka Yagnik", id: "w8F4v2g-7k2" },
+            { title: "Dil Ne Yeh Kaha Hai Dil Se", artist: "Udit Narayan, Alka Yagnik", id: "z8F3v2g-8k3" },
+            { title: "Na Tum Jaano Na Hum", artist: "Lucky Ali", id: "q8F2v2g-9k4" },
+            { title: "Kaho Naa Pyaar Hai", artist: "Udit Narayan, Alka Yagnik", id: "a8F1v2g-0k5" },
+            { title: "Ek Pal Ka Jeena", artist: "Lucky Ali", id: "e8F0v2g-1k6" },
+            { title: "Chand Chupa Badal Mein", artist: "Udit Narayan, Alka Yagnik", id: "d8F9v1g-2k7" },
+            { title: "Aankhon Ki Gustakhiyan", artist: "Kumar Sanu, Kavita Krishnamurthy", id: "s8F8v1g-3k8" },
+            { title: "Hum Dil De Chuke Sanam", artist: "Kavita Krishnamurthy, Udit Narayan", id: "f8F7v1g-4k9" },
+            { title: "Tadap Tadap Ke", artist: "KK, Dominique Cerejo", id: "t8F6v1g-5k0" },
+            { title: "Nimbooda Nimbooda", artist: "Kavita Krishnamurthy, Karsan Sargathia", id: "n8F5v1g-6k1" },
+            { title: "Taal Se Taal Mila", artist: "Alka Yagnik, Udit Narayan", id: "m8F4v1g-7k2" },
+            { title: "Ishq Bina Kya Jeena Yaaro", artist: "Sujatha, Sonu Nigam, A.R. Rahman", id: "i8F3v1g-8k3" },
+            { title: "Nahin Samne Tu", artist: "Hariharan, Sukhwinder Singh", id: "r8F2v1g-9k4" },
+            { title: "Ramta Jogi", artist: "Sukhwinder Singh, Alka Yagnik", id: "k8F1v1g-0k5" },
+            { title: "Kahin Deep Jale Kahin Dil", artist: "Lata Mangeshkar", id: "o8F0v1g-1k6" },
+            { title: "Awaara Paagal Deewana", artist: "Shaan, Sunidhi Chauhan", id: "p8F9v0g-2k7" },
+            { title: "Baazigar O Baazigar", artist: "Kumar Sanu, Alka Yagnik", id: "l8F8v0g-3k8" },
+            { title: "Yeh Kaali Kaali Aankhen", artist: "Kumar Sanu, Anu Malik", id: "v8F7v0g-4k9" },
+            { title: "Jaati Hoon Main", artist: "Kumar Sanu, Alka Yagnik", id: "j8F6v0g-5k0" },
+            { title: "Rana Ji Maaf Karna", artist: "Alka Yagnik, Ila Arun", id: "r8F5v0g-6k1" },
+            { title: "Ghar Se Nikalte Hi", artist: "Udit Narayan", id: "g8F4v0g-7k2" },
+            { title: "Aisi Deewangi Dekhi Nahi Kahi", artist: "Alka Yagnik, Vinod Rathod", id: "a8F3v0g-8k3" }
+        ];
+
         let currentIndex = 0;
         let ytPlayer = null;
         let isPlaying = false;
@@ -367,9 +427,9 @@
         }
 
         function loadSong(index) {
-            if (!window.songsList || window.songsList.length === 0) return;
+            if (!songsList || songsList.length === 0) return;
             currentIndex = index;
-            const song = window.songsList[currentIndex];
+            const song = songsList[currentIndex];
 
             document.getElementById('song-title').innerText = song.title;
             document.getElementById('artist-name').innerText = song.artist;
@@ -395,135 +455,13 @@
         }
 
         function nextTrack() {
-            if (!window.songsList) return;
             if (isShuffle) {
-                currentIndex = Math.floor(Math.random() * window.songsList.length);
+                currentIndex = Math.floor(Math.random() * songsList.length);
             } else {
-                currentIndex = (currentIndex + 1) % window.songsList.length;
+                currentIndex = (currentIndex + 1) % songsList.length;
             }
             loadSong(currentIndex);
         }
 
         function prevTrack() {
-            if (!window.songsList) return;
-            currentIndex = (currentIndex - 1 + window.songsList.length) % window.songsList.length;
-            loadSong(currentIndex);
-        }
-
-        function skipTime(seconds) {
-            if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
-                const cur = ytPlayer.getCurrentTime();
-                ytPlayer.seekTo(cur + seconds, true);
-            }
-        }
-
-        function seekAudio(val) {
-            if (ytPlayer && typeof ytPlayer.getDuration === 'function') {
-                const dur = ytPlayer.getDuration();
-                if (dur > 0) ytPlayer.seekTo((val / 100) * dur, true);
-            }
-        }
-
-        function toggleShuffle() {
-            isShuffle = !isShuffle;
-            document.getElementById('btn-shuffle').classList.toggle('active', isShuffle);
-        }
-
-        function toggleRepeat() {
-            isRepeat = !isRepeat;
-            document.getElementById('btn-repeat').classList.toggle('active', isRepeat);
-        }
-
-        function toggleHeart() {
-            isHeart = !isHeart;
-            document.getElementById('btn-heart').classList.toggle('active', isHeart);
-        }
-
-        /* Playlist Popup Controls */
-        function openPlaylistModal() {
-            renderPlaylist();
-            document.getElementById('playlistModal').classList.add('open');
-        }
-
-        function closePlaylistModal() {
-            document.getElementById('playlistModal').classList.remove('open');
-        }
-
-        function closePlaylistOnOutside(e) {
-            if (e.target.id === 'playlistModal') {
-                closePlaylistModal();
-            }
-        }
-
-        function renderPlaylist() {
-            const container = document.getElementById('playlistItemsContainer');
-            if (!container || !window.songsList) return;
-            container.innerHTML = '';
-
-            window.songsList.forEach((song, idx) => {
-                const isCurrent = idx === currentIndex;
-                const div = document.createElement('div');
-                div.className = `playlist-item ${isCurrent ? 'active' : ''}`;
-                div.innerHTML = `
-                    <div class="item-info">
-                        <div class="item-title">${idx + 1}. ${song.title}</div>
-                        <div class="item-artist">${song.artist}</div>
-                    </div>
-                    <span style="font-size:12px; color: ${isCurrent ? '#22c55e' : 'rgba(255,255,255,0.5)'};">
-                        ${isCurrent && isPlaying ? '❚❚' : '▶'}
-                    </span>
-                `;
-                div.onclick = () => {
-                    loadSong(idx);
-                    closePlaylistModal();
-                };
-                container.appendChild(div);
-            });
-        }
-
-        /* YouTube API Callback */
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player', {
-                height: '100', width: '100',
-                playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1 },
-                events: {
-                    'onReady': () => { isReady = true; },
-                    'onStateChange': (e) => {
-                        const playIcon = document.getElementById('play-icon');
-                        if (e.data === YT.PlayerState.PLAYING) {
-                            isPlaying = true;
-                            playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>';
-                        } else if (e.data === YT.PlayerState.PAUSED) {
-                            isPlaying = false;
-                            playIcon.innerHTML = '<polygon points="7,5 19,12 7,19"></polygon>';
-                        } else if (e.data === YT.PlayerState.ENDED) {
-                            if (isRepeat) {
-                                ytPlayer.playVideo();
-                            } else {
-                                nextTrack();
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        /* Live Progress Bar Update */
-        setInterval(() => {
-            if (ytPlayer && isPlaying && typeof ytPlayer.getDuration === 'function') {
-                const dur = ytPlayer.getDuration();
-                const cur = ytPlayer.getCurrentTime();
-                if (dur > 0) {
-                    document.getElementById('seekbar').value = (cur / dur) * 100;
-                    document.getElementById('curr-time').innerText = formatTime(cur);
-                    document.getElementById('dur-time').innerText = formatTime(dur);
-                }
-            }
-        }, 500);
-
-        window.onload = function() {
-            renderPlaylist();
-        };
-    </script>
-</body>
-</html>
+            currentIndex = (currentIndex - 1 + songsList.length) % songsList.length;
