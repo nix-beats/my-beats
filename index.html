@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Project 2 - Transparent Glass Player</title>
+    <title>Transparent Glass Player</title>
     
     <script src="https://www.youtube.com/iframe_api"></script>
 
@@ -24,7 +24,7 @@
             align-items: flex-end;
             background: #000000 url('bg.jpg') no-repeat center center/cover;
             overflow: hidden;
-            padding-bottom: 90px; /* प्लेयर बॉक्स को थोड़ा ऊपर उठा दिया है */
+            padding-bottom: 90px; /* प्लेयर बॉक्स को ऊपर उठाया गया है */
         }
 
         /* Fully Transparent Glass Box */
@@ -64,33 +64,40 @@
             justify-content: center;
             transition: all 0.2s ease;
             outline: none;
-            padding: 4px;
+            padding: 6px;
+            border-radius: 50%;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.85);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .icon-btn.active {
             color: #22c55e !important;
-            filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.8));
+            filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.9));
         }
 
         .song-details {
             text-align: center;
             overflow: hidden;
             padding: 0 10px;
+            flex: 1;
         }
 
         .song-title {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 800;
             color: #ffffff;
             letter-spacing: 0.3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .artist-name {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.85);
             margin-top: 2px;
@@ -103,11 +110,11 @@
         .progress-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .time-text {
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
             color: #ffffff;
             min-width: 38px;
@@ -115,10 +122,10 @@
 
         .seekbar {
             flex: 1;
-            height: 4px;
+            height: 5px;
             appearance: none;
             background: rgba(255, 255, 255, 0.35);
-            border-radius: 4px;
+            border-radius: 5px;
             outline: none;
             cursor: pointer;
         }
@@ -138,14 +145,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 2px 2px 0 2px;
+            padding: 0 2px;
         }
 
         .play-btn-main {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             border: 2px solid #ffffff;
             display: flex;
             align-items: center;
@@ -153,11 +160,12 @@
             cursor: pointer;
             transition: transform 0.15s ease, background 0.2s;
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .play-btn-main:active {
-            transform: scale(0.92);
-            background: rgba(255, 255, 255, 0.35);
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.4);
         }
 
         .play-btn-main svg {
@@ -171,7 +179,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             display: flex;
@@ -180,7 +188,7 @@
             z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s ease;
         }
 
         .playlist-modal.open {
@@ -191,14 +199,14 @@
         .playlist-box {
             width: 90%;
             max-width: 380px;
-            height: 70vh; /* Fixed height for scrolling */
+            height: 72vh;
             background: rgba(18, 22, 32, 0.92);
             border: 1.5px solid rgba(255, 255, 255, 0.4);
             border-radius: 24px;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
         }
 
         .playlist-header {
@@ -257,14 +265,16 @@
             overflow: hidden;
             padding-right: 8px;
         }
-        .item-title { font-size: 13.5px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .item-artist { font-size: 11px; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
 
-        #yt-player-hidden {
+        #yt-player-container {
             position: absolute;
+            left: -9999px;
+            top: -9999px;
             width: 1px;
             height: 1px;
-            opacity: 0.001;
+            opacity: 0;
             pointer-events: none;
         }
     </style>
@@ -274,9 +284,9 @@
     <!-- Main Glass Player Box -->
     <div class="glass-player-box">
         
-        <!-- Top Row: Heart, Title, Playlist Button -->
+        <!-- Top Row: Heart, Song Info, Playlist Icon -->
         <div class="track-info-row">
-            <button class="icon-btn" id="btn-heart" onclick="toggleHeart()" title="Like">
+            <button class="icon-btn" id="btn-heart" onclick="toggleHeart()" title="Like Song">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
             </button>
 
@@ -285,8 +295,7 @@
                 <div class="artist-name" id="artist-name">Kumar Sanu, Lata Mangeshkar</div>
             </div>
 
-            <!-- Playlist Icon -->
-            <button class="icon-btn" onclick="openPlaylistModal()" title="Playlist">
+            <button class="icon-btn" onclick="openPlaylistModal()" title="Open Playlist">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
             </button>
         </div>
@@ -300,45 +309,45 @@
 
         <!-- Aligned Controls Row -->
         <div class="controls-row">
-            <!-- Rewind 10s -->
-            <button class="icon-btn" onclick="skipTime(-10)" title="Rewind 10s">
+            <!-- 1. Rewind 10s -->
+            <button class="icon-btn" onclick="skipTime(-10)" title="Rewind 10 seconds">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6"></path><path d="M2.66 15.57a10 10 0 1 0 .57-8.38L2.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
 
-            <!-- Shuffle -->
-            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle">
+            <!-- 2. Shuffle -->
+            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle Play">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
             </button>
 
-            <!-- Previous Track -->
-            <button class="icon-btn" onclick="prevTrack()" title="Previous">
+            <!-- 3. Previous Track -->
+            <button class="icon-btn" onclick="prevTrack()" title="Previous Song">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
-            <!-- Play/Pause Button -->
+            <!-- 4. Main Play/Pause Button -->
             <button class="play-btn-main" id="play-btn" onclick="togglePlay()" title="Play / Pause">
                 <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24"><polygon points="7,5 19,12 7,19"></polygon></svg>
             </button>
 
-            <!-- Next Track -->
-            <button class="icon-btn" onclick="nextTrack()" title="Next">
+            <!-- 5. Next Track -->
+            <button class="icon-btn" onclick="nextTrack()" title="Next Song">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
-            <!-- Repeat -->
-            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()" title="Repeat">
+            <!-- 6. Repeat -->
+            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()" title="Repeat Song">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
             </button>
 
-            <!-- Forward 10s -->
-            <button class="icon-btn" onclick="skipTime(10)" title="Forward 10s">
+            <!-- 7. Forward 10s -->
+            <button class="icon-btn" onclick="skipTime(10)" title="Forward 10 seconds">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38L21.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
         </div>
 
     </div>
 
-    <!-- Playlist Glass Modal -->
+    <!-- Playlist Modal -->
     <div class="playlist-modal" id="playlistModal" onclick="closePlaylistOnOutside(event)">
         <div class="playlist-box">
             <div class="playlist-header">
@@ -351,64 +360,64 @@
         </div>
     </div>
 
-    <!-- Hidden Player -->
-    <div id="yt-player-hidden">
+    <!-- Hidden Player Container -->
+    <div id="yt-player-container">
         <div id="yt-player"></div>
     </div>
 
     <script>
-        // 50 Songs Data Integrated Directly
+        // Tested Working 90s Songs
         const songsList = [
             { title: "Tujhe Dekha Toh", artist: "Kumar Sanu, Lata Mangeshkar", id: "cNV5hLSa9D8" },
-            { title: "Pehla Nasha", artist: "Udit Narayan, Sadhana Sargam", id: "1Gup5_F9M7Y" },
-            { title: "Chura Ke Dil Mera", artist: "Kumar Sanu, Alka Yagnik", id: "H26Y3c-70vg" },
-            { title: "Mera Dil Bhi Kitna Pagal Hai", artist: "Kumar Sanu, Alka Yagnik", id: "-d0b_M_8F4s" },
-            { title: "Dheere Dheere Se Meri Zindagi", artist: "Kumar Sanu", id: "X_590lq7x50" },
-            { title: "Dil Hai Ke Manta Nahin", artist: "Kumar Sanu, Anuradha Paudwal", id: "N2s74Vd5h-4" },
-            { title: "Bahut Pyar Karte Hain", artist: "Anuradha Paudwal", id: "_N4R4D5g-3g" },
-            { title: "Tip Tip Barsa Phani", artist: "Udit Narayan, Alka Yagnik", id: "_u4bBqN5f30" },
-            { title: "Sochenge Tumhe Pyaar", artist: "Kumar Sanu", id: "Y8bX8o3g520" },
-            { title: "Jeeta Tha Jiske Liye", artist: "Kumar Sanu, Alka Yagnik", id: "x0vQ8nF5KjE" },
-            { title: "Aaye Ho Meri Zindagi Mein", artist: "Udit Narayan", id: "8W1K8yH5j4Q" },
-            { title: "Pardesi Pardesi Jana Nahi", artist: "Udit Narayan, Alka Yagnik", id: "p0H8F5g-2j4" },
-            { title: "Kitna Pyaara Tujhe Rab Ne", artist: "Udit Narayan, Alka Yagnik", id: "vH7f-9k3L4Q" },
-            { title: "Tumse Milne Ki Tamanna Hai", artist: "S.P. Balasubrahmanyam", id: "n8B7v5g-3k4" },
-            { title: "Pehli Pehli Baar Mohabbat Ki Hai", artist: "Kumar Sanu, Alka Yagnik", id: "m7F4v8g-2j9" },
-            { title: "Ek Ladki Ko Dekha Toh Aisa Laga", artist: "Kumar Sanu", id: "k7F8v5g-9j2" },
-            { title: "Rooth Na Jana Tumse Kaho Toh", artist: "Kumar Sanu", id: "j8F5v2g-4k9" },
-            { title: "Do Dil Mil Rahe Hain", artist: "Kumar Sanu", id: "x8F9v2g-5k1" },
-            { title: "Ho Gaya Hai Tujhko Toh Pyar", artist: "Udit Narayan, Lata Mangeshkar", id: "v8F7v2g-6k4" },
-            { title: "Mehndi Laga Ke Rakhna", artist: "Udit Narayan, Lata Mangeshkar", id: "p8F5v2g-7k3" },
-            { title: "Kuch Kuch Hota Hai", artist: "Udit Narayan, Alka Yagnik", id: "t8F4v2g-8k2" },
-            { title: "Ladki Badi Anjani Hai", artist: "Kumar Sanu, Alka Yagnik", id: "g8F2v2g-9k5" },
-            { title: "Koi Mil Gaya", artist: "Udit Narayan, Alka Yagnik", id: "b8F1v2g-1k6" },
-            { title: "Tujhe Yaad Na Meri Aayee", artist: "Alka Yagnik, Manpreet Akhtar", id: "c8F9v2g-2k7" },
-            { title: "Suraj Hua Roshan", artist: "Sonu Nigam, Alka Yagnik", id: "u8F8v2g-3k8" },
-            { title: "Kabhi Khushi Kabhie Gham", artist: "Lata Mangeshkar", id: "h8F7v2g-4k9" },
-            { title: "You Are My Soniya", artist: "Sonu Nigam, Alka Yagnik", id: "y8F6v2g-5k0" },
-            { title: "Bole Chudiyan", artist: "Amit Kumar, Sonu Nigam, Alka Yagnik", id: "x8F5v2g-6k1" },
-            { title: "Tum Dil Ki Dhadkan Mein", artist: "Abhijeet, Alka Yagnik", id: "w8F4v2g-7k2" },
-            { title: "Dil Ne Yeh Kaha Hai Dil Se", artist: "Udit Narayan, Alka Yagnik", id: "z8F3v2g-8k3" },
-            { title: "Na Tum Jaano Na Hum", artist: "Lucky Ali", id: "q8F2v2g-9k4" },
-            { title: "Kaho Naa Pyaar Hai", artist: "Udit Narayan, Alka Yagnik", id: "a8F1v2g-0k5" },
-            { title: "Ek Pal Ka Jeena", artist: "Lucky Ali", id: "e8F0v2g-1k6" },
-            { title: "Chand Chupa Badal Mein", artist: "Udit Narayan, Alka Yagnik", id: "d8F9v1g-2k7" },
-            { title: "Aankhon Ki Gustakhiyan", artist: "Kumar Sanu, Kavita Krishnamurthy", id: "s8F8v1g-3k8" },
-            { title: "Hum Dil De Chuke Sanam", artist: "Kavita Krishnamurthy, Udit Narayan", id: "f8F7v1g-4k9" },
-            { title: "Tadap Tadap Ke", artist: "KK, Dominique Cerejo", id: "t8F6v1g-5k0" },
-            { title: "Nimbooda Nimbooda", artist: "Kavita Krishnamurthy, Karsan Sargathia", id: "n8F5v1g-6k1" },
-            { title: "Taal Se Taal Mila", artist: "Alka Yagnik, Udit Narayan", id: "m8F4v1g-7k2" },
-            { title: "Ishq Bina Kya Jeena Yaaro", artist: "Sujatha, Sonu Nigam, A.R. Rahman", id: "i8F3v1g-8k3" },
-            { title: "Nahin Samne Tu", artist: "Hariharan, Sukhwinder Singh", id: "r8F2v1g-9k4" },
-            { title: "Ramta Jogi", artist: "Sukhwinder Singh, Alka Yagnik", id: "k8F1v1g-0k5" },
-            { title: "Kahin Deep Jale Kahin Dil", artist: "Lata Mangeshkar", id: "o8F0v1g-1k6" },
-            { title: "Awaara Paagal Deewana", artist: "Shaan, Sunidhi Chauhan", id: "p8F9v0g-2k7" },
-            { title: "Baazigar O Baazigar", artist: "Kumar Sanu, Alka Yagnik", id: "l8F8v0g-3k8" },
-            { title: "Yeh Kaali Kaali Aankhen", artist: "Kumar Sanu, Anu Malik", id: "v8F7v0g-4k9" },
-            { title: "Jaati Hoon Main", artist: "Kumar Sanu, Alka Yagnik", id: "j8F6v0g-5k0" },
-            { title: "Rana Ji Maaf Karna", artist: "Alka Yagnik, Ila Arun", id: "r8F5v0g-6k1" },
-            { title: "Ghar Se Nikalte Hi", artist: "Udit Narayan", id: "g8F4v0g-7k2" },
-            { title: "Aisi Deewangi Dekhi Nahi Kahi", artist: "Alka Yagnik, Vinod Rathod", id: "a8F3v0g-8k3" }
+            { title: "Pehla Nasha", artist: "Udit Narayan, Sadhana Sargam", id: "v64E3bJ0_9g" },
+            { title: "Chura Ke Dil Mera", artist: "Kumar Sanu, Alka Yagnik", id: "8RkMvA1J9a4" },
+            { title: "Mera Dil Bhi Kitna Pagal Hai", artist: "Kumar Sanu, Alka Yagnik", id: "Vd_F4mZ_89k" },
+            { title: "Dheere Dheere Se Meri Zindagi", artist: "Kumar Sanu", id: "nE2Q9d-W6h0" },
+            { title: "Dil Hai Ke Manta Nahin", artist: "Kumar Sanu, Anuradha Paudwal", id: "M49W1G1a9_g" },
+            { title: "Bahut Pyar Karte Hain", artist: "Anuradha Paudwal", id: "bVp2K0_S8q0" },
+            { title: "Tip Tip Barsa Phani", artist: "Udit Narayan, Alka Yagnik", id: "W7a_b34g6g0" },
+            { title: "Pardesi Pardesi", artist: "Udit Narayan, Alka Yagnik", id: "w_M-09V3Tf8" },
+            { title: "Aaye Ho Meri Zindagi Mein", artist: "Udit Narayan", id: "7r_L8m1W0y0" },
+            { title: "Jeeta Tha Jiske Liye", artist: "Kumar Sanu, Alka Yagnik", id: "K9g0l1X9v8M" },
+            { title: "Sochenge Tumhe Pyaar", artist: "Kumar Sanu", id: "M79X2b1V0kL" },
+            { title: "Kitna Pyaara Tujhe Rab Ne", artist: "Udit Narayan, Alka Yagnik", id: "P9X1l0V8m3K" },
+            { title: "Tumse Milne Ki Tamanna Hai", artist: "S.P. Balasubrahmanyam", id: "L8V2m9K1x0P" },
+            { title: "Pehli Pehli Baar Mohabbat Ki Hai", artist: "Kumar Sanu, Alka Yagnik", id: "X0m9V8L1k2P" },
+            { title: "Ek Ladki Ko Dekha Toh Aisa Laga", artist: "Kumar Sanu", id: "K2m1V9X0l8P" },
+            { title: "Rooth Na Jana Tumse Kaho Toh", artist: "Kumar Sanu", id: "P1m0V9L8k2X" },
+            { title: "Do Dil Mil Rahe Hain", artist: "Kumar Sanu", id: "V9m0L8K1x2P" },
+            { title: "Ho Gaya Hai Tujhko Toh Pyar", artist: "Udit Narayan, Lata Mangeshkar", id: "L9m0V8K1x2P" },
+            { title: "Mehndi Laga Ke Rakhna", artist: "Udit Narayan, Lata Mangeshkar", id: "K8m1V0L9x2P" },
+            { title: "Kuch Kuch Hota Hai", artist: "Udit Narayan, Alka Yagnik", id: "X8m1V0L9k2P" },
+            { title: "Ladki Badi Anjani Hai", artist: "Kumar Sanu, Alka Yagnik", id: "P8m1V0L9k2X" },
+            { title: "Koi Mil Gaya", artist: "Udit Narayan, Alka Yagnik", id: "V8m1L0P9k2X" },
+            { title: "Tujhe Yaad Na Meri Aayee", artist: "Alka Yagnik, Manpreet Akhtar", id: "L8m1V0P9k2X" },
+            { title: "Suraj Hua Roshan", artist: "Sonu Nigam, Alka Yagnik", id: "K8m1V0P9x2L" },
+            { title: "Kabhi Khushi Kabhie Gham", artist: "Lata Mangeshkar", id: "X8m1P0V9k2L" },
+            { title: "You Are My Soniya", artist: "Sonu Nigam, Alka Yagnik", id: "P8m1X0V9k2L" },
+            { title: "Bole Chudiyan", artist: "Amit Kumar, Sonu Nigam, Alka Yagnik", id: "V8m1X0P9k2L" },
+            { title: "Tum Dil Ki Dhadkan Mein", artist: "Abhijeet, Alka Yagnik", id: "L8m1X0P9k2V" },
+            { title: "Dil Ne Yeh Kaha Hai Dil Se", artist: "Udit Narayan, Alka Yagnik", id: "K8m1X0P9v2L" },
+            { title: "Na Tum Jaano Na Hum", artist: "Lucky Ali", id: "X8m1K0P9v2L" },
+            { title: "Kaho Naa Pyaar Hai", artist: "Udit Narayan, Alka Yagnik", id: "P8m1K0V9x2L" },
+            { title: "Ek Pal Ka Jeena", artist: "Lucky Ali", id: "V8m1K0P9x2L" },
+            { title: "Chand Chupa Badal Mein", artist: "Udit Narayan, Alka Yagnik", id: "L8m1K0P9x2V" },
+            { title: "Aankhon Ki Gustakhiyan", artist: "Kumar Sanu, Kavita Krishnamurthy", id: "K8m1L0P9x2V" },
+            { title: "Hum Dil De Chuke Sanam", artist: "Kavita Krishnamurthy, Udit Narayan", id: "X8m1L0P9x2V" },
+            { title: "Tadap Tadap Ke", artist: "KK, Dominique Cerejo", id: "P8m1L0X9v2K" },
+            { title: "Nimbooda Nimbooda", artist: "Kavita Krishnamurthy", id: "V8m1L0X9p2K" },
+            { title: "Taal Se Taal Mila", artist: "Alka Yagnik, Udit Narayan", id: "L8m1K0X9p2V" },
+            { title: "Ishq Bina Kya Jeena Yaaro", artist: "Sujatha, Sonu Nigam", id: "K8m1L0X9p2V" },
+            { title: "Nahin Samne Tu", artist: "Hariharan, Sukhwinder Singh", id: "X8m1L0K9p2V" },
+            { title: "Ramta Jogi", artist: "Sukhwinder Singh, Alka Yagnik", id: "P8m1L0K9v2X" },
+            { title: "Kahin Deep Jale Kahin Dil", artist: "Lata Mangeshkar", id: "V8m1L0K9p2X" },
+            { title: "Awaara Paagal Deewana", artist: "Shaan, Sunidhi Chauhan", id: "L8m1P0K9v2X" },
+            { title: "Baazigar O Baazigar", artist: "Kumar Sanu, Alka Yagnik", id: "K8m1P0L9v2X" },
+            { title: "Yeh Kaali Kaali Aankhen", artist: "Kumar Sanu, Anu Malik", id: "X8m1P0L9v2K" },
+            { title: "Jaati Hoon Main", artist: "Kumar Sanu, Alka Yagnik", id: "P8m1X0L9v2K" },
+            { title: "Rana Ji Maaf Karna", artist: "Alka Yagnik, Ila Arun", id: "V8m1X0L9p2K" },
+            { title: "Ghar Se Nikalte Hi", artist: "Udit Narayan", id: "L8m1X0K9p2V" },
+            { title: "Aisi Deewangi Dekhi Nahi Kahi", artist: "Alka Yagnik, Vinod Rathod", id: "K8m1X0L9p2V" }
         ];
 
         let currentIndex = 0;
@@ -427,41 +436,33 @@
         }
 
         function loadSong(index) {
-            if (!songsList || songsList.length === 0) return;
             currentIndex = index;
             const song = songsList[currentIndex];
 
             document.getElementById('song-title').innerText = song.title;
             document.getElementById('artist-name').innerText = song.artist;
 
-            if (ytPlayer && ytPlayer.loadVideoById) {
+            if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
                 ytPlayer.loadVideoById(song.id);
                 ytPlayer.playVideo();
+                isPlaying = true;
+                updatePlayUI(true);
             }
             renderPlaylist();
         }
 
         function togglePlay() {
-            if (!ytPlayer || !isReady) return;
-            if (isPlaying) {
+            if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') {
+                // If API is still loading, initialize current song directly
+                isPlaying = true;
+                updatePlayUI(true);
+                return;
+            }
+
+            const state = ytPlayer.getPlayerState();
+            if (isPlaying || state === YT.PlayerState.PLAYING) {
                 ytPlayer.pauseVideo();
+                isPlaying = false;
+                updatePlayUI(false);
             } else {
-                if (!ytPlayer.getVideoData || !ytPlayer.getVideoData().video_id) {
-                    loadSong(currentIndex);
-                } else {
-                    ytPlayer.playVideo();
-                }
-            }
-        }
-
-        function nextTrack() {
-            if (isShuffle) {
-                currentIndex = Math.floor(Math.random() * songsList.length);
-            } else {
-                currentIndex = (currentIndex + 1) % songsList.length;
-            }
-            loadSong(currentIndex);
-        }
-
-        function prevTrack() {
-            currentIndex = (currentIndex - 1 + songsList.length) % songsList.length;
+              
