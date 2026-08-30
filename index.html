@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dual Vertical UI - Sharp White Background</title>
+    <title>Compact Dual UI - White Background</title>
 
     <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -11,41 +11,41 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        /* 1. Sharp Pure White Page Background */
+        /* Sharp Pure White Background */
         html, body {
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background-color: #ffffff; /* Sharp White */
+            background-color: #ffffff;
             color: #e2e4e9;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px; /* Ensure boxes never touch screen edges */
+            padding: 12px;
         }
 
-        /* Dual Box App Outer Wrapper */
+        /* Outer Wrapper: Reduced Height & Spacing */
         .app-wrapper {
             display: flex;
-            gap: 16px;
-            height: 92vh;
-            max-height: 720px;
+            gap: 10px; /* Spacing kam kar diya */
+            height: 82vh;
+            max-height: 580px; /* Height kam kar di */
             width: 100%;
-            max-width: 560px;
+            max-width: 500px;
         }
 
-        /* 2. LEFT SLIM SIDEBAR (Patla Box - Completely Curved Corners) */
+        /* 1. LEFT SLIM SIDEBAR */
         .slim-sidebar {
-            width: 68px;
+            width: 60px;
             background: #0d0e14;
             border: 1px solid #1c1e29;
-            border-radius: 24px; /* Curved Corners */
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 18px 0;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25); /* Soft Shadow on White */
+            padding: 14px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             flex-shrink: 0;
         }
 
@@ -53,48 +53,48 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 18px;
+            gap: 14px;
             width: 100%;
         }
 
         /* macOS Dots */
-        .mac-dots { display: flex; gap: 5px; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .mac-dots { display: flex; gap: 4px; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; }
         .dot-red { background: #ff5f56; }
         .dot-yellow { background: #ffbd2e; }
         .dot-green { background: #27c93f; }
 
         .brand-icon-mini {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             background: #1d202d;
             border: 1px solid #2d3246;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
         }
 
-        /* Left Side Menu Icons (Home, Search, Library, Hotlist) */
+        /* Compact Nav Icons */
         .nav-icons-group {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
             width: 100%;
             align-items: center;
-            margin-top: 6px;
+            margin-top: 2px;
         }
 
         .slim-nav-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #6a7189;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -103,48 +103,48 @@
             background: #202436;
             color: #ffffff;
             border: 1px solid #313750;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
         }
 
         .slim-bottom {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
         }
 
         .profile-avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
             border: 1px solid #2e3347;
             object-fit: cover;
         }
 
-        /* 3. RIGHT MAIN PANEL (Bada Box - Completely Curved Corners) */
+        /* 2. RIGHT MAIN PANEL */
         .main-panel {
             flex: 1;
             background: #0d0e14;
             border: 1px solid #1c1e29;
-            border-radius: 24px; /* Curved Corners */
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25); /* Soft Shadow on White */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
         .panel-header {
-            padding: 18px 20px 10px 20px;
+            padding: 14px 14px 8px 14px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
-        .brand-text-full h1 { font-size: 16px; font-weight: 700; color: #ffffff; }
-        .brand-text-full p { font-size: 11px; color: #585f76; margin-top: 1px; }
+        .brand-text-full h1 { font-size: 14px; font-weight: 700; color: #ffffff; }
+        .brand-text-full p { font-size: 10px; color: #585f76; margin-top: 1px; }
 
-        /* Search Input with ⌘K */
+        /* Search Input */
         .search-wrapper {
             position: relative;
             display: flex;
@@ -154,45 +154,44 @@
             width: 100%;
             background: #141620;
             border: 1px solid #202333;
-            border-radius: 10px;
-            padding: 9px 36px 9px 34px;
+            border-radius: 8px;
+            padding: 7px 30px 7px 30px;
             color: #fff;
-            font-size: 12px;
+            font-size: 11px;
             outline: none;
         }
         .search-wrapper input:focus { border-color: #383e58; }
         .search-wrapper input::placeholder { color: #52586d; }
-        .search-icon { position: absolute; left: 12px; color: #52586d; font-size: 12px; }
+        .search-icon { position: absolute; left: 10px; color: #52586d; font-size: 11px; }
         .kbd-badge {
-            position: absolute; right: 10px; background: #1c1f2e; border: 1px solid #2a2e45;
-            color: #6a7189; font-size: 10px; padding: 2px 5px; border-radius: 4px; font-family: monospace;
+            position: absolute; right: 8px; background: #1c1f2e; border: 1px solid #2a2e45;
+            color: #6a7189; font-size: 9px; padding: 1px 4px; border-radius: 4px; font-family: monospace;
         }
 
-        /* Inner Scrollable Track List Container */
+        /* Scrollable List Container */
         .content-area {
             flex: 1;
             overflow-y: auto;
-            padding: 0 18px 140px 18px;
+            padding: 0 14px 115px 14px;
         }
         .content-area::-webkit-scrollbar { display: none; }
 
         .section-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: #4b5165;
-            margin: 14px 0 8px 4px;
+            margin: 10px 0 6px 4px;
             letter-spacing: 0.5px;
         }
 
-        /* Categories Nav */
         .nav-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
             color: #8c94ac;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             cursor: pointer;
             margin-bottom: 2px;
@@ -200,67 +199,66 @@
         .nav-item:hover { background: #141620; color: #fff; }
         .nav-item.active { background: #1b1e2c; color: #fff; border: 1px solid #282d42; }
 
-        /* Track Item */
         .track-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 9px 12px;
-            border-radius: 8px;
+            padding: 7px 10px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
         .track-item:hover { background: #131520; }
         .track-item.playing { background: #1a1d2e; border: 1px solid #282e46; }
         .track-item.playing .track-title { color: #60a5fa; }
 
-        .track-title { font-size: 12px; font-weight: 600; color: #d0d4e4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .track-sub { font-size: 10px; color: #585f76; margin-top: 1px; }
+        .track-title { font-size: 11px; font-weight: 600; color: #d0d4e4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .track-sub { font-size: 9px; color: #585f76; margin-top: 1px; }
 
-        /* Pinned Bottom Music Player Card */
+        /* Compact Player Card */
         .bottom-player-card {
             position: absolute;
-            bottom: 12px;
-            left: 12px;
-            right: 12px;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
             background: #12141e;
             border: 1px solid #212535;
-            border-radius: 14px;
-            padding: 10px 12px;
+            border-radius: 12px;
+            padding: 8px 10px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            gap: 6px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.8);
         }
 
         .player-top { display: flex; align-items: center; justify-content: space-between; }
-        .player-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
-        .player-thumb { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #292e42; }
-        .player-title-str { font-size: 12px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .player-artist-str { font-size: 10px; color: #687087; }
+        .player-info { display: flex; align-items: center; gap: 8px; overflow: hidden; }
+        .player-thumb { width: 32px; height: 32px; border-radius: 6px; object-fit: cover; border: 1px solid #292e42; }
+        .player-title-str { font-size: 11px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-artist-str { font-size: 9px; color: #687087; }
 
-        .player-btns { display: flex; align-items: center; gap: 6px; }
-        .btn-action { background: none; border: none; color: #8c94ac; font-size: 13px; cursor: pointer; padding: 4px; }
+        .player-btns { display: flex; align-items: center; gap: 4px; }
+        .btn-action { background: none; border: none; color: #8c94ac; font-size: 12px; cursor: pointer; padding: 3px; }
         .btn-action:hover { color: #fff; }
         
         .play-main-btn {
             background: #ffffff;
             color: #0d0e14;
             border: none;
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
             font-weight: 700;
         }
 
-        .progress-box { display: flex; align-items: center; gap: 8px; }
+        .progress-box { display: flex; align-items: center; gap: 6px; }
         .seekbar { flex: 1; height: 3px; accent-color: #ffffff; cursor: pointer; background: #202434; border-radius: 2px; }
-        .time-str { font-size: 9px; color: #5c637a; font-weight: 600; width: 24px; }
+        .time-str { font-size: 8px; color: #5c637a; font-weight: 600; width: 22px; }
 
         #yt-player-container { position: fixed; bottom: 0; right: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
     </style>
@@ -269,7 +267,7 @@
 
     <div class="app-wrapper">
         
-        <!-- 1. LEFT SLIM SIDEBAR (Floating Curved Box) -->
+        <!-- LEFT SLIM BOX -->
         <div class="slim-sidebar">
             <div class="slim-top">
                 <div class="mac-dots">
@@ -279,7 +277,6 @@
                 </div>
                 <div class="brand-icon-mini">🎵</div>
                 
-                <!-- 4 Bottom Menu Icons -->
                 <div class="nav-icons-group">
                     <div class="slim-nav-btn active" title="Home">🏠</div>
                     <div class="slim-nav-btn" title="Search" onclick="document.getElementById('searchInput').focus()">🔍</div>
@@ -294,7 +291,7 @@
             </div>
         </div>
 
-        <!-- 2. RIGHT MAIN PANEL (Floating Curved Box with Tracks) -->
+        <!-- RIGHT MAIN BOX -->
         <div class="main-panel">
             
             <div class="panel-header">
@@ -337,7 +334,7 @@
                 <div id="trackListContainer"></div>
             </div>
 
-            <!-- Pinned Music Player Inside Large Box -->
+            <!-- Pinned Music Player Card -->
             <div class="bottom-player-card">
                 <div class="player-top">
                     <div class="player-info">
@@ -422,7 +419,7 @@
             );
 
             if (displayList.length === 0) {
-                container.innerHTML = `<div style="color:#4b5165; font-size:11px; text-align:center; padding:15px 0;">No tracks found</div>`;
+                container.innerHTML = `<div style="color:#4b5165; font-size:11px; text-align:center; padding:12px 0;">No tracks found</div>`;
                 return;
             }
 
@@ -525,4 +522,5 @@
             renderTracks();
         };
     </script>
-<
+</body>
+</html>
