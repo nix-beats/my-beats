@@ -2,314 +2,326 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-Beats Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spotify - My Beats</title>
 
     <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { 
-            background: url('bg.jpg') no-repeat center center fixed;
-            background-size: cover;
+        /* Prevent entire page scrolling */
+        html, body { 
+            height: 100%; 
+            width: 100%;
+            overflow: hidden; 
+            background-color: #000000; 
             color: #ffffff; 
-            padding: 10px; 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .logo { 
-            font-size: 18px; 
-            font-weight: 800; 
-            color: #ffffff; 
-            margin-top: 10px;
-            margin-bottom: 15px;
-            letter-spacing: 2.5px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-            text-align: center;
         }
 
-        /* 1. Categories Section (Top Side) */
-        .category-container {
-            width: 100%;
-            max-width: 350px;
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 480px;
+            margin: 0 auto;
+            background: #121212;
+            position: relative;
+        }
+
+        /* Top Header & Search */
+        .header {
+            padding: 12px 16px 8px 16px;
+            background: #121212;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 15px;
         }
 
-        .category-box {
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(6px);
-            border-radius: 12px;
-            padding: 10px;
-        }
-
-        .cat-title {
-            font-size: 12px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
             font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-            text-transform: uppercase;
+            color: #1DB954;
+            letter-spacing: -0.5px;
         }
 
-        .cat-buttons { display: flex; gap: 6px; }
-
-        .mood-btn {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #ffffff;
-            padding: 6px 4px;
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #242424;
             border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
+            padding: 8px 12px;
+            gap: 8px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 13px;
+            width: 100%;
+        }
+
+        .search-box input::placeholder { color: #b3b3b3; }
+
+        /* Category Scroll Chips */
+        .category-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 16px 12px 16px;
+            scrollbar-width: none;
+            background: #121212;
+        }
+        .category-scroll::-webkit-scrollbar { display: none; }
+
+        .chip {
+            background: #232323;
+            color: #ffffff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chip.active {
+            background: #1DB954;
+            color: #000000;
+        }
+
+        /* Internal Song List (Scrollable Area) */
+        .song-list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 16px 120px 16px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #b3b3b3;
+            margin: 12px 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: background 0.2s;
+        }
+
+        .track-item:active, .track-item.playing {
+            background: #282828;
+        }
+
+        .track-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .track-number {
+            font-size: 13px;
+            color: #b3b3b3;
+            width: 16px;
             text-align: center;
         }
 
-        .playlist-btn {
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 6px 8px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
+        .track-meta { overflow: hidden; }
+        .track-name { 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: #ffffff; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        .track-item.playing .track-name { color: #1DB954; }
+
+        .track-artist { 
+            font-size: 12px; 
+            color: #b3b3b3; 
+            margin-top: 2px;
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
         }
 
-        /* 2. Compact Player Card (Moved to the VERY BOTTOM) */
-        .player-card {
-            background: rgba(0, 0, 0, 0.55);
-            border: 1.5px solid #ffffff;
-            backdrop-filter: blur(10px);
-            border-radius: 14px;
-            padding: 12px;
-            width: 100%;
-            max-width: 350px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            margin-top: auto; /* Push to absolute bottom */
-            margin-bottom: 10px;
+        .play-icon-small {
+            color: #1DB954;
+            font-size: 14px;
         }
 
-        .active-tag {
-            font-size: 10px;
-            font-weight: 800;
-            color: #4cd137;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .active-tag::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background-color: #4cd137;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-        
-        .cd-art { 
-            width: 42px; 
-            height: 42px; 
-            border-radius: 50%; 
-            border: 1.5px solid #ffffff; 
-            object-fit: cover; 
-            animation: spin 8s linear infinite;
-            animation-play-state: paused;
-        }
-
-        .cd-art.playing { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .song-info { flex: 1; margin: 0 10px; overflow: hidden; }
-        .song-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .artist-name { font-size: 11px; color: rgba(255, 255, 255, 0.8); margin-top: 1px; }
-
-        .seekbar-row { margin: 6px 0 8px 0; }
-        .seekbar {
-            width: 100%;
-            height: 3px;
-            accent-color: #ffffff;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        /* Live Timer Display */
-        .time-box {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 600;
-            margin-top: 3px;
-        }
-
-        .controls-row { 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            background: rgba(0,0,0,0.3); 
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 4px; 
-            border-radius: 10px; 
-        }
-        
-        .btn { background: none; border: none; cursor: pointer; color: #ffffff; font-size: 16px; }
-        .play-btn { 
-            background: #ffffff; 
-            color: #000000;
-            width: 30px; 
-            height: 30px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        /* Popup Playlist Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-        }
-
-        .modal-content {
+        /* Pinned Spotify Bottom Player */
+        .bottom-player {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: #181818;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 14px;
-            width: 100%;
-            max-width: 350px;
-            max-height: 75vh;
+            border-top: 1px solid #282828;
+            padding: 10px 16px 14px 16px;
             display: flex;
             flex-direction: column;
-            padding: 12px;
+            gap: 6px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
         }
 
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .modal-title { font-size: 13px; font-weight: 800; color: #fff; }
-        .close-btn { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
+        .player-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-        .search-box {
-            width: 100%;
-            padding: 8px;
-            background: #282828;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .player-track-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .player-art {
+            width: 42px;
+            height: 42px;
             border-radius: 6px;
-            color: #fff;
-            font-size: 12px;
-            outline: none;
-            margin-bottom: 8px;
+            object-fit: cover;
+            animation: spin 10s linear infinite;
+            animation-play-state: paused;
+        }
+        .player-art.playing { animation-play-state: running; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .player-details { overflow: hidden; }
+        .player-title { font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-sub { font-size: 11px; color: #b3b3b3; }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .playlist-items { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .song-item { padding: 6px 8px; background: #222; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .item-name { font-size: 12px; font-weight: 700; color: #fff; }
-        .item-artist { font-size: 10px; color: #aaa; }
+        .ctrl-btn {
+            background: none;
+            border: none;
+            color: #b3b3b3;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .ctrl-btn:active { color: #fff; }
+
+        .main-play-btn {
+            background: #1DB954;
+            color: #000;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .seekbar-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .seekbar {
+            flex: 1;
+            height: 3px;
+            accent-color: #1DB954;
+            cursor: pointer;
+        }
+
+        .time-text {
+            font-size: 10px;
+            color: #b3b3b3;
+            font-weight: 600;
+            width: 28px;
+        }
 
         #yt-player-container { position: fixed; bottom: 0; right: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div class="logo">MY-BEATS</div>
-
-    <!-- 1. Category Buttons Section -->
-    <div class="category-container">
+    <div class="app-container">
         
-        <div class="category-box">
-            <div class="cat-title">1. 90's POP</div>
-            <div class="cat-buttons">
-                <button class="mood-btn" onclick="setPlaylist('nineties_romantic', '90s Pop - Romantic')">❤️ Romantic</button>
-                <button class="mood-btn" onclick="setPlaylist('nineties_sad', '90s Pop - Sad')">💔 Sad</button>
-                <button class="playlist-btn" onclick="openPlaylistModal('nineties', '90s Pop')">📜 Playlist</button>
+        <!-- Top Header -->
+        <div class="header">
+            <div class="brand">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.18-.1.2-1.38-.42-.18-.6.42-1.2 1.02-1.38C9.12 6.18 16.2 6.42 20.58 9.06c.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
+                My Beats
+            </div>
+            <div class="search-box">
+                <span style="color:#b3b3b3; font-size: 12px;">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search songs or artists..." oninput="renderTracks()">
             </div>
         </div>
 
-        <div class="category-box">
-            <div class="cat-title">2. BOLLYWOOD POP</div>
-            <div class="cat-buttons">
-                <button class="mood-btn" onclick="setPlaylist('bollywood_romantic', 'Bollywood Pop - Romantic')">❤️ Romantic</button>
-                <button class="mood-btn" onclick="setPlaylist('bollywood_sad', 'Bollywood Pop - Sad')">💔 Sad</button>
-                <button class="playlist-btn" onclick="openPlaylistModal('bollywood', 'Bollywood Pop')">📜 Playlist</button>
+        <!-- Horizontal Category Pills -->
+        <div class="category-scroll">
+            <button class="chip active" onclick="filterCategory('all', this)">All</button>
+            <button class="chip" onclick="filterCategory('bollywood_romantic', this)">Bollywood ❤️</button>
+            <button class="chip" onclick="filterCategory('bollywood_sad', this)">Bollywood 💔</button>
+            <button class="chip" onclick="filterCategory('nineties_romantic', this)">90s ❤️</button>
+            <button class="chip" onclick="filterCategory('nineties_sad', this)">90s 💔</button>
+            <button class="chip" onclick="filterCategory('sadabahar_romantic', this)">Retro ❤️</button>
+            <button class="chip" onclick="filterCategory('sadabahar_sad', this)">Retro 💔</button>
+            <button class="chip" onclick="filterCategory('punjabi_romantic', this)">Punjabi ❤️</button>
+            <button class="chip" onclick="filterCategory('punjabi_sad', this)">Punjabi 💔</button>
+        </div>
+
+        <!-- Scrollable Song List -->
+        <div class="song-list-container">
+            <div class="section-title" id="currentCategoryLabel">All Songs</div>
+            <div id="trackList"></div>
+        </div>
+
+        <!-- Spotify Style Bottom Player -->
+        <div class="bottom-player">
+            <div class="player-row">
+                <div class="player-track-info">
+                    <img src="cd.jpg" id="cd-art" class="player-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
+                    <div class="player-details">
+                        <div class="player-title" id="song-title">Select a Song</div>
+                        <div class="player-sub" id="artist-name">Spotify Music</div>
+                    </div>
+                </div>
+                <div class="player-controls">
+                    <button class="ctrl-btn" onclick="prevSong()">⏮</button>
+                    <button class="main-play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+                    <button class="ctrl-btn" onclick="nextSong()">⏭</button>
+                </div>
+            </div>
+            <div class="seekbar-container">
+                <span class="time-text" id="curr-time">0:00</span>
+                <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
+                <span class="time-text" id="dur-time" style="text-align: right;">0:00</span>
             </div>
         </div>
 
-        <div class="category-box">
-            <div class="cat-title">3. SADA BAHAR (RETRO)</div>
-            <div class="cat-buttons">
-                <button class="mood-btn" onclick="setPlaylist('sadabahar_romantic', 'Sada Bahar - Romantic')">❤️ Romantic</button>
-                <button class="mood-btn" onclick="setPlaylist('sadabahar_sad', 'Sada Bahar - Sad')">💔 Sad</button>
-                <button class="playlist-btn" onclick="openPlaylistModal('sadabahar', 'Sada Bahar')">📜 Playlist</button>
-            </div>
-        </div>
-
-        <div class="category-box">
-            <div class="cat-title">4. PUNJABI (LONG DRIVE)</div>
-            <div class="cat-buttons">
-                <button class="mood-btn" onclick="setPlaylist('punjabi_romantic', 'Punjabi - Romantic')">❤️ Romantic</button>
-                <button class="mood-btn" onclick="setPlaylist('punjabi_sad', 'Punjabi - Sad')">💔 Sad</button>
-                <button class="playlist-btn" onclick="openPlaylistModal('punjabi', 'Punjabi Long Drive')">📜 Playlist</button>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- 2. Player Card Box (Now at the VERY BOTTOM) -->
-    <div class="player-card">
-        <div class="active-tag" id="active-category-name">BOLLYWOOD POP - ROMANTIC</div>
-        <div class="top-row">
-            <img src="cd.jpg" class="cd-art" id="cd-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
-            <div class="song-info">
-                <div class="song-title" id="song-title">Select a Song</div>
-                <div class="artist-name" id="artist-name">---</div>
-            </div>
-        </div>
-        <div class="seekbar-row">
-            <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
-            <div class="time-box">
-                <span id="curr-time">0:00</span>
-                <span id="dur-time">0:00</span>
-            </div>
-        </div>
-        <div class="controls-row">
-            <button class="btn" onclick="prevSong()">⏮</button>
-            <button class="btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-            <button class="btn" onclick="nextSong()">⏭</button>
-        </div>
-    </div>
-
-    <!-- Modal Playlist Window -->
-    <div class="modal" id="playlistModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title" id="modalCategoryTitle">PLAYLIST</div>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <input type="text" class="search-box" id="searchInput" placeholder="Search song..." oninput="filterSongs()">
-            <div class="playlist-items" id="playlistList"></div>
-        </div>
     </div>
 
     <div id="yt-player-container">
@@ -317,51 +329,106 @@
     </div>
 
     <script>
-        let currentPlaylistKey = 'bollywood_romantic';
-        let currentList = [];
+        let currentFilter = 'all';
+        let displayList = [];
         let currentIndex = 0;
         let ytPlayer = null;
         let isPlaying = false;
         let isEngineReady = false;
-        let modalActiveKey = '';
 
-        function formatTime(seconds) {
-            if (isNaN(seconds) || seconds < 0) return "0:00";
-            const m = Math.floor(seconds / 60);
-            const s = Math.floor(seconds % 60);
+        function formatTime(sec) {
+            if (isNaN(sec) || sec < 0) return "0:00";
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        function loadList(key) {
-            if (window.musicData && window.musicData[key]) {
-                return window.musicData[key].filter(song => song.id !== "...id..." && song.id !== "");
+        function getAllSongs() {
+            let all = [];
+            if (!window.musicData) return all;
+            for (let key in window.musicData) {
+                const songs = window.musicData[key].filter(s => s.id && s.id !== "...id...");
+                songs.forEach(s => all.push({ ...s, categoryKey: key }));
             }
-            return [];
+            return all;
         }
 
-        function setPlaylist(key, titleName) {
-            currentPlaylistKey = key;
-            currentList = loadList(key);
-            currentIndex = 0;
-            document.getElementById('active-category-name').innerText = titleName;
-            
-            if (currentList.length > 0) {
-                updateUI();
-                if (isPlaying) playCurrentSong();
-            } else {
-                document.getElementById('song-title').innerText = "No Songs Added";
-                document.getElementById('artist-name').innerText = "Fill 'songs.js'";
-                document.getElementById('curr-time').innerText = "0:00";
-                document.getElementById('dur-time').innerText = "0:00";
-            }
+        function filterCategory(catKey, btnElem) {
+            currentFilter = catKey;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            if (btnElem) btnElem.classList.add('active');
+
+            const labelMap = {
+                'all': 'All Songs',
+                'bollywood_romantic': 'Bollywood Romantic',
+                'bollywood_sad': 'Bollywood Sad',
+                'nineties_romantic': '90s Romantic',
+                'nineties_sad': '90s Sad',
+                'sadabahar_romantic': 'Retro Romantic',
+                'sadabahar_sad': 'Retro Sad',
+                'punjabi_romantic': 'Punjabi Romantic',
+                'punjabi_sad': 'Punjabi Sad'
+            };
+            document.getElementById('currentCategoryLabel').innerText = labelMap[catKey] || 'Playlist';
+            renderTracks();
         }
 
-        function updateUI() {
-            if (currentList.length > 0) {
-                const song = currentList[currentIndex];
-                document.getElementById('song-title').innerText = song.title;
-                document.getElementById('artist-name').innerText = song.artist;
+        function renderTracks() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const container = document.getElementById('trackList');
+            container.innerHTML = '';
+
+            let rawList = [];
+            if (currentFilter === 'all') {
+                rawList = getAllSongs();
+            } else if (window.musicData && window.musicData[currentFilter]) {
+                rawList = window.musicData[currentFilter].filter(s => s.id && s.id !== "...id...");
             }
+
+            displayList = rawList.filter(s => 
+                s.title.toLowerCase().includes(query) || 
+                s.artist.toLowerCase().includes(query)
+            );
+
+            if (displayList.length === 0) {
+                container.innerHTML = `<div style="color:#b3b3b3; font-size:13px; text-align:center; padding:30px 0;">No songs found</div>`;
+                return;
+            }
+
+            displayList.forEach((song, idx) => {
+                const isCurrent = isPlaying && currentSong && currentSong.id === song.id;
+                const div = document.createElement('div');
+                div.className = `track-item ${isCurrent ? 'playing' : ''}`;
+                div.innerHTML = `
+                    <div class="track-left">
+                        <span class="track-number">${idx + 1}</span>
+                        <div class="track-meta">
+                            <div class="track-name">${song.title}</div>
+                            <div class="track-artist">${song.artist}</div>
+                        </div>
+                    </div>
+                    ${isCurrent ? '<span class="play-icon-small">♫</span>' : ''}
+                `;
+                div.onclick = () => playSelectedTrack(idx);
+                container.appendChild(div);
+            });
+        }
+
+        let currentSong = null;
+
+        function playSelectedTrack(idx) {
+            if (displayList.length === 0) return;
+            currentIndex = idx;
+            currentSong = displayList[currentIndex];
+
+            document.getElementById('song-title').innerText = currentSong.title;
+            document.getElementById('artist-name').innerText = currentSong.artist;
+
+            if (ytPlayer && ytPlayer.loadVideoById) {
+                ytPlayer.loadVideoById(currentSong.id);
+                ytPlayer.playVideo();
+            }
+            renderTracks();
         }
 
         function onYouTubeIframeAPIReady() {
@@ -375,10 +442,12 @@
                             isPlaying = true;
                             document.getElementById('play-btn').innerText = '❚❚';
                             document.getElementById('cd-art').classList.add('playing');
+                            renderTracks();
                         } else if (e.data === YT.PlayerState.PAUSED) {
                             isPlaying = false;
                             document.getElementById('play-btn').innerText = '▶';
                             document.getElementById('cd-art').classList.remove('playing');
+                            renderTracks();
                         } else if (e.data === YT.PlayerState.ENDED) {
                             nextSong();
                         }
@@ -387,33 +456,26 @@
             });
         }
 
-        function playCurrentSong() {
-            if (currentList.length === 0) return;
-            const song = currentList[currentIndex];
-            if (ytPlayer && ytPlayer.loadVideoById) {
-                ytPlayer.loadVideoById(song.id);
-                ytPlayer.playVideo();
-            }
-        }
-
         function togglePlay() {
             if (!isEngineReady || !ytPlayer) return;
+            if (!currentSong && displayList.length > 0) {
+                playSelectedTrack(0);
+                return;
+            }
             if (isPlaying) { ytPlayer.pauseVideo(); } 
-            else { playCurrentSong(); }
+            else { ytPlayer.playVideo(); }
         }
 
         function nextSong() {
-            if (currentList.length === 0) return;
-            currentIndex = (currentIndex + 1) % currentList.length;
-            updateUI();
-            if (isPlaying) playCurrentSong();
+            if (displayList.length === 0) return;
+            currentIndex = (currentIndex + 1) % displayList.length;
+            playSelectedTrack(currentIndex);
         }
 
         function prevSong() {
-            if (currentList.length === 0) return;
-            currentIndex = (currentIndex - 1 + currentList.length) % currentList.length;
-            updateUI();
-            if (isPlaying) playCurrentSong();
+            if (displayList.length === 0) return;
+            currentIndex = (currentIndex - 1 + displayList.length) % displayList.length;
+            playSelectedTrack(currentIndex);
         }
 
         function seekAudio(val) {
@@ -423,64 +485,6 @@
             }
         }
 
-        function openPlaylistModal(categoryPrefix, title) {
-            modalActiveKey = categoryPrefix;
-            document.getElementById('modalCategoryTitle').innerText = title + " Playlist";
-            document.getElementById('searchInput').value = '';
-            document.getElementById('playlistModal').style.display = 'flex';
-            filterSongs();
-        }
-
-        function closeModal() {
-            document.getElementById('playlistModal').style.display = 'none';
-        }
-
-        function filterSongs() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('playlistList');
-            container.innerHTML = '';
-
-            const romList = window.musicData[modalActiveKey + '_romantic'] || [];
-            const sadList = window.musicData[modalActiveKey + '_sad'] || [];
-            const combined = [
-                ...romList.map(s => ({...s, key: modalActiveKey + '_romantic', tag: 'Romantic'})),
-                ...sadList.map(s => ({...s, key: modalActiveKey + '_sad', tag: 'Sad'}))
-            ].filter(s => s.id !== "...id..." && s.id !== "");
-
-            const filtered = combined.filter(song => 
-                song.title.toLowerCase().includes(query) || 
-                song.artist.toLowerCase().includes(query)
-            );
-
-            if(filtered.length === 0) {
-                container.innerHTML = '<div style="color:#aaa; text-align:center; padding:10px; font-size:11px;">No songs found</div>';
-                return;
-            }
-
-            filtered.forEach((song) => {
-                const div = document.createElement('div');
-                div.className = 'song-item';
-                div.innerHTML = `
-                    <div>
-                        <div class="item-name">${song.title}</div>
-                        <div class="item-artist">${song.artist} • [${song.tag}]</div>
-                    </div>
-                    <span style="font-size:10px; color:#4cd137;">▶ Play</span>
-                `;
-                div.onclick = () => {
-                    currentPlaylistKey = song.key;
-                    currentList = loadList(song.key);
-                    currentIndex = currentList.findIndex(s => s.id === song.id);
-                    document.getElementById('active-category-name').innerText = song.tag + " - " + song.title;
-                    updateUI();
-                    playCurrentSong();
-                    closeModal();
-                };
-                container.appendChild(div);
-            });
-        }
-
-        /* Timer Update Interval */
         setInterval(() => {
             if (ytPlayer && isPlaying && typeof ytPlayer.getDuration === 'function') {
                 const dur = ytPlayer.getDuration();
@@ -494,7 +498,7 @@
         }, 500);
 
         window.onload = function() {
-            setPlaylist('bollywood_romantic', 'BOLLYWOOD POP - ROMANTIC');
+            renderTracks();
         };
     </script>
 </body>
