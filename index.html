@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Transparent Glass Player</title>
-    
-    <!-- YouTube IFrame API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-
+    <title>Glassmorphism Audio Player</title>
     <style>
         * {
             margin: 0;
@@ -23,22 +19,22 @@
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            background: #000000 url('bg.jpg') no-repeat center center/cover;
+            background: #0d0f17 url('bg.jpg') no-repeat center center/cover;
             overflow: hidden;
             padding-bottom: 90px;
         }
 
-        /* Fully Transparent Glass Box */
+        /* Glassmorphism Player Container */
         .glass-player-box {
             width: 92%;
             max-width: 390px;
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
             border-radius: 32px;
             padding: 22px 20px 18px 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             color: #ffffff;
             display: flex;
             flex-direction: column;
@@ -47,12 +43,11 @@
             z-index: 10;
         }
 
-        /* Track Info Row */
+        /* Top Row Info */
         .track-info-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 4px;
         }
 
         .icon-btn {
@@ -63,7 +58,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: transform 0.15s ease, color 0.2s;
             outline: none;
             padding: 6px;
             border-radius: 50%;
@@ -76,13 +71,13 @@
 
         .icon-btn.active {
             color: #22c55e !important;
-            filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.9));
+            filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.8));
         }
 
         .song-details {
             text-align: center;
             overflow: hidden;
-            padding: 0 10px;
+            padding: 0 8px;
             flex: 1;
         }
 
@@ -90,24 +85,23 @@
             font-size: 16px;
             font-weight: 800;
             color: #ffffff;
-            letter-spacing: 0.3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
         }
 
         .artist-name {
             font-size: 12.5px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.8);
             margin-top: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* Seekbar Row */
+        /* Progress Seekbar */
         .progress-container {
             display: flex;
             align-items: center;
@@ -125,7 +119,7 @@
             flex: 1;
             height: 5px;
             appearance: none;
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 5px;
             outline: none;
             cursor: pointer;
@@ -141,12 +135,11 @@
             cursor: pointer;
         }
 
-        /* Controls Row */
+        /* Control Buttons */
         .controls-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 2px;
         }
 
         .play-btn-main {
@@ -180,7 +173,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             display: flex;
@@ -200,14 +193,13 @@
         .playlist-box {
             width: 90%;
             max-width: 380px;
-            height: 72vh;
-            background: rgba(18, 22, 32, 0.92);
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            height: 70vh;
+            background: rgba(18, 22, 32, 0.95);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
             border-radius: 24px;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
         }
 
         .playlist-header {
@@ -221,7 +213,6 @@
 
         .playlist-header h3 {
             font-size: 16px;
-            font-weight: 700;
             color: #ffffff;
         }
 
@@ -231,15 +222,6 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            padding-right: 4px;
-        }
-        
-        .playlist-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .playlist-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
         }
 
         .playlist-item {
@@ -250,11 +232,6 @@
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .playlist-item:hover, .playlist-item:active {
-            background: rgba(255, 255, 255, 0.18);
         }
 
         .playlist-item.active {
@@ -262,187 +239,119 @@
             border: 1px solid #22c55e;
         }
 
-        .item-info {
-            overflow: hidden;
-            padding-right: 8px;
-        }
-        .item-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .item-artist { font-size: 11px; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
-
-        #yt-player-container {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
+        .item-title { font-size: 13px; font-weight: 700; color: #ffffff; }
+        .item-artist { font-size: 11px; color: rgba(255, 255, 255, 0.7); }
     </style>
 </head>
 <body>
 
-    <!-- Main Glass Player Box -->
     <div class="glass-player-box">
-        
-        <!-- Top Row: Heart, Song Info, Playlist Icon -->
         <div class="track-info-row">
-            <button class="icon-btn" id="btn-heart" onclick="toggleHeart()" title="Like Song">
+            <button class="icon-btn" id="btn-heart" onclick="toggleHeart()">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
             </button>
 
             <div class="song-details">
-                <div class="song-title" id="song-title">Tujhe Dekha Toh</div>
-                <div class="artist-name" id="artist-name">Kumar Sanu, Lata Mangeshkar</div>
+                <div class="song-title" id="song-title">Song Name</div>
+                <div class="artist-name" id="artist-name">Artist Name</div>
             </div>
 
-            <button class="icon-btn" onclick="openPlaylistModal()" title="Open Playlist">
+            <button class="icon-btn" onclick="openPlaylistModal()">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
             </button>
         </div>
 
-        <!-- Progress Seekbar Row -->
         <div class="progress-container">
             <span class="time-text" id="curr-time">00:00</span>
             <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
             <span class="time-text" id="dur-time" style="text-align: right;">00:00</span>
         </div>
 
-        <!-- Controls Row -->
         <div class="controls-row">
-            <!-- 1. Rewind 10s -->
-            <button class="icon-btn" onclick="skipTime(-10)" title="Rewind 10s">
+            <button class="icon-btn" onclick="skipTime(-10)">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6"></path><path d="M2.66 15.57a10 10 0 1 0 .57-8.38L2.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
 
-            <!-- 2. Shuffle -->
-            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle">
+            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
             </button>
 
-            <!-- 3. Previous -->
-            <button class="icon-btn" onclick="prevTrack()" title="Previous Song">
+            <button class="icon-btn" onclick="prevTrack()">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
-            <!-- 4. Play/Pause -->
-            <button class="play-btn-main" id="play-btn" onclick="togglePlay()" title="Play / Pause">
+            <button class="play-btn-main" id="play-btn" onclick="togglePlay()">
                 <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24"><polygon points="7,5 19,12 7,19"></polygon></svg>
             </button>
 
-            <!-- 5. Next -->
-            <button class="icon-btn" onclick="nextTrack()" title="Next Song">
+            <button class="icon-btn" onclick="nextTrack()">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"></line></svg>
             </button>
 
-            <!-- 6. Repeat -->
-            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()" title="Repeat">
+            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
             </button>
 
-            <!-- 7. Forward 10s -->
-            <button class="icon-btn" onclick="skipTime(10)" title="Forward 10s">
+            <button class="icon-btn" onclick="skipTime(10)">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38L21.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
             </button>
         </div>
-
     </div>
 
-    <!-- Playlist Modal -->
+    <!-- Playlist Popup -->
     <div class="playlist-modal" id="playlistModal" onclick="closePlaylistOnOutside(event)">
         <div class="playlist-box">
             <div class="playlist-header">
-                <h3>90's Sadabahar Songs</h3>
-                <button class="icon-btn" onclick="closePlaylistModal()">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
+                <h3>Playlist (90s Hits)</h3>
+                <button class="icon-btn" onclick="closePlaylistModal()">✕</button>
             </div>
             <div class="playlist-list" id="playlistItemsContainer"></div>
         </div>
     </div>
 
-    <!-- Hidden Player Container -->
-    <div id="yt-player-container">
-        <div id="yt-player"></div>
-    </div>
-
     <script>
-        // Working YouTube Video IDs for 90s Songs
+        // High-speed Direct MP3 Stream Links
         const songsList = [
-            { title: "Tujhe Dekha Toh", artist: "Kumar Sanu, Lata Mangeshkar", id: "cNV5hLSa9D8" },
-            { title: "Pehla Nasha", artist: "Udit Narayan, Sadhana Sargam", id: "_l9mZkQd6g8" },
-            { title: "Chura Ke Dil Mera", artist: "Kumar Sanu, Alka Yagnik", id: "dZp89fK1N_E" },
-            { title: "Mera Dil Bhi Kitna Pagal Hai", artist: "Kumar Sanu, Alka Yagnik", id: "8_C1Q12S6yU" },
-            { title: "Dheere Dheere Se Meri Zindagi", artist: "Kumar Sanu", id: "nF7yu66gqE4" },
-            { title: "Bahut Pyar Karte Hain", artist: "Anuradha Paudwal", id: "d-B4bE7Pq5g" },
-            { title: "Tip Tip Barsa Phani", artist: "Udit Narayan, Alka Yagnik", id: "2218w4c3xXg" },
-            { title: "Pardesi Pardesi", artist: "Udit Narayan, Alka Yagnik", id: "W6qR1yW_rXU" },
-            { title: "Aaye Ho Meri Zindagi Mein", artist: "Udit Narayan", id: "xJ1gC2L9n-0" },
-            { title: "Do Dil Mil Rahe Hain", artist: "Kumar Sanu", id: "p4b07P71F_s" },
-            { title: "Kuch Kuch Hota Hai", artist: "Udit Narayan, Alka Yagnik", id: "L6gO20m7Xn4" },
-            { title: "Chand Chupa Badal Mein", artist: "Udit Narayan, Alka Yagnik", id: "y9E8fJg3P2Q" }
+            { 
+                title: "Tujhe Dekha Toh", 
+                artist: "Kumar Sanu, Lata Mangeshkar", 
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" 
+            },
+            { 
+                title: "Pehla Nasha", 
+                artist: "Udit Narayan, Sadhana Sargam", 
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" 
+            },
+            { 
+                title: "Chura Ke Dil Mera", 
+                artist: "Kumar Sanu, Alka Yagnik", 
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" 
+            },
+            { 
+                title: "Mera Dil Bhi Kitna Pagal Hai", 
+                artist: "Kumar Sanu, Alka Yagnik", 
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" 
+            },
+            { 
+                title: "Dheere Dheere Se", 
+                artist: "Kumar Sanu", 
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" 
+            }
         ];
 
         let currentIndex = 0;
-        let ytPlayer = null;
-        let isPlayerReady = false;
         let isPlaying = false;
         let isShuffle = false;
         let isRepeat = false;
         let isHeart = false;
-        let errorCount = 0;
+
+        const audio = new Audio();
 
         function formatTime(sec) {
             if (isNaN(sec) || sec < 0) return "00:00";
             const m = Math.floor(sec / 60);
             const s = Math.floor(sec % 60);
             return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-        }
-
-        /* YouTube iFrame Setup */
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player', {
-                height: '100',
-                width: '100',
-                videoId: songsList[currentIndex].id,
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'playsinline': 1,
-                    'enablejsapi': 1,
-                    'origin': window.location.origin || '*'
-                },
-                events: {
-                    'onReady': () => {
-                        isPlayerReady = true;
-                        updateUI();
-                    },
-                    'onError': (e) => {
-                        console.warn("Song ID Error (Auto-skipping):", e.data);
-                        // IF SONG FAILS/BLOCKED (Error 2, 5, 100, 101, 150) -> AUTO SKIP TO NEXT
-                        errorCount++;
-                        if (errorCount < songsList.length) {
-                            setTimeout(nextTrack, 600);
-                        }
-                    },
-                    'onStateChange': (e) => {
-                        if (e.data === YT.PlayerState.PLAYING) {
-                            isPlaying = true;
-                            errorCount = 0; // Reset error count on successful playback
-                            updatePlayUI(true);
-                        } else if (e.data === YT.PlayerState.PAUSED) {
-                            isPlaying = false;
-                            updatePlayUI(false);
-                        } else if (e.data === YT.PlayerState.ENDED) {
-                            if (isRepeat) {
-                                ytPlayer.playVideo();
-                            } else {
-                                nextTrack();
-                            }
-                        }
-                    }
-                }
-            });
         }
 
         function updateUI() {
@@ -455,27 +364,30 @@
         function loadSong(index) {
             currentIndex = index;
             updateUI();
-
-            if (ytPlayer && isPlayerReady && typeof ytPlayer.loadVideoById === 'function') {
-                ytPlayer.loadVideoById(songsList[currentIndex].id);
-                ytPlayer.playVideo();
+            audio.src = songsList[currentIndex].url;
+            audio.play().then(() => {
                 isPlaying = true;
                 updatePlayUI(true);
-            }
+            }).catch(err => {
+                console.warn("Auto-play blocked or link error, skipping...", err);
+                nextTrack();
+            });
         }
 
         function togglePlay() {
-            if (!ytPlayer || !isPlayerReady) {
-                // If API is still connecting, force play status UI
-                isPlaying = !isPlaying;
-                updatePlayUI(isPlaying);
+            if (!audio.src) {
+                loadSong(currentIndex);
                 return;
             }
 
             if (isPlaying) {
-                ytPlayer.pauseVideo();
+                audio.pause();
+                isPlaying = false;
+                updatePlayUI(false);
             } else {
-                ytPlayer.playVideo();
+                audio.play();
+                isPlaying = true;
+                updatePlayUI(true);
             }
         }
 
@@ -503,16 +415,12 @@
         }
 
         function skipTime(seconds) {
-            if (ytPlayer && isPlayerReady && typeof ytPlayer.getCurrentTime === 'function') {
-                const cur = ytPlayer.getCurrentTime();
-                ytPlayer.seekTo(cur + seconds, true);
-            }
+            audio.currentTime = Math.min(Math.max(audio.currentTime + seconds, 0), audio.duration || 0);
         }
 
         function seekAudio(val) {
-            if (ytPlayer && isPlayerReady && typeof ytPlayer.getDuration === 'function') {
-                const dur = ytPlayer.getDuration();
-                if (dur > 0) ytPlayer.seekTo((val / 100) * dur, true);
+            if (audio.duration) {
+                audio.currentTime = (val / 100) * audio.duration;
             }
         }
 
@@ -531,6 +439,74 @@
             document.getElementById('btn-heart').classList.toggle('active', isHeart);
         }
 
-        /* Playlist Logic */
+        /* HTML5 Audio Events */
+        audio.ontimeupdate = () => {
+            if (audio.duration) {
+                document.getElementById('seekbar').value = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('curr-time').innerText = formatTime(audio.currentTime);
+                document.getElementById('dur-time').innerText = formatTime(audio.duration);
+            }
+        };
+
+        audio.onended = () => {
+            if (isRepeat) {
+                audio.currentTime = 0;
+                audio.play();
+            } else {
+                nextTrack();
+            }
+        };
+
+        // AUTO-SKIP ON ERROR
+        audio.onerror = () => {
+            console.log("Audio link broken. Skipping to next song...");
+            nextTrack();
+        };
+
+        /* Playlist Controls */
         function openPlaylistModal() {
-            rend
+            renderPlaylist();
+            document.getElementById('playlistModal').classList.add('open');
+        }
+
+        function closePlaylistModal() {
+            document.getElementById('playlistModal').classList.remove('open');
+        }
+
+        function closePlaylistOnOutside(e) {
+            if (e.target.id === 'playlistModal') closePlaylistModal();
+        }
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlistItemsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            songsList.forEach((song, idx) => {
+                const isCurrent = idx === currentIndex;
+                const div = document.createElement('div');
+                div.className = `playlist-item ${isCurrent ? 'active' : ''}`;
+                div.innerHTML = `
+                    <div>
+                        <div class="item-title">${idx + 1}. ${song.title}</div>
+                        <div class="item-artist">${song.artist}</div>
+                    </div>
+                    <span style="font-size:12px; color: ${isCurrent ? '#22c55e' : 'rgba(255,255,255,0.6)'}">
+                        ${isCurrent && isPlaying ? '❚❚' : '▶'}
+                    </span>
+                `;
+                div.onclick = () => {
+                    loadSong(idx);
+                    closePlaylistModal();
+                };
+                container.appendChild(div);
+            });
+        }
+
+        window.onload = () => {
+            updateUI();
+            audio.src = songsList[0].url;
+        };
+    </script>
+</body>
+</html>
