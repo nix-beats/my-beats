@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dual Vertical UI - Music Workspace</title>
+    <title>Dual Vertical UI - Sharp White Background</title>
 
     <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -11,50 +11,53 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         
+        /* 1. Sharp Pure White Page Background */
         html, body {
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background-color: #060709;
+            background-color: #ffffff; /* Sharp White */
             color: #e2e4e9;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px; /* Ensure boxes never touch screen edges */
         }
 
         /* Dual Box App Outer Wrapper */
         .app-wrapper {
             display: flex;
-            gap: 14px;
-            height: 94vh;
+            gap: 16px;
+            height: 92vh;
             max-height: 720px;
-            width: 95%;
-            max-width: 540px;
+            width: 100%;
+            max-width: 560px;
         }
 
-        /* 1. LEFT SLIM SIDEBAR (Patla Box) */
+        /* 2. LEFT SLIM SIDEBAR (Patla Box - Completely Curved Corners) */
         .slim-sidebar {
-            width: 64px;
+            width: 68px;
             background: #0d0e14;
             border: 1px solid #1c1e29;
-            border-radius: 16px;
+            border-radius: 24px; /* Curved Corners */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 0;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            padding: 18px 0;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25); /* Soft Shadow on White */
+            flex-shrink: 0;
         }
 
         .slim-top {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
             width: 100%;
         }
 
-        /* macOS Dots Stacked / Compact */
+        /* macOS Dots */
         .mac-dots { display: flex; gap: 5px; }
         .dot { width: 8px; height: 8px; border-radius: 50%; }
         .dot-red { background: #ff5f56; }
@@ -62,31 +65,31 @@
         .dot-green { background: #27c93f; }
 
         .brand-icon-mini {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             background: #1d202d;
             border: 1px solid #2d3246;
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
         }
 
-        /* 2nd Photo Menu Icons (Home, Search, Library, Hotlist) */
+        /* Left Side Menu Icons (Home, Search, Library, Hotlist) */
         .nav-icons-group {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             width: 100%;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 6px;
         }
 
         .slim-nav-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -111,28 +114,28 @@
         }
 
         .profile-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
             border: 1px solid #2e3347;
             object-fit: cover;
         }
 
-        /* 2. RIGHT MAIN PANEL (Bada Box) */
+        /* 3. RIGHT MAIN PANEL (Bada Box - Completely Curved Corners) */
         .main-panel {
             flex: 1;
             background: #0d0e14;
             border: 1px solid #1c1e29;
-            border-radius: 16px;
+            border-radius: 24px; /* Curved Corners */
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25); /* Soft Shadow on White */
         }
 
         .panel-header {
-            padding: 16px 18px 10px 18px;
+            padding: 18px 20px 10px 20px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -141,7 +144,7 @@
         .brand-text-full h1 { font-size: 16px; font-weight: 700; color: #ffffff; }
         .brand-text-full p { font-size: 11px; color: #585f76; margin-top: 1px; }
 
-        /* Search Input */
+        /* Search Input with ⌘K */
         .search-wrapper {
             position: relative;
             display: flex;
@@ -151,7 +154,7 @@
             width: 100%;
             background: #141620;
             border: 1px solid #202333;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 9px 36px 9px 34px;
             color: #fff;
             font-size: 12px;
@@ -165,11 +168,11 @@
             color: #6a7189; font-size: 10px; padding: 2px 5px; border-radius: 4px; font-family: monospace;
         }
 
-        /* Scrollable Content */
+        /* Inner Scrollable Track List Container */
         .content-area {
             flex: 1;
             overflow-y: auto;
-            padding: 0 16px 140px 16px;
+            padding: 0 18px 140px 18px;
         }
         .content-area::-webkit-scrollbar { display: none; }
 
@@ -181,12 +184,12 @@
             letter-spacing: 0.5px;
         }
 
-        /* Navigation Links */
+        /* Categories Nav */
         .nav-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 10px;
+            padding: 8px 12px;
             border-radius: 8px;
             color: #8c94ac;
             font-size: 12px;
@@ -202,7 +205,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 10px;
+            padding: 9px 12px;
             border-radius: 8px;
             cursor: pointer;
             margin-bottom: 3px;
@@ -212,17 +215,17 @@
         .track-item.playing .track-title { color: #60a5fa; }
 
         .track-title { font-size: 12px; font-weight: 600; color: #d0d4e4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .track-sub { font-size: 10px; color: #585f76; }
+        .track-sub { font-size: 10px; color: #585f76; margin-top: 1px; }
 
-        /* Bottom Player Card */
+        /* Pinned Bottom Music Player Card */
         .bottom-player-card {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            right: 10px;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
             background: #12141e;
             border: 1px solid #212535;
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 10px 12px;
             display: flex;
             flex-direction: column;
@@ -266,7 +269,7 @@
 
     <div class="app-wrapper">
         
-        <!-- LEFT SLIM BOX -->
+        <!-- 1. LEFT SLIM SIDEBAR (Floating Curved Box) -->
         <div class="slim-sidebar">
             <div class="slim-top">
                 <div class="mac-dots">
@@ -274,13 +277,13 @@
                     <div class="dot dot-yellow"></div>
                     <div class="dot dot-green"></div>
                 </div>
-                <div class="brand-icon-mini">⚡</div>
+                <div class="brand-icon-mini">🎵</div>
                 
-                <!-- 2nd Photo Bottom Menu Buttons -->
+                <!-- 4 Bottom Menu Icons -->
                 <div class="nav-icons-group">
                     <div class="slim-nav-btn active" title="Home">🏠</div>
                     <div class="slim-nav-btn" title="Search" onclick="document.getElementById('searchInput').focus()">🔍</div>
-                    <div class="slim-nav-btn" title="Library" onclick="filterCategory('all', null)">🎵</div>
+                    <div class="slim-nav-btn" title="Library" onclick="filterCategory('all', null)">📁</div>
                     <div class="slim-nav-btn" title="Hotlist" onclick="filterCategory('bollywood_romantic', null)">🔥</div>
                 </div>
             </div>
@@ -291,13 +294,13 @@
             </div>
         </div>
 
-        <!-- RIGHT MAIN WIDE BOX -->
+        <!-- 2. RIGHT MAIN PANEL (Floating Curved Box with Tracks) -->
         <div class="main-panel">
             
             <div class="panel-header">
                 <div class="brand-text-full">
-                    <h1>Riter Beats</h1>
-                    <p>Music & Productivity Workspace</p>
+                    <h1>Riter Workspace</h1>
+                    <p>Music Dashboard</p>
                 </div>
 
                 <div class="search-wrapper">
@@ -324,17 +327,17 @@
                     <span>📻 90's Hits</span>
                 </div>
                 <div class="nav-item" onclick="filterCategory('sadabahar_romantic', this)">
-                    <span>🎙️ Retro Classics</span>
+                    <span>🎙️ Retro Sada Bahar</span>
                 </div>
                 <div class="nav-item" onclick="filterCategory('punjabi_romantic', this)">
-                    <span>🚗 Punjabi Beats</span>
+                    <span>🚗 Punjabi Drive</span>
                 </div>
 
                 <div class="section-label">Music Track List</div>
                 <div id="trackListContainer"></div>
             </div>
 
-            <!-- Pinned Bottom Player Box -->
+            <!-- Pinned Music Player Inside Large Box -->
             <div class="bottom-player-card">
                 <div class="player-top">
                     <div class="player-info">
@@ -522,5 +525,4 @@
             renderTracks();
         };
     </script>
-</body>
-</html>
+<
