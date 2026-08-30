@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My Beats - Riter Dashboard UI</title>
+    <title>Dual Vertical UI - Music Workspace</title>
 
     <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -11,79 +11,142 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        /* Strict No Page Scroll */
         html, body {
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background-color: #08090c;
+            background-color: #060709;
             color: #e2e4e9;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Outer Dashboard Container */
-        .sidebar-container {
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
+        /* Dual Box App Outer Wrapper */
+        .app-wrapper {
+            display: flex;
+            gap: 14px;
+            height: 94vh;
+            max-height: 720px;
+            width: 95%;
+            max-width: 540px;
+        }
+
+        /* 1. LEFT SLIM SIDEBAR (Patla Box) */
+        .slim-sidebar {
+            width: 64px;
             background: #0d0e14;
             border: 1px solid #1c1e29;
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        /* macOS Window Dots & Header */
-        .mac-header {
-            padding: 16px 20px 10px 20px;
+        .slim-top {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
         }
 
-        .mac-dots {
-            display: flex;
-            gap: 6px;
-        }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        /* macOS Dots Stacked / Compact */
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
         .dot-red { background: #ff5f56; }
         .dot-yellow { background: #ffbd2e; }
         .dot-green { background: #27c93f; }
 
-        .brand-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .brand-logo {
-            width: 32px;
-            height: 32px;
-            background: #252836;
-            border: 1px solid #32364a;
-            border-radius: 8px;
+        .brand-icon-mini {
+            width: 34px;
+            height: 34px;
+            background: #1d202d;
+            border: 1px solid #2d3246;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            color: #fff;
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        .brand-text h1 { font-size: 15px; font-weight: 700; color: #ffffff; letter-spacing: 0.3px; }
-        .brand-text p { font-size: 11px; color: #62687b; margin-top: 1px; }
+        /* 2nd Photo Menu Icons (Home, Search, Library, Hotlist) */
+        .nav-icons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            align-items: center;
+            margin-top: 10px;
+        }
 
-        /* Sleek Search Box with ⌘K Badge */
+        .slim-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6a7189;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .slim-nav-btn:hover { background: #181b28; color: #fff; }
+        .slim-nav-btn.active {
+            background: #202436;
+            color: #ffffff;
+            border: 1px solid #313750;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .slim-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid #2e3347;
+            object-fit: cover;
+        }
+
+        /* 2. RIGHT MAIN PANEL (Bada Box) */
+        .main-panel {
+            flex: 1;
+            background: #0d0e14;
+            border: 1px solid #1c1e29;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        .panel-header {
+            padding: 16px 18px 10px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .brand-text-full h1 { font-size: 16px; font-weight: 700; color: #ffffff; }
+        .brand-text-full p { font-size: 11px; color: #585f76; margin-top: 1px; }
+
+        /* Search Input */
         .search-wrapper {
             position: relative;
             display: flex;
             align-items: center;
-            margin: 4px 0 6px 0;
         }
-
         .search-wrapper input {
             width: 100%;
             background: #141620;
@@ -93,29 +156,20 @@
             color: #fff;
             font-size: 12px;
             outline: none;
-            transition: border 0.2s;
         }
-        .search-wrapper input:focus { border-color: #3f4563; }
+        .search-wrapper input:focus { border-color: #383e58; }
         .search-wrapper input::placeholder { color: #52586d; }
-
         .search-icon { position: absolute; left: 12px; color: #52586d; font-size: 12px; }
         .kbd-badge {
-            position: absolute;
-            right: 10px;
-            background: #1c1f2e;
-            border: 1px solid #2a2e45;
-            color: #6a7189;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-family: monospace;
+            position: absolute; right: 10px; background: #1c1f2e; border: 1px solid #2a2e45;
+            color: #6a7189; font-size: 10px; padding: 2px 5px; border-radius: 4px; font-family: monospace;
         }
 
-        /* Main Content List Area (Scrollable internally) */
+        /* Scrollable Content */
         .content-area {
             flex: 1;
             overflow-y: auto;
-            padding: 0 16px 130px 16px;
+            padding: 0 16px 140px 16px;
         }
         .content-area::-webkit-scrollbar { display: none; }
 
@@ -123,122 +177,69 @@
             font-size: 11px;
             font-weight: 600;
             color: #4b5165;
-            margin: 14px 0 8px 6px;
+            margin: 14px 0 8px 4px;
             letter-spacing: 0.5px;
         }
 
-        /* Nav & Category Rows */
+        /* Navigation Links */
         .nav-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
+            padding: 8px 10px;
             border-radius: 8px;
-            color: #939ab1;
-            font-size: 13px;
+            color: #8c94ac;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             margin-bottom: 2px;
-            transition: all 0.15s ease;
         }
         .nav-item:hover { background: #141620; color: #fff; }
-        .nav-item.active {
-            background: #1b1e2c;
-            color: #ffffff;
-            font-weight: 600;
-            border: 1px solid #282d42;
-        }
+        .nav-item.active { background: #1b1e2c; color: #fff; border: 1px solid #282d42; }
 
-        .nav-left { display: flex; align-items: center; gap: 10px; }
-        .nav-icon { font-size: 14px; opacity: 0.7; width: 16px; text-align: center; }
-
-        .count-badge {
-            background: #181b28;
-            border: 1px solid #252a3e;
-            color: #6c748e;
-            font-size: 10px;
-            padding: 1px 6px;
-            border-radius: 10px;
-        }
-
-        /* Track List Item (Riter Style) */
+        /* Track Item */
         .track-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
+            padding: 8px 10px;
             border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
-        .track-item:hover { background: #12141d; }
-        .track-item.playing {
-            background: #191c2b;
-            border: 1px solid #262b40;
-        }
+        .track-item:hover { background: #131520; }
+        .track-item.playing { background: #1a1d2e; border: 1px solid #282e46; }
         .track-item.playing .track-title { color: #60a5fa; }
 
-        .track-meta { overflow: hidden; margin-left: 8px; }
         .track-title { font-size: 12px; font-weight: 600; color: #d0d4e4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .track-sub { font-size: 10px; color: #585f76; margin-top: 1px; }
+        .track-sub { font-size: 10px; color: #585f76; }
 
-        /* Pinned Bottom User/Player Box (Image Matching) */
+        /* Bottom Player Card */
         .bottom-player-card {
             position: absolute;
-            bottom: 12px;
-            left: 12px;
-            right: 12px;
-            background: #13151f;
-            border: 1px solid #222636;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: #12141e;
+            border: 1px solid #212535;
             border-radius: 12px;
             padding: 10px 12px;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
         }
 
-        .player-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .player-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            overflow: hidden;
-        }
-
-        .player-thumb {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            object-fit: cover;
-            border: 1px solid #292e42;
-        }
-
-        .player-text { overflow: hidden; }
+        .player-top { display: flex; align-items: center; justify-content: space-between; }
+        .player-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
+        .player-thumb { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #292e42; }
         .player-title-str { font-size: 12px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .player-artist-str { font-size: 10px; color: #687087; }
 
-        .player-btns {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-action {
-            background: none;
-            border: none;
-            color: #8c94ac;
-            font-size: 13px;
-            cursor: pointer;
-            padding: 4px;
-        }
+        .player-btns { display: flex; align-items: center; gap: 6px; }
+        .btn-action { background: none; border: none; color: #8c94ac; font-size: 13px; cursor: pointer; padding: 4px; }
         .btn-action:hover { color: #fff; }
-
+        
         .play-main-btn {
             background: #ffffff;
             color: #0d0e14;
@@ -254,129 +255,109 @@
             font-weight: 700;
         }
 
-        /* Progress Bar */
-        .progress-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .seekbar {
-            flex: 1;
-            height: 3px;
-            accent-color: #ffffff;
-            cursor: pointer;
-            background: #202434;
-            border-radius: 2px;
-        }
-
-        .time-str {
-            font-size: 9px;
-            color: #5c637a;
-            font-weight: 600;
-            width: 24px;
-        }
+        .progress-box { display: flex; align-items: center; gap: 8px; }
+        .seekbar { flex: 1; height: 3px; accent-color: #ffffff; cursor: pointer; background: #202434; border-radius: 2px; }
+        .time-str { font-size: 9px; color: #5c637a; font-weight: 600; width: 24px; }
 
         #yt-player-container { position: fixed; bottom: 0; right: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar-container">
+    <div class="app-wrapper">
         
-        <!-- Header & Window Controls -->
-        <div class="mac-header">
-            <div class="mac-dots">
-                <div class="dot dot-red"></div>
-                <div class="dot dot-yellow"></div>
-                <div class="dot dot-green"></div>
-            </div>
-
-            <div class="brand-box">
-                <div class="brand-logo">🎵</div>
-                <div class="brand-text">
-                    <h1>My Beats™</h1>
-                    <p>Music Workspace</p>
+        <!-- LEFT SLIM BOX -->
+        <div class="slim-sidebar">
+            <div class="slim-top">
+                <div class="mac-dots">
+                    <div class="dot dot-red"></div>
+                    <div class="dot dot-yellow"></div>
+                    <div class="dot dot-green"></div>
+                </div>
+                <div class="brand-icon-mini">⚡</div>
+                
+                <!-- 2nd Photo Bottom Menu Buttons -->
+                <div class="nav-icons-group">
+                    <div class="slim-nav-btn active" title="Home">🏠</div>
+                    <div class="slim-nav-btn" title="Search" onclick="document.getElementById('searchInput').focus()">🔍</div>
+                    <div class="slim-nav-btn" title="Library" onclick="filterCategory('all', null)">🎵</div>
+                    <div class="slim-nav-btn" title="Hotlist" onclick="filterCategory('bollywood_romantic', null)">🔥</div>
                 </div>
             </div>
 
-            <div class="search-wrapper">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search.." oninput="renderTracks()">
-                <span class="kbd-badge">⌘K</span>
+            <div class="slim-bottom">
+                <div class="slim-nav-btn" title="Settings">⚙️</div>
+                <img src="cd.jpg" class="profile-avatar" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
             </div>
         </div>
 
-        <!-- Scrollable Dashboard Content -->
-        <div class="content-area">
+        <!-- RIGHT MAIN WIDE BOX -->
+        <div class="main-panel">
             
-            <div class="section-label">General</div>
-            <div class="nav-item active" id="cat-all" onclick="filterCategory('all', this)">
-                <div class="nav-left">
-                    <span class="nav-icon">⊞</span>
-                    <span>Overview (All)</span>
+            <div class="panel-header">
+                <div class="brand-text-full">
+                    <h1>Riter Beats</h1>
+                    <p>Music & Productivity Workspace</p>
                 </div>
-            </div>
-            <div class="nav-item" id="cat-fav" onclick="filterCategory('bollywood_romantic', this)">
-                <div class="nav-left">
-                    <span class="nav-icon">❤️</span>
-                    <span>Bollywood Romantic</span>
-                </div>
-            </div>
-            <div class="nav-item" onclick="filterCategory('bollywood_sad', this)">
-                <div class="nav-left">
-                    <span class="nav-icon">💔</span>
-                    <span>Bollywood Sad</span>
+
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search.." oninput="renderTracks()">
+                    <span class="kbd-badge">⌘K</span>
                 </div>
             </div>
 
-            <div class="section-label">Categories</div>
-            <div class="nav-item" onclick="filterCategory('nineties_romantic', this)">
-                <div class="nav-left">
-                    <span class="nav-icon">📻</span>
-                    <span>90's Romantic</span>
+            <div class="content-area">
+                <div class="section-label">General</div>
+                <div class="nav-item active" onclick="filterCategory('all', this)">
+                    <span>⊞ Overview (All Tracks)</span>
                 </div>
-            </div>
-            <div class="nav-item" onclick="filterCategory('sadabahar_romantic', this)">
-                <div class="nav-left">
-                    <span class="nav-icon">🎙️</span>
-                    <span>Retro Sada Bahar</span>
+                <div class="nav-item" onclick="filterCategory('bollywood_romantic', this)">
+                    <span>❤️ Bollywood Romantic</span>
                 </div>
-            </div>
-            <div class="nav-item" onclick="filterCategory('punjabi_romantic', this)">
-                <div class="nav-left">
-                    <span class="nav-icon">🚗</span>
-                    <span>Punjabi Long Drive</span>
+                <div class="nav-item" onclick="filterCategory('bollywood_sad', this)">
+                    <span>💔 Bollywood Sad</span>
                 </div>
+
+                <div class="section-label">Playlists</div>
+                <div class="nav-item" onclick="filterCategory('nineties_romantic', this)">
+                    <span>📻 90's Hits</span>
+                </div>
+                <div class="nav-item" onclick="filterCategory('sadabahar_romantic', this)">
+                    <span>🎙️ Retro Classics</span>
+                </div>
+                <div class="nav-item" onclick="filterCategory('punjabi_romantic', this)">
+                    <span>🚗 Punjabi Beats</span>
+                </div>
+
+                <div class="section-label">Music Track List</div>
+                <div id="trackListContainer"></div>
             </div>
 
-            <div class="section-label">Tracks</div>
-            <div id="trackListContainer"></div>
-
-        </div>
-
-        <!-- Pinned Bottom User / Player Card (Riter Style) -->
-        <div class="bottom-player-card">
-            <div class="player-top">
-                <div class="player-info">
-                    <img src="cd.jpg" class="player-thumb" id="cd-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
-                    <div class="player-text">
-                        <div class="player-title-str" id="song-title">Select a Song</div>
-                        <div class="player-artist-str" id="artist-name">Music Player</div>
+            <!-- Pinned Bottom Player Box -->
+            <div class="bottom-player-card">
+                <div class="player-top">
+                    <div class="player-info">
+                        <img src="cd.jpg" class="player-thumb" id="cd-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
+                        <div>
+                            <div class="player-title-str" id="song-title">Select Track</div>
+                            <div class="player-artist-str" id="artist-name">Music Player</div>
+                        </div>
+                    </div>
+                    <div class="player-btns">
+                        <button class="btn-action" onclick="prevSong()">⏮</button>
+                        <button class="play-main-btn" id="play-btn" onclick="togglePlay()">▶</button>
+                        <button class="btn-action" onclick="nextSong()">⏭</button>
                     </div>
                 </div>
-                <div class="player-btns">
-                    <button class="btn-action" onclick="prevSong()">⏮</button>
-                    <button class="play-main-btn" id="play-btn" onclick="togglePlay()">▶</button>
-                    <button class="btn-action" onclick="nextSong()">⏭</button>
+
+                <div class="progress-box">
+                    <span class="time-str" id="curr-time">0:00</span>
+                    <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
+                    <span class="time-str" id="dur-time" style="text-align: right;">0:00</span>
                 </div>
             </div>
 
-            <div class="progress-box">
-                <span class="time-str" id="curr-time">0:00</span>
-                <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
-                <span class="time-str" id="dur-time" style="text-align: right;">0:00</span>
-            </div>
         </div>
 
     </div>
@@ -392,6 +373,7 @@
         let ytPlayer = null;
         let isPlaying = false;
         let isEngineReady = false;
+        let currentSong = null;
 
         function formatTime(sec) {
             if (isNaN(sec) || sec < 0) return "0:00";
@@ -412,8 +394,10 @@
 
         function filterCategory(catKey, elem) {
             currentFilter = catKey;
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            if (elem) elem.classList.add('active');
+            if (elem) {
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                elem.classList.add('active');
+            }
             renderTracks();
         }
 
@@ -435,7 +419,7 @@
             );
 
             if (displayList.length === 0) {
-                container.innerHTML = `<div style="color:#4b5165; font-size:11px; text-align:center; padding:15px 0;">No songs found</div>`;
+                container.innerHTML = `<div style="color:#4b5165; font-size:11px; text-align:center; padding:15px 0;">No tracks found</div>`;
                 return;
             }
 
@@ -444,12 +428,9 @@
                 const div = document.createElement('div');
                 div.className = `track-item ${isCurrent ? 'playing' : ''}`;
                 div.innerHTML = `
-                    <div style="display:flex; align-items:center; overflow:hidden;">
-                        <span style="font-size:10px; color:#4b5165; width:12px;">└</span>
-                        <div class="track-meta">
-                            <div class="track-title">${song.title}</div>
-                            <div class="track-sub">${song.artist}</div>
-                        </div>
+                    <div style="overflow:hidden;">
+                        <div class="track-title">${song.title}</div>
+                        <div class="track-sub">${song.artist}</div>
                     </div>
                     <span style="font-size:10px; color:${isCurrent ? '#60a5fa' : '#3c4257'};">▶</span>
                 `;
@@ -457,8 +438,6 @@
                 container.appendChild(div);
             });
         }
-
-        let currentSong = null;
 
         function playSelectedTrack(idx) {
             if (displayList.length === 0) return;
