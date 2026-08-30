@@ -1,264 +1,334 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Spotify - My Beats</title>
+    <title>Neumorphic Music Player</title>
 
     <script src="songs.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        /* Prevent entire page scrolling */
-        html, body { 
-            height: 100%; 
-            width: 100%;
-            overflow: hidden; 
-            background-color: #000000; 
-            color: #ffffff; 
+        /* Neumorphic / Soft Elevation Theme Colors */
+        :root[data-theme="dark"] {
+            --bg: #131722;
+            --card-bg: #1a1f2c;
+            --text-main: #ffffff;
+            --text-sub: #8a96a8;
+            --shadow-outer: 10px 10px 20px #0c0e16, -10px -10px 20px #1a202e;
+            --glow: 0px 15px 35px rgba(255, 255, 255, 0.15);
+            --pill-bg: #212738;
+            --accent-btn: #ffffff;
+            --accent-text: #000000;
+            --border-line: rgba(255, 255, 255, 0.08);
         }
 
-        .app-container {
-            display: flex;
-            flex-direction: column;
+        :root[data-theme="light"] {
+            --bg: #eef2f5;
+            --card-bg: #ffffff;
+            --text-main: #19202d;
+            --text-sub: #7e8b9b;
+            --shadow-outer: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+            --glow: 0px 15px 30px rgba(0, 0, 0, 0.12);
+            --pill-bg: #e6ecf1;
+            --accent-btn: #19202d;
+            --accent-text: #ffffff;
+            --border-line: rgba(0, 0, 0, 0.06);
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .app-frame {
+            max-width: 420px;
             height: 100vh;
-            max-width: 480px;
             margin: 0 auto;
-            background: #121212;
-            position: relative;
-        }
-
-        /* Top Header & Search */
-        .header {
-            padding: 12px 16px 8px 16px;
-            background: #121212;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            position: relative;
+            background: var(--bg);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 18px;
-            font-weight: 800;
-            color: #1DB954;
-            letter-spacing: -0.5px;
+        /* Views management */
+        .view-screen {
+            display: none;
+            flex-direction: column;
+            height: calc(100vh - 70px);
+            padding: 16px;
+            overflow: hidden;
         }
+        .view-screen.active { display: flex; }
 
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: #242424;
-            border-radius: 8px;
-            padding: 8px 12px;
-            gap: 8px;
-        }
-
-        .search-box input {
-            background: none;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-size: 13px;
-            width: 100%;
-        }
-
-        .search-box input::placeholder { color: #b3b3b3; }
-
-        /* Category Scroll Chips */
-        .category-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 4px 16px 12px 16px;
-            scrollbar-width: none;
-            background: #121212;
-        }
-        .category-scroll::-webkit-scrollbar { display: none; }
-
-        .chip {
-            background: #232323;
-            color: #ffffff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .chip.active {
-            background: #1DB954;
-            color: #000000;
-        }
-
-        /* Internal Song List (Scrollable Area) */
-        .song-list-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 16px 120px 16px;
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #b3b3b3;
-            margin: 12px 0 8px 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .track-item {
+        /* HEADER */
+        .top-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px;
-            border-radius: 6px;
+            padding: 4px 0 12px 0;
+        }
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 18px;
             cursor: pointer;
-            margin-bottom: 4px;
-            transition: background 0.2s;
         }
 
-        .track-item:active, .track-item.playing {
-            background: #282828;
+        /* 1. LIBRARY VIEW (Right Screen layout) */
+        .album-header-card {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 16px;
         }
 
-        .track-left {
+        .album-art-thumb {
+            width: 90px;
+            height: 90px;
+            border-radius: 18px;
+            object-fit: cover;
+            box-shadow: var(--glow);
+        }
+
+        .album-info-meta { display: flex; flex-direction: column; gap: 4px; }
+        .album-tag { font-size: 11px; color: var(--text-sub); }
+        .album-title { font-size: 22px; font-weight: 800; color: var(--text-main); }
+        .album-artist { font-size: 12px; color: var(--text-sub); }
+
+        .album-action-pills {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .action-pill {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            background: var(--pill-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-line);
+        }
+
+        /* PLAY / SHUFFLE BUTTONS ROW */
+        .action-buttons-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .btn-play-large {
+            flex: 1;
+            background: var(--accent-btn);
+            color: var(--accent-text);
+            border: none;
+            padding: 12px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            overflow: hidden;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: var(--glow);
+            cursor: pointer;
         }
-
-        .track-number {
+        .btn-shuffle-large {
+            flex: 1;
+            background: var(--pill-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-line);
+            padding: 12px;
+            border-radius: 16px;
+            font-weight: 700;
             font-size: 13px;
-            color: #b3b3b3;
-            width: 16px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
         }
 
-        .track-meta { overflow: hidden; }
-        .track-name { 
-            font-size: 14px; 
-            font-weight: 600; 
-            color: #ffffff; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
+        /* SONG LIST (Scrollable area) */
+        .song-list-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+            padding-bottom: 70px;
         }
-        .track-item.playing .track-name { color: #1DB954; }
+        .song-list-scroll::-webkit-scrollbar { display: none; }
 
-        .track-artist { 
-            font-size: 12px; 
-            color: #b3b3b3; 
-            margin-top: 2px;
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
+        .track-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 14px;
+            margin-bottom: 6px;
+            cursor: pointer;
         }
-
-        .play-icon-small {
-            color: #1DB954;
-            font-size: 14px;
+        .track-row.active-track {
+            background: var(--card-bg);
+            box-shadow: var(--shadow-outer);
         }
 
-        /* Pinned Spotify Bottom Player */
-        .bottom-player {
+        .track-left-group { display: flex; align-items: center; gap: 14px; overflow: hidden; }
+        .track-index { font-size: 13px; font-weight: 700; color: var(--text-sub); width: 18px; }
+        .track-details { overflow: hidden; }
+        .track-name-str { font-size: 14px; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .track-artist-str { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+        .dots-btn { color: var(--text-sub); font-size: 14px; }
+
+        /* FLOATING MINI PLAYER (Above bottom nav) */
+        .floating-mini-player {
+            position: absolute;
+            bottom: 72px;
+            left: 16px;
+            right: 16px;
+            background: var(--accent-btn);
+            color: var(--accent-text);
+            border-radius: 20px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--glow);
+            cursor: pointer;
+            z-index: 10;
+        }
+        .mini-left { display: flex; align-items: center; gap: 10px; overflow: hidden; }
+        .mini-art { width: 38px; height: 38px; border-radius: 12px; object-fit: cover; }
+        .mini-meta { overflow: hidden; }
+        .mini-title { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mini-sub { font-size: 10px; opacity: 0.7; }
+        .mini-right { display: flex; align-items: center; gap: 12px; }
+
+        /* 2. NOW PLAYING VIEW (Left Screen Layout) */
+        .now-playing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 10px 0 20px 0;
+        }
+
+        .big-album-wrapper {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            margin: 10px 0;
+        }
+        .big-album-art {
+            width: 100%;
+            height: 100%;
+            border-radius: 28px;
+            object-fit: cover;
+            box-shadow: var(--glow);
+        }
+
+        .now-song-meta { text-align: center; width: 100%; }
+        .now-song-title { font-size: 20px; font-weight: 800; color: var(--text-main); }
+        .now-artist-name { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+
+        /* Waveform / Seekbar styling */
+        .waveform-box {
+            width: 100%;
+            margin: 15px 0 5px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .wave-bars {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 30px;
+        }
+        .wave-bar {
+            width: 3px;
+            background: var(--text-sub);
+            border-radius: 3px;
+            opacity: 0.4;
+            transition: height 0.2s;
+        }
+        .wave-bar.active { background: var(--text-main); opacity: 1; }
+
+        .time-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); font-weight: 600; }
+        .seek-slider { width: 100%; accent-color: var(--text-main); cursor: pointer; }
+
+        /* Full Controls Row */
+        .player-controls-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 10px;
+        }
+        .ctrl-icon { font-size: 18px; color: var(--text-sub); cursor: pointer; }
+        .big-play-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--accent-btn);
+            color: var(--accent-text);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--glow);
+            cursor: pointer;
+        }
+
+        /* BOTTOM NAVIGATION BAR */
+        .bottom-nav {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: #181818;
-            border-top: 1px solid #282828;
-            padding: 10px 16px 14px 16px;
+            height: 65px;
+            background: var(--bg);
+            border-top: 1px solid var(--border-line);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 20;
+        }
+
+        .nav-item {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
-        }
-
-        .player-row {
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-
-        .player-track-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .player-art {
-            width: 42px;
-            height: 42px;
-            border-radius: 6px;
-            object-fit: cover;
-            animation: spin 10s linear infinite;
-            animation-play-state: paused;
-        }
-        .player-art.playing { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .player-details { overflow: hidden; }
-        .player-title { font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .player-sub { font-size: 11px; color: #b3b3b3; }
-
-        .player-controls {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .ctrl-btn {
-            background: none;
-            border: none;
-            color: #b3b3b3;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .ctrl-btn:active { color: #fff; }
-
-        .main-play-btn {
-            background: #1DB954;
-            color: #000;
-            border: none;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .seekbar-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .seekbar {
-            flex: 1;
-            height: 3px;
-            accent-color: #1DB954;
-            cursor: pointer;
-        }
-
-        .time-text {
+            gap: 3px;
+            color: var(--text-sub);
             font-size: 10px;
-            color: #b3b3b3;
             font-weight: 600;
-            width: 28px;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        .nav-item.active { color: var(--text-main); }
+        .nav-icon { font-size: 16px; }
+
+        /* Search Bar Input */
+        .search-input-box {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: var(--pill-bg);
+            border: 1px solid var(--border-line);
+            color: var(--text-main);
+            outline: none;
+            margin-bottom: 12px;
+            font-size: 13px;
         }
 
         #yt-player-container { position: fixed; bottom: 0; right: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
@@ -266,60 +336,115 @@
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="app-frame">
         
-        <!-- Top Header -->
-        <div class="header">
-            <div class="brand">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.18-.1.2-1.38-.42-.18-.6.42-1.2 1.02-1.38C9.12 6.18 16.2 6.42 20.58 9.06c.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
-                My Beats
+        <!-- 1. LIBRARY VIEW SCREEN (Right Screen in UI Image) -->
+        <div class="view-screen active" id="libraryView">
+            <div class="top-header">
+                <button class="icon-btn">❮</button>
+                <button class="icon-btn" onclick="toggleTheme()" title="Switch Dark/Light Theme">☀️/🌙</button>
             </div>
-            <div class="search-box">
-                <span style="color:#b3b3b3; font-size: 12px;">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search songs or artists..." oninput="renderTracks()">
-            </div>
-        </div>
 
-        <!-- Horizontal Category Pills -->
-        <div class="category-scroll">
-            <button class="chip active" onclick="filterCategory('all', this)">All</button>
-            <button class="chip" onclick="filterCategory('bollywood_romantic', this)">Bollywood ❤️</button>
-            <button class="chip" onclick="filterCategory('bollywood_sad', this)">Bollywood 💔</button>
-            <button class="chip" onclick="filterCategory('nineties_romantic', this)">90s ❤️</button>
-            <button class="chip" onclick="filterCategory('nineties_sad', this)">90s 💔</button>
-            <button class="chip" onclick="filterCategory('sadabahar_romantic', this)">Retro ❤️</button>
-            <button class="chip" onclick="filterCategory('sadabahar_sad', this)">Retro 💔</button>
-            <button class="chip" onclick="filterCategory('punjabi_romantic', this)">Punjabi ❤️</button>
-            <button class="chip" onclick="filterCategory('punjabi_sad', this)">Punjabi 💔</button>
-        </div>
+            <input type="text" class="search-input-box" id="searchInput" placeholder="Search songs..." oninput="renderSongList()">
 
-        <!-- Scrollable Song List -->
-        <div class="song-list-container">
-            <div class="section-title" id="currentCategoryLabel">All Songs</div>
-            <div id="trackList"></div>
-        </div>
-
-        <!-- Spotify Style Bottom Player -->
-        <div class="bottom-player">
-            <div class="player-row">
-                <div class="player-track-info">
-                    <img src="cd.jpg" id="cd-art" class="player-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
-                    <div class="player-details">
-                        <div class="player-title" id="song-title">Select a Song</div>
-                        <div class="player-sub" id="artist-name">Spotify Music</div>
+            <!-- Album Card Header -->
+            <div class="album-header-card">
+                <img src="cd.jpg" class="album-art-thumb" id="lib-album-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
+                <div class="album-info-meta">
+                    <span class="album-tag">Album • 17 songs</span>
+                    <h2 class="album-title" id="lib-album-title">My Playlist</h2>
+                    <span class="album-artist">Featured Artists</span>
+                    <div class="album-action-pills">
+                        <span class="action-pill">🎵 HQ</span>
+                        <span class="action-pill">⬇ Offline</span>
+                        <span class="action-pill">•••</span>
                     </div>
                 </div>
-                <div class="player-controls">
-                    <button class="ctrl-btn" onclick="prevSong()">⏮</button>
-                    <button class="main-play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-                    <button class="ctrl-btn" onclick="nextSong()">⏭</button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons-row">
+                <button class="btn-play-large" onclick="playSelectedTrack(0)">▶ Play</button>
+                <button class="btn-shuffle-large" onclick="shufflePlay()">🔀 Shuffle</button>
+            </div>
+
+            <!-- Scrollable Track List -->
+            <div class="song-list-scroll" id="songListContainer"></div>
+
+            <!-- Floating Mini Player -->
+            <div class="floating-mini-player" onclick="switchView('nowPlayingView')">
+                <div class="mini-left">
+                    <img src="cd.jpg" class="mini-art" id="mini-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
+                    <div class="mini-meta">
+                        <div class="mini-title" id="mini-title">Select Song</div>
+                        <div class="mini-sub" id="mini-artist">Artist</div>
+                    </div>
+                </div>
+                <div class="mini-right">
+                    <span style="font-size: 14px;">♡</span>
+                    <button class="icon-btn" style="color: inherit; font-size: 16px;" onclick="event.stopPropagation(); togglePlay();" id="mini-play-btn">▶</button>
                 </div>
             </div>
-            <div class="seekbar-container">
-                <span class="time-text" id="curr-time">0:00</span>
-                <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
-                <span class="time-text" id="dur-time" style="text-align: right;">0:00</span>
+        </div>
+
+        <!-- 2. NOW PLAYING VIEW SCREEN (Left Screen in UI Image) -->
+        <div class="view-screen" id="nowPlayingView">
+            <div class="top-header">
+                <button class="icon-btn" onclick="switchView('libraryView')">❮</button>
+                <span style="font-size: 13px; font-weight: 700;">Now Playing</span>
+                <button class="icon-btn">≡</button>
             </div>
+
+            <div class="now-playing-container">
+                <!-- Glowing Big Album Art -->
+                <div class="big-album-wrapper">
+                    <img src="cd.jpg" class="big-album-art" id="now-art" onerror="this.src='https://raw.githubusercontent.com/we0are0back0-max/trucker-music-web/main/cd.jpg'">
+                </div>
+
+                <div class="now-song-meta">
+                    <h2 class="now-song-title" id="now-title">Unstable</h2>
+                    <p class="now-artist-name" id="now-artist">Mr. Kitty</p>
+                </div>
+
+                <!-- Waveform / Seekbar Box -->
+                <div class="waveform-box">
+                    <div class="wave-bars" id="waveBars"></div>
+                    <input type="range" class="seek-slider" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
+                    <div class="time-labels">
+                        <span id="curr-time">1:04</span>
+                        <span id="dur-time">2:52</span>
+                    </div>
+                </div>
+
+                <!-- Full Controls Row -->
+                <div class="player-controls-main">
+                    <span class="ctrl-icon">🔀</span>
+                    <span class="ctrl-icon" onclick="prevSong()">⏮</span>
+                    <button class="big-play-btn" id="now-play-btn" onclick="togglePlay()">▶</button>
+                    <span class="ctrl-icon" onclick="nextSong()">⏭</span>
+                    <span class="ctrl-icon">🔁</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION BAR -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="switchView('libraryView')">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" onclick="document.getElementById('searchInput').focus(); switchView('libraryView');">
+                <span class="nav-icon">🔍</span>
+                <span>Search</span>
+            </button>
+            <button class="nav-item active" onclick="switchView('libraryView')">
+                <span class="nav-icon">🎵</span>
+                <span>Library</span>
+            </button>
+            <button class="nav-item">
+                <span class="nav-icon">🔥</span>
+                <span>Hotlist</span>
+            </button>
         </div>
 
     </div>
@@ -329,12 +454,36 @@
     </div>
 
     <script>
-        let currentFilter = 'all';
-        let displayList = [];
+        let songList = [];
         let currentIndex = 0;
         let ytPlayer = null;
         let isPlaying = false;
         let isEngineReady = false;
+
+        // Theme Toggle (Dark / Light)
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        // View Switching
+        function switchView(viewId) {
+            document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        // Generate Waveform Bars Visualizer
+        function buildWaveform() {
+            const container = document.getElementById('waveBars');
+            container.innerHTML = '';
+            for (let i = 0; i < 35; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar' + (i < 12 ? ' active' : '');
+                bar.style.height = Math.floor(Math.random() * 22 + 6) + 'px';
+                container.appendChild(bar);
+            }
+        }
 
         function formatTime(sec) {
             if (isNaN(sec) || sec < 0) return "0:00";
@@ -343,92 +492,65 @@
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        function getAllSongs() {
-            let all = [];
-            if (!window.musicData) return all;
+        function loadSongsFromData() {
+            songList = [];
+            if (!window.musicData) return;
             for (let key in window.musicData) {
-                const songs = window.musicData[key].filter(s => s.id && s.id !== "...id...");
-                songs.forEach(s => all.push({ ...s, categoryKey: key }));
+                const items = window.musicData[key].filter(s => s.id && s.id !== "...id...");
+                songList.push(...items);
             }
-            return all;
         }
 
-        function filterCategory(catKey, btnElem) {
-            currentFilter = catKey;
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            if (btnElem) btnElem.classList.add('active');
-
-            const labelMap = {
-                'all': 'All Songs',
-                'bollywood_romantic': 'Bollywood Romantic',
-                'bollywood_sad': 'Bollywood Sad',
-                'nineties_romantic': '90s Romantic',
-                'nineties_sad': '90s Sad',
-                'sadabahar_romantic': 'Retro Romantic',
-                'sadabahar_sad': 'Retro Sad',
-                'punjabi_romantic': 'Punjabi Romantic',
-                'punjabi_sad': 'Punjabi Sad'
-            };
-            document.getElementById('currentCategoryLabel').innerText = labelMap[catKey] || 'Playlist';
-            renderTracks();
-        }
-
-        function renderTracks() {
+        function renderSongList() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            const container = document.getElementById('trackList');
+            const container = document.getElementById('songListContainer');
             container.innerHTML = '';
 
-            let rawList = [];
-            if (currentFilter === 'all') {
-                rawList = getAllSongs();
-            } else if (window.musicData && window.musicData[currentFilter]) {
-                rawList = window.musicData[currentFilter].filter(s => s.id && s.id !== "...id...");
-            }
-
-            displayList = rawList.filter(s => 
+            const filtered = songList.filter(s => 
                 s.title.toLowerCase().includes(query) || 
                 s.artist.toLowerCase().includes(query)
             );
 
-            if (displayList.length === 0) {
-                container.innerHTML = `<div style="color:#b3b3b3; font-size:13px; text-align:center; padding:30px 0;">No songs found</div>`;
-                return;
-            }
-
-            displayList.forEach((song, idx) => {
-                const isCurrent = isPlaying && currentSong && currentSong.id === song.id;
+            filtered.forEach((song, idx) => {
+                const isActive = currentIndex === idx && isPlaying;
                 const div = document.createElement('div');
-                div.className = `track-item ${isCurrent ? 'playing' : ''}`;
+                div.className = `track-row ${isActive ? 'active-track' : ''}`;
                 div.innerHTML = `
-                    <div class="track-left">
-                        <span class="track-number">${idx + 1}</span>
-                        <div class="track-meta">
-                            <div class="track-name">${song.title}</div>
-                            <div class="track-artist">${song.artist}</div>
+                    <div class="track-left-group">
+                        <span class="track-index">${(idx + 1).toString().padStart(2, '0')}</span>
+                        <div class="track-details">
+                            <div class="track-name-str">${song.title}</div>
+                            <div class="track-artist-str">${song.artist}</div>
                         </div>
                     </div>
-                    ${isCurrent ? '<span class="play-icon-small">♫</span>' : ''}
+                    <span class="dots-btn">•••</span>
                 `;
                 div.onclick = () => playSelectedTrack(idx);
                 container.appendChild(div);
             });
         }
 
-        let currentSong = null;
-
         function playSelectedTrack(idx) {
-            if (displayList.length === 0) return;
+            if (songList.length === 0) return;
             currentIndex = idx;
-            currentSong = displayList[currentIndex];
+            const song = songList[currentIndex];
 
-            document.getElementById('song-title').innerText = currentSong.title;
-            document.getElementById('artist-name').innerText = currentSong.artist;
+            document.getElementById('mini-title').innerText = song.title;
+            document.getElementById('mini-artist').innerText = song.artist;
+            document.getElementById('now-title').innerText = song.title;
+            document.getElementById('now-artist').innerText = song.artist;
 
             if (ytPlayer && ytPlayer.loadVideoById) {
-                ytPlayer.loadVideoById(currentSong.id);
+                ytPlayer.loadVideoById(song.id);
                 ytPlayer.playVideo();
             }
-            renderTracks();
+            renderSongList();
+        }
+
+        function shufflePlay() {
+            if (songList.length === 0) return;
+            const rand = Math.floor(Math.random() * songList.length);
+            playSelectedTrack(rand);
         }
 
         function onYouTubeIframeAPIReady() {
@@ -440,14 +562,14 @@
                     'onStateChange': (e) => {
                         if (e.data === YT.PlayerState.PLAYING) {
                             isPlaying = true;
-                            document.getElementById('play-btn').innerText = '❚❚';
-                            document.getElementById('cd-art').classList.add('playing');
-                            renderTracks();
+                            document.getElementById('mini-play-btn').innerText = '❚❚';
+                            document.getElementById('now-play-btn').innerText = '❚❚';
+                            renderSongList();
                         } else if (e.data === YT.PlayerState.PAUSED) {
                             isPlaying = false;
-                            document.getElementById('play-btn').innerText = '▶';
-                            document.getElementById('cd-art').classList.remove('playing');
-                            renderTracks();
+                            document.getElementById('mini-play-btn').innerText = '▶';
+                            document.getElementById('now-play-btn').innerText = '▶';
+                            renderSongList();
                         } else if (e.data === YT.PlayerState.ENDED) {
                             nextSong();
                         }
@@ -458,23 +580,19 @@
 
         function togglePlay() {
             if (!isEngineReady || !ytPlayer) return;
-            if (!currentSong && displayList.length > 0) {
-                playSelectedTrack(0);
-                return;
-            }
             if (isPlaying) { ytPlayer.pauseVideo(); } 
             else { ytPlayer.playVideo(); }
         }
 
         function nextSong() {
-            if (displayList.length === 0) return;
-            currentIndex = (currentIndex + 1) % displayList.length;
+            if (songList.length === 0) return;
+            currentIndex = (currentIndex + 1) % songList.length;
             playSelectedTrack(currentIndex);
         }
 
         function prevSong() {
-            if (displayList.length === 0) return;
-            currentIndex = (currentIndex - 1 + displayList.length) % displayList.length;
+            if (songList.length === 0) return;
+            currentIndex = (currentIndex - 1 + songList.length) % songList.length;
             playSelectedTrack(currentIndex);
         }
 
@@ -498,7 +616,9 @@
         }, 500);
 
         window.onload = function() {
-            renderTracks();
+            buildWaveform();
+            loadSongsFromData();
+            renderSongList();
         };
     </script>
 </body>
