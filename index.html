@@ -2,540 +2,149 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Glassmorphic YouTube Player</title>
-    
-    <script src="songs.js"></script>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Store</title>
     <style>
+        /* Base Reset & Styling */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            background: #000000 url('bg.jpg') no-repeat center center/cover;
-            overflow: hidden;
-            padding-bottom: 90px;
-        }
-
-        /* Transparent Glass Box */
-        .glass-player-box {
-            width: 92%;
-            max-width: 390px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid rgba(255, 255, 255, 0.5);
-            border-radius: 32px;
-            padding: 22px 20px 18px 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Track Info Row */
-        .track-info-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 4px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            outline: none;
-            padding: 6px;
-            border-radius: 50%;
-        }
-
-        .icon-btn:active {
-            transform: scale(0.85);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .icon-btn.active {
-            color: #22c55e !important;
-            filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.9));
-        }
-
-        .song-details {
-            text-align: center;
-            overflow: hidden;
-            padding: 0 10px;
-            flex: 1;
-        }
-
-        .song-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 0.3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .artist-name {
-            font-size: 12.5px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            margin-top: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Seekbar Row */
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .time-text {
-            font-size: 11.5px;
-            font-weight: 700;
-            color: #ffffff;
-            min-width: 38px;
-        }
-
-        .seekbar {
-            flex: 1;
-            height: 5px;
-            appearance: none;
-            background: rgba(255, 255, 255, 0.35);
-            border-radius: 5px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .seekbar::-webkit-slider-thumb {
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ffffff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
-            cursor: pointer;
-        }
-
-        /* Controls Row */
-        .controls-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2px;
-        }
-
-        .play-btn-main {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.25);
-            border: 2px solid #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.15s ease, background 0.2s;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .play-btn-main:active {
-            transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .play-btn-main svg {
-            fill: #ffffff;
-        }
-
-        /* Playlist Modal */
-        .playlist-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-
-        .playlist-modal.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .playlist-box {
-            width: 90%;
-            max-width: 380px;
-            height: 72vh;
-            background: rgba(18, 22, 32, 0.92);
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
-            border-radius: 24px;
+            background-color: #ffffff;
+            color: #111111;
+            font-family: 'Courier New', Courier, monospace, sans-serif;
             padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Hacker Vibe Header */
+        header {
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000000;
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px #00ff41;
+            display: inline-block;
+        }
+
+        .brand-name span {
+            color: #008000;
+        }
+
+        /* Products Grid / Container */
+        .product-container {
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            gap: 40px;
         }
 
-        .playlist-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            margin-bottom: 12px;
+        .product-card {
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
         }
 
-        .playlist-header h3 {
+        .product-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+        }
+
+        .product-caption {
             font-size: 16px;
-            font-weight: 700;
+            color: #333333;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-family: Arial, sans-serif;
+        }
+
+        .buy-btn {
+            display: inline-block;
+            background-color: #0066ff;
             color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.2s ease-in-out;
         }
 
-        .playlist-list {
-            overflow-y: auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding-right: 4px;
+        .buy-btn:hover {
+            background-color: #0044cc;
         }
 
-        .playlist-item {
-            padding: 10px 12px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.06);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: background 0.2s;
+        /* Footer / Site Description */
+        footer {
+            margin-top: 50px;
+            padding: 25px 20px;
+            border-top: 2px dashed #000000;
+            text-align: center;
+            background-color: #f4f4f4;
+            border-radius: 8px;
         }
 
-        .playlist-item:hover, .playlist-item:active {
-            background: rgba(255, 255, 255, 0.18);
-        }
-
-        .playlist-item.active {
-            background: rgba(34, 197, 94, 0.25);
-            border: 1px solid #22c55e;
-        }
-
-        .item-info {
-            overflow: hidden;
-            padding-right: 8px;
-        }
-        .item-title { font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .item-artist { font-size: 11px; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
-
-        #yt-player-container {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
+        .site-desc {
+            font-size: 14px;
+            color: #555555;
+            line-height: 1.6;
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
 <body>
 
-    <div class="glass-player-box">
-        <div class="track-info-row">
-            <button class="icon-btn" id="btn-heart" onclick="toggleHeart()" title="Like Song">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            </button>
+    <header>
+        <div class="brand-name">>_ DARK STORE<span>_</span></div>
+    </header>
 
-            <div class="song-details">
-                <div class="song-title" id="song-title">Loading...</div>
-                <div class="artist-name" id="artist-name">Please wait</div>
-            </div>
+    <main class="product-container">
 
-            <button class="icon-btn" onclick="openPlaylistModal()" title="Open Playlist">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-            </button>
+        <div class="product-card">
+            <img src="product1.jpg" alt="Product 1" class="product-img">
+            <p class="product-caption">.....1-caption.....</p>
+            <a href="......buy-link-1......" class="buy-btn">Buy Now</a>
         </div>
 
-        <div class="progress-container">
-            <span class="time-text" id="curr-time">00:00</span>
-            <input type="range" class="seekbar" id="seekbar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
-            <span class="time-text" id="dur-time" style="text-align: right;">00:00</span>
+        <div class="product-card">
+            <img src="product2.jpg" alt="Product 2" class="product-img">
+            <p class="product-caption">.....2-caption.....</p>
+            <a href="......buy-link-2......" class="buy-btn">Buy Now</a>
         </div>
 
-        <div class="controls-row">
-            <button class="icon-btn" onclick="skipTime(-10)" title="Rewind 10s">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6"></path><path d="M2.66 15.57a10 10 0 1 0 .57-8.38L2.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
-            </button>
-
-            <button class="icon-btn" id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
-            </button>
-
-            <button class="icon-btn" onclick="prevTrack()" title="Previous Song">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"></line></svg>
-            </button>
-
-            <button class="play-btn-main" id="play-btn" onclick="togglePlay()" title="Play / Pause">
-                <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24"><polygon points="7,5 19,12 7,19"></polygon></svg>
-            </button>
-
-            <button class="icon-btn" onclick="nextTrack()" title="Next Song">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"></line></svg>
-            </button>
-
-            <button class="icon-btn" id="btn-repeat" onclick="toggleRepeat()" title="Repeat">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
-            </button>
-
-            <button class="icon-btn" onclick="skipTime(10)" title="Forward 10s">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38L21.5 8"></path><text x="8.5" y="15" font-size="7" fill="#ffffff" font-weight="bold">10</text></svg>
-            </button>
+        <div class="product-card">
+            <img src="product3.jpg" alt="Product 3" class="product-img">
+            <p class="product-caption">.....3-caption.....</p>
+            <a href="......buy-link-3......" class="buy-btn">Buy Now</a>
         </div>
-    </div>
 
-    <div class="playlist-modal" id="playlistModal" onclick="closePlaylistOnOutside(event)">
-        <div class="playlist-box">
-            <div class="playlist-header">
-                <h3>Playlist Songs</h3>
-                <button class="icon-btn" onclick="closePlaylistModal()">✕</button>
-            </div>
-            <div class="playlist-list" id="playlistItemsContainer"></div>
+        <div class="product-card">
+            <img src="product4.jpg" alt="Product 4" class="product-img">
+            <p class="product-caption">.....4-caption.....</p>
+            <a href="......buy-link-4......" class="buy-btn">Buy Now</a>
         </div>
-    </div>
 
-    <div id="yt-player-container">
-        <div id="yt-player"></div>
-    </div>
+    </main>
 
-    <script>
-        let currentIndex = 0;
-        let ytPlayer = null;
-        let isPlayerReady = false;
-        let isPlaying = false;
-        let isShuffle = false;
-        let isRepeat = false;
-        let isHeart = false;
+    <footer>
+        <p class="site-desc">.....site-description.....</p>
+    </footer>
 
-        function formatTime(sec) {
-            if (isNaN(sec) || sec < 0) return "00:00";
-            const m = Math.floor(sec / 60);
-            const s = Math.floor(sec % 60);
-            return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-        }
-
-        // YouTube API Initialization
-        function onYouTubeIframeAPIReady() {
-            if (!songsList || songsList.length === 0) return;
-
-            ytPlayer = new YT.Player('yt-player', {
-                height: '100',
-                width: '100',
-                videoId: songsList[currentIndex].id,
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'playsinline': 1,
-                    'enablejsapi': 1
-                },
-                events: {
-                    'onReady': () => {
-                        isPlayerReady = true;
-                        updateUI();
-                    },
-                    'onError': (e) => {
-                        console.warn("Video failed to play (Error/Blocked ID). Auto-skipping to next...", e.data);
-                        setTimeout(nextTrack, 600); // AUTO SKIP ON ERROR
-                    },
-                    'onStateChange': (e) => {
-                        if (e.data === YT.PlayerState.PLAYING) {
-                            isPlaying = true;
-                            updatePlayUI(true);
-                        } else if (e.data === YT.PlayerState.PAUSED) {
-                            isPlaying = false;
-                            updatePlayUI(false);
-                        } else if (e.data === YT.PlayerState.ENDED) {
-                            if (isRepeat) {
-                                ytPlayer.playVideo();
-                            } else {
-                                nextTrack();
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function updateUI() {
-            if (!songsList || songsList.length === 0) return;
-            const song = songsList[currentIndex];
-            document.getElementById('song-title').innerText = song.title;
-            document.getElementById('artist-name').innerText = song.artist;
-            renderPlaylist();
-        }
-
-        function loadSong(index) {
-            currentIndex = index;
-            updateUI();
-
-            if (ytPlayer && isPlayerReady && typeof ytPlayer.loadVideoById === 'function') {
-                ytPlayer.loadVideoById(songsList[currentIndex].id);
-                ytPlayer.playVideo();
-                isPlaying = true;
-                updatePlayUI(true);
-            }
-        }
-
-        function togglePlay() {
-            if (!ytPlayer || !isPlayerReady) return;
-
-            if (isPlaying) {
-                ytPlayer.pauseVideo();
-            } else {
-                ytPlayer.playVideo();
-            }
-        }
-
-        function updatePlayUI(playing) {
-            const playIcon = document.getElementById('play-icon');
-            if (playing) {
-                playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>';
-            } else {
-                playIcon.innerHTML = '<polygon points="7,5 19,12 7,19"></polygon>';
-            }
-        }
-
-        function nextTrack() {
-            if (isShuffle) {
-                currentIndex = Math.floor(Math.random() * songsList.length);
-            } else {
-                currentIndex = (currentIndex + 1) % songsList.length;
-            }
-            loadSong(currentIndex);
-        }
-
-        function prevTrack() {
-            currentIndex = (currentIndex - 1 + songsList.length) % songsList.length;
-            loadSong(currentIndex);
-        }
-
-        function skipTime(seconds) {
-            if (ytPlayer && isPlayerReady && typeof ytPlayer.getCurrentTime === 'function') {
-                const cur = ytPlayer.getCurrentTime();
-                ytPlayer.seekTo(cur + seconds, true);
-            }
-        }
-
-        function seekAudio(val) {
-            if (ytPlayer && isPlayerReady && typeof ytPlayer.getDuration === 'function') {
-                const dur = ytPlayer.getDuration();
-                if (dur > 0) ytPlayer.seekTo((val / 100) * dur, true);
-            }
-        }
-
-        function toggleShuffle() {
-            isShuffle = !isShuffle;
-            document.getElementById('btn-shuffle').classList.toggle('active', isShuffle);
-        }
-
-        function toggleRepeat() {
-            isRepeat = !isRepeat;
-            document.getElementById('btn-repeat').classList.toggle('active', isRepeat);
-        }
-
-        function toggleHeart() {
-            isHeart = !isHeart;
-            document.getElementById('btn-heart').classList.toggle('active', isHeart);
-        }
-
-        function openPlaylistModal() {
-            renderPlaylist();
-            document.getElementById('playlistModal').classList.add('open');
-        }
-
-        function closePlaylistModal() {
-            document.getElementById('playlistModal').classList.remove('open');
-        }
-
-        function closePlaylistOnOutside(e) {
-            if (e.target.id === 'playlistModal') closePlaylistModal();
-        }
-
-        function renderPlaylist() {
-            const container = document.getElementById('playlistItemsContainer');
-            if (!container) return;
-            container.innerHTML = '';
-
-            songsList.forEach((song, idx) => {
-                const isCurrent = idx === currentIndex;
-                const div = document.createElement('div');
-                div.className = `playlist-item ${isCurrent ? 'active' : ''}`;
-                div.innerHTML = `
-                    <div class="item-info">
-                        <div class="item-title">${idx + 1}. ${song.title}</div>
-                        <div class="item-artist">${song.artist}</div>
-                    </div>
-                    <span style="font-size:12px; color: ${isCurrent ? '#22c55e' : 'rgba(255,255,255,0.6)'}; font-weight: bold;">
-                        ${isCurrent && isPlaying ? '❚❚' : '▶'}
-                    </span>
-                `;
-                div.onclick = () => {
-                    loadSong(idx);
-                    closePlaylistModal();
-                };
-                container.appendChild(div);
-            });
-        }
-
-        setInterval(() => {
-            if (ytPlayer && isPlayerReady && isPlaying && typeof ytPlayer.getDuration === 'function') {
-                const dur = ytPlayer.getDuration();
-                const cur = ytPlayer.getCurrentTime();
-                if (dur > 0) {
-                    document.getElementById('seekbar').value = (cur / dur) * 100;
-                    document.getElementById('curr-time').innerText = formatTime(cur);
-                    document.getElementById('dur-time').innerText = formatTime(dur);
-                }
-            }
-        }, 500);
-
-        window.onload = function() {
-            updateUI();
-        };
-    </script>
 </body>
 </html>
