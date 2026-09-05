@@ -10,6 +10,13 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            /* Disable text/media selection & long press callout */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -78,7 +85,7 @@
             height: 100%;
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -87,26 +94,53 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Alert / Play Button (!) */
-        .alert-btn {
+        /* Container for Eye Button & Text */
+        .mask-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Eye Button */
+        .eye-btn {
             width: 65px;
             height: 65px;
             border-radius: 50%;
             background-color: #000000;
             color: #00ff41;
-            font-size: 32px;
-            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid #00ff41;
             box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
-            user-select: none;
             transition: transform 0.2s ease;
         }
 
-        .video-mask:hover .alert-btn {
+        .eye-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: #00ff41;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .video-mask:hover .eye-btn {
             transform: scale(1.1);
+        }
+
+        /* "see content" Subtext */
+        .btn-subtext {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: lowercase;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         /* Caption & Black Buy Button */
@@ -116,6 +150,8 @@
             margin-bottom: 20px;
             line-height: 1.5;
             font-family: Arial, sans-serif;
+            -webkit-user-select: text;
+            user-select: text;
         }
 
         .buy-btn {
@@ -151,41 +187,63 @@
             color: #555555;
             line-height: 1.6;
             font-family: Arial, sans-serif;
+            -webkit-user-select: text;
+            user-select: text;
         }
     </style>
 </head>
 <body>
 
+    <!-- Header Section (Left Top Hacker Vibe Logo) -->
     <header>
         <div class="brand-name">>_ DARK STORE<span>_</span></div>
     </header>
 
+    <!-- Main Content: Single Video Product -->
     <main>
         <div class="product-card">
             
+            <!-- Video Container with Blur Mask -->
             <div class="video-wrapper">
-                <video id="myVideo" controls preload="metadata">
-                    <source src="product.vid" type="video/mp4">
+                <!-- Video with Download Restrictions -->
+                <video id="myVideo" controls controlsList="nodownload" disablePictureInPicture oncontextmenu="return false;" preload="metadata">
+                    <source src="product.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
                 
+                <!-- Blur Mask Overlay with Eye Button and "see content" -->
                 <div class="video-mask" id="videoMask" onclick="playVideo()">
-                    <div class="alert-btn">!</div>
+                    <div class="mask-content">
+                        <div class="eye-btn">
+                            <!-- Eye SVG Icon -->
+                            <svg viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                        <span class="btn-subtext">see content</span>
+                    </div>
                 </div>
             </div>
 
-            <p class="product-caption">.....caption.....</p>
+            <!-- Product Caption Placeholder -->
+            <p class="product-caption">2000+ Dark Web , Red Rooms Vidios only in 299₹  
+Click on Buy button</p>
 
-            <a href="......buy-link......" class="buy-btn">Buy Now</a>
+            <!-- Black Buy Button with Link Placeholder -->
+            <a href="http://t.me/Dark_web_rooms_bot" class="buy-btn">Buy Now</a>
 
         </div>
     </main>
 
+    <!-- Footer Section (Site Description Placeholder) -->
     <footer>
         <p class="site-desc">.....site-description.....</p>
     </footer>
 
+    <!-- Scripts -->
     <script>
+        // Play video and remove blur mask
         function playVideo() {
             var video = document.getElementById('myVideo');
             var mask = document.getElementById('videoMask');
@@ -193,6 +251,11 @@
             mask.style.display = 'none'; // Blur Mask Hata do
             video.play();               // Video Play kar do
         }
+
+        // Disable right click / long press context menu globally and on video
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
     </script>
 
 </body>
