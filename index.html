@@ -42,13 +42,7 @@
             color: #008000;
         }
 
-        /* Products Grid / Container */
-        .product-container {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
+        /* Main Video Card Container */
         .product-card {
             border: 1px solid #e0e0e0;
             padding: 20px;
@@ -58,36 +52,88 @@
             text-align: center;
         }
 
-        .product-img {
+        /* Video Wrapper with Blur Mask Overlay */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
             max-width: 100%;
-            height: auto;
             border-radius: 6px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #000000;
         }
 
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Blur Overlay Mask */
+        .video-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Alert / Play Button (!) */
+        .alert-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: #000000;
+            color: #00ff41;
+            font-size: 32px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+            user-select: none;
+            transition: transform 0.2s ease;
+        }
+
+        .video-mask:hover .alert-btn {
+            transform: scale(1.1);
+        }
+
+        /* Caption & Black Buy Button */
         .product-caption {
             font-size: 16px;
             color: #333333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             line-height: 1.5;
             font-family: Arial, sans-serif;
         }
 
         .buy-btn {
             display: inline-block;
-            background-color: #0066ff;
+            background-color: #000000;
             color: #ffffff;
-            padding: 12px 24px;
+            padding: 12px 28px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 5px;
             font-family: Arial, sans-serif;
-            transition: background-color 0.2s ease-in-out;
+            border: 1px solid #000000;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         .buy-btn:hover {
-            background-color: #0044cc;
+            background-color: #222222;
+            color: #00ff41;
         }
 
         /* Footer / Site Description */
@@ -114,37 +160,40 @@
         <div class="brand-name">>_ DARK STORE<span>_</span></div>
     </header>
 
-    <main class="product-container">
-
+    <main>
         <div class="product-card">
-            <img src="product1.jpg" alt="Product 1" class="product-img">
-            <p class="product-caption">.....1-caption.....</p>
-            <a href="......buy-link-1......" class="buy-btn">Buy Now</a>
-        </div>
+            
+            <div class="video-wrapper">
+                <video id="myVideo" controls preload="metadata">
+                    <source src="product.vid" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                
+                <div class="video-mask" id="videoMask" onclick="playVideo()">
+                    <div class="alert-btn">!</div>
+                </div>
+            </div>
 
-        <div class="product-card">
-            <img src="product2.jpg" alt="Product 2" class="product-img">
-            <p class="product-caption">.....2-caption.....</p>
-            <a href="......buy-link-2......" class="buy-btn">Buy Now</a>
-        </div>
+            <p class="product-caption">.....caption.....</p>
 
-        <div class="product-card">
-            <img src="product3.jpg" alt="Product 3" class="product-img">
-            <p class="product-caption">.....3-caption.....</p>
-            <a href="......buy-link-3......" class="buy-btn">Buy Now</a>
-        </div>
+            <a href="......buy-link......" class="buy-btn">Buy Now</a>
 
-        <div class="product-card">
-            <img src="product4.jpg" alt="Product 4" class="product-img">
-            <p class="product-caption">.....4-caption.....</p>
-            <a href="......buy-link-4......" class="buy-btn">Buy Now</a>
         </div>
-
     </main>
 
     <footer>
         <p class="site-desc">.....site-description.....</p>
     </footer>
+
+    <script>
+        function playVideo() {
+            var video = document.getElementById('myVideo');
+            var mask = document.getElementById('videoMask');
+            
+            mask.style.display = 'none'; // Blur Mask Hata do
+            video.play();               // Video Play kar do
+        }
+    </script>
 
 </body>
 </html>
