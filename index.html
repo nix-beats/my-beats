@@ -10,7 +10,6 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            /* Disable text/media selection & long press callout */
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
@@ -20,15 +19,92 @@
         }
 
         body {
-            background-color: #ffffff;
-            color: #111111;
+            background-color: #ffffff; /* White Background */
+            color: #000000; /* Black Text */
             font-family: 'Courier New', Courier, monospace, sans-serif;
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
         }
 
-        /* Hacker Vibe Header */
+        /* 18+ Age Verification Modal Overlay */
+        .age-gate-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .age-gate-box {
+            background-color: #ffffff;
+            border: 3px solid #000000;
+            border-radius: 10px;
+            padding: 30px 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .age-gate-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .age-gate-text {
+            font-size: 15px;
+            color: #111111;
+            margin-bottom: 25px;
+            font-family: Arial, sans-serif;
+        }
+
+        .age-btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .age-btn {
+            flex: 1;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid #000000;
+            transition: all 0.2s ease;
+            font-family: Arial, sans-serif;
+        }
+
+        .btn-yes {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .btn-yes:hover {
+            background-color: #333333;
+        }
+
+        .btn-no {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .btn-no:hover {
+            background-color: #eeeeee;
+        }
+
+        /* Header Section */
         header {
             padding: 15px 0;
             margin-bottom: 30px;
@@ -36,38 +112,41 @@
         }
 
         .brand-name {
-            font-size: 28px;
-            font-weight: bold;
-            color: #000000;
+            font-size: 32px;
+            font-weight: 900;
+            color: #000000; /* Black Brand Name */
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 2px 2px 0px #00ff41;
-            display: inline-block;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        .brand-name span {
-            color: #008000;
+        .tagline {
+            font-size: 13px;
+            color: #000000; /* Black Tagline */
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            font-family: Arial, sans-serif;
         }
 
         /* Main Video Card Container */
         .product-card {
-            border: 1px solid #e0e0e0;
+            border: 2px solid #000000;
             padding: 20px;
             border-radius: 8px;
-            background-color: #fafafa;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-        /* Video Wrapper with Blur Mask Overlay */
+        /* Video Box */
         .video-wrapper {
-            position: relative;
             width: 100%;
-            max-width: 100%;
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 20px;
             background-color: #000000;
+            border: 1px solid #000000;
         }
 
         .video-wrapper video {
@@ -76,77 +155,10 @@
             display: block;
         }
 
-        /* Blur Overlay Mask */
-        .video-mask {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: opacity 0.3s ease;
-        }
-
-        /* Container for Eye Button & Text */
-        .mask-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        /* Eye Button */
-        .eye-btn {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background-color: #000000;
-            color: #00ff41;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #00ff41;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
-            transition: transform 0.2s ease;
-        }
-
-        .eye-btn svg {
-            width: 32px;
-            height: 32px;
-            fill: none;
-            stroke: #00ff41;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .video-mask:hover .eye-btn {
-            transform: scale(1.1);
-        }
-
-        /* "see content" Subtext */
-        .btn-subtext {
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: lowercase;
-            font-family: 'Courier New', Courier, monospace;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        /* Caption & Black Buy Button */
+        /* Caption Text */
         .product-caption {
             font-size: 16px;
-            color: #333333;
+            color: #000000;
             margin-bottom: 20px;
             line-height: 1.5;
             font-family: Arial, sans-serif;
@@ -154,37 +166,40 @@
             user-select: text;
         }
 
+        /* Full Width Black Buy Button */
         .buy-btn {
-            display: inline-block;
+            display: block;
+            width: 100%;
             background-color: #000000;
             color: #ffffff;
-            padding: 12px 28px;
+            padding: 14px 0;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 5px;
+            font-size: 16px;
+            border-radius: 6px;
             font-family: Arial, sans-serif;
             border: 1px solid #000000;
+            text-align: center;
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         .buy-btn:hover {
-            background-color: #222222;
-            color: #00ff41;
+            background-color: #333333;
         }
 
-        /* Footer / Site Description */
+        /* Footer / Description Box */
         footer {
             margin-top: 50px;
             padding: 25px 20px;
-            border-top: 2px dashed #000000;
+            border: 2px solid #000000;
             text-align: center;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
             border-radius: 8px;
         }
 
         .site-desc {
             font-size: 14px;
-            color: #555555;
+            color: #000000; /* Black Text */
             line-height: 1.6;
             font-family: Arial, sans-serif;
             -webkit-user-select: text;
@@ -194,72 +209,63 @@
 </head>
 <body>
 
-    <!-- Header Section (Left Top Hacker Vibe Logo) -->
+    <!-- 18+ Age Gate Popup Modal -->
+    <div class="age-gate-overlay" id="ageGate">
+        <div class="age-gate-box">
+            <div class="age-gate-title">⚠️ Age Verification</div>
+            <div class="age-gate-text">Are you 18 years old or older?</div>
+            <div class="age-btn-container">
+                <button class="age-btn btn-yes" onclick="confirmAge(true)">YES</button>
+                <button class="age-btn btn-no" onclick="confirmAge(false)">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
     <header>
-        <div class="brand-name">>_ DARK STORE<span>_</span></div>
+        <div class="brand-name">DARK STORE</div>
+        <div class="tagline">( The most Darkest vidios in the world 😲 )</div>
     </header>
 
     <!-- Main Content: Single Video Product -->
     <main>
         <div class="product-card">
             
-            <!-- Video Container with Blur Mask -->
+            <!-- Video Box -->
             <div class="video-wrapper">
-                <!-- Video with Download Restrictions -->
                 <video id="myVideo" controls controlsList="nodownload" disablePictureInPicture oncontextmenu="return false;" preload="metadata">
                     <source src="product.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                
-                <!-- Blur Mask Overlay with Eye Button and "see content" -->
-                <div class="video-mask" id="videoMask" onclick="playVideo()">
-                    <div class="mask-content">
-                        <div class="eye-btn">
-                            <!-- Eye SVG Icon -->
-                            <svg viewBox="0 0 24 24">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </div>
-                        <span class="btn-subtext">see content</span>
-                    </div>
-                </div>
             </div>
 
             <!-- Product Caption Placeholder -->
-            <p class="product-caption">2000+ Dark Web , Red Rooms Vidios only in 299₹  
-Click on Buy button</p>
+            <p class="You have Video's receive in Telegram app, ( 2000+ )Dark Web Leaked Video's / price only - 249₹ </p>
 
-            <!-- Black Buy Button with Link Placeholder -->
+            <!-- Black Buy Button (Full Width) -->
             <a href="https://t.me/Rebel_by_dark_side?text=yes%20I%20am%20ready%20for%20buy%20content%20in%20299%E2%82%B9" class="buy-btn">Buy Now</a>
 
         </div>
     </main>
 
-    <!-- Footer Section (Site Description Placeholder) -->
+    <!-- Footer Section -->
     <footer>
-        <p class="site-desc">
-1. First install Teligram 
-2. click on Buy button 
-3. Massage on Teligram 
-
-Free Demo Avilable ✓
-just talk with -rebel 
-:- Get videos collection group link 🖇️</p>
+        <p class="site-desc">Download Teligram App First , massage for Buy Dakr Web Leaked Video's ( Rebel ) </p>
     </footer>
 
     <!-- Scripts -->
     <script>
-        // Play video and remove blur mask
-        function playVideo() {
-            var video = document.getElementById('myVideo');
-            var mask = document.getElementById('videoMask');
-            
-            mask.style.display = 'none'; // Blur Mask Hata do
-            video.play();               // Video Play kar do
+        // Age verification handler
+        function confirmAge(isAdult) {
+            if (isAdult) {
+                document.getElementById('ageGate').style.display = 'none';
+            } else {
+                alert("Access Denied! You must be 18 or older to view this site.");
+                window.location.href = "https://www.google.com";
+            }
         }
 
-        // Disable right click / long press context menu globally and on video
+        // Disable Right Click / Long Press
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
