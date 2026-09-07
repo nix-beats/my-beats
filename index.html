@@ -9,11 +9,11 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      background-color: #0d0d0d;
+      background-color: #000000;
       color: #ffffff;
       min-height: 100vh;
       display: flex;
@@ -21,16 +21,15 @@
       align-items: center;
       justify-content: center;
       overflow-x: hidden;
-      position: relative;
     }
 
-    /* Video Background Styling */
+    /* Video Background */
     .video-container {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       z-index: -2;
       overflow: hidden;
     }
@@ -41,35 +40,30 @@
       object-fit: cover;
     }
 
-    /* Dark Overlay for better text readability */
+    /* Dark Overlay */
     .overlay {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.65);
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.55);
       z-index: -1;
     }
 
     /* Main Card Container */
     .main-card {
-      background: rgba(20, 20, 20, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 40px 30px;
+      background: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 35px 25px;
       border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
       text-align: center;
-      max-width: 420px;
-      width: 90%;
+      max-width: 380px;
+      width: 88%;
       margin: 20px;
-      animation: fadeIn 0.8s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .title {
@@ -79,97 +73,80 @@
       margin-bottom: 12px;
       color: #ffffff;
       text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
 
-    .subtitle {
+    /* Caption / Subtitle Placeholder */
+    .caption {
       font-size: 0.95rem;
-      color: #b0b0b0;
-      margin-bottom: 30px;
-      line-height: 1.5;
+      color: #cccccc;
+      margin-bottom: 25px;
+      line-height: 1.4;
     }
 
-    /* Buy Now Button Styling */
+    /* Buy Button */
     .buy-btn {
-      display: inline-block;
+      display: block;
       width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #0088cc 0%, #005580 100%);
+      padding: 15px;
+      background: #0088cc;
       color: #ffffff;
       font-size: 1.1rem;
       font-weight: 700;
       text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 136, 204, 0.4);
-      transition: all 0.3s ease;
+      box-shadow: 0 6px 18px rgba(0, 136, 204, 0.4);
+      transition: all 0.2s ease;
       border: none;
-      cursor: pointer;
-    }
-
-    .buy-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 25px rgba(0, 136, 204, 0.6);
-      background: linear-gradient(135deg, #0099ee 0%, #006699 100%);
     }
 
     .buy-btn:active {
-      transform: translateY(1px);
-    }
-
-    /* Footer / Features */
-    .features {
-      margin-top: 25px;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 20px;
-    }
-
-    .feature-item {
-      font-size: 0.8rem;
-      color: #888888;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .feature-item span {
-      color: #0088cc;
+      transform: scale(0.98);
+      background: #0077bb;
     }
   </style>
 </head>
 <body>
 
-  <!-- Video Background (Hosted on Secondary GitHub CDN) -->
+  <!-- Background Video -->
   <div class="video-container">
     <video autoplay loop muted playsinline id="bg-video">
-      <source src="https://cdn.jsdelivr.net/gh/weAre0back0-max/video-host@main/product.mp4" type="video/mp4">
+      <source src="https://raw.githack.com/weAre0back0-max/video-host/main/product.mp4" type="video/mp4">
+      <source src="https://cdn.statically.io/gh/weAre0back0-max/video-host/main/product.mp4" type="video/mp4">
       <source src="https://raw.githubusercontent.com/weAre0back0-max/video-host/main/product.mp4" type="video/mp4">
-      Your browser does not support video playback.
     </video>
   </div>
 
-  <!-- Background Dark Overlay -->
   <div class="overlay"></div>
 
-  <!-- Main Dark Store Card -->
+  <!-- Store Content -->
   <div class="main-card">
     <h1 class="title">DARK STORE</h1>
-    <p class="subtitle">Instant Access & Premium Service. Click below to proceed via Telegram.</p>
     
-    <!-- Telegram Redirect Button -->
+    <!-- YAHAN APNA WEBSITE / PRODUCT CAPTION LIKHO -->
+    <p class="caption">
+      <!-- AAPKA CAPTION YAHAN AAYEGA -->
+    </p>
+
+    <!-- Buy Now Telegram Button -->
     <a href="https://t.me/Rebel_by_dark_side" target="_blank" class="buy-btn">
       BUY NOW
     </a>
-
-    <div class="features">
-      <div class="feature-item"><span>✓</span> Instant Support</div>
-      <div class="feature-item"><span>✓</span> 100% Verified</div>
-      <div class="feature-item"><span>✓</span> Safe Deal</div>
-    </div>
   </div>
+
+  <script>
+    // Force video play on mobile devices
+    document.addEventListener("DOMContentLoaded", function() {
+      var video = document.getElementById("bg-video");
+      if (video) {
+        video.muted = true;
+        video.play().catch(function(e) {
+          console.log("Autoplay error:", e);
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>
