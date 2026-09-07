@@ -31,6 +31,7 @@
       height: 100vh;
       z-index: -2;
       overflow: hidden;
+      background: #000000;
     }
 
     #bg-video {
@@ -104,14 +105,16 @@
 </head>
 <body>
 
+  <!-- Background Video Container -->
   <div class="video-container">
-    <video autoplay loop muted playsinline id="bg-video">
-      <source src="https://weare0back0-max.github.io/video-host/product.mp4" type="video/mp4">
+    <video autoplay loop muted playsinline webkit-playsinline preload="auto" id="bg-video">
+      <source src="https://we0are0back0-max.github.io/video-host/product.mp4" type="video/mp4">
     </video>
   </div>
 
   <div class="overlay"></div>
 
+  <!-- Store Content -->
   <div class="main-card">
     <h1 class="title">DARK STORE</h1>
     
@@ -124,16 +127,20 @@
     </a>
   </div>
 
+  <!-- Mobile Autoplay Force Script -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var video = document.getElementById("bg-video");
-      if (video) {
-        video.muted = true;
-        video.play().catch(function(e) {
-          console.log("Autoplay error:", e);
+    const video = document.getElementById('bg-video');
+    if (video) {
+      video.muted = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // If browser restricts autoplay, play on first touch/scroll
+          document.addEventListener('touchstart', () => { video.play(); }, { once: true });
+          document.addEventListener('click', () => { video.play(); }, { once: true });
         });
       }
-    });
+    }
   </script>
 
 </body>
