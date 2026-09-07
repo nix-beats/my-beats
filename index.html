@@ -27,83 +27,6 @@
             margin: 0 auto;
         }
 
-        /* 18+ Age Verification Modal Overlay */
-        .age-gate-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 20px;
-        }
-
-        .age-gate-box {
-            background-color: #ffffff;
-            border: 3px solid #000000;
-            border-radius: 10px;
-            padding: 30px 20px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .age-gate-title {
-            font-size: 22px;
-            font-weight: bold;
-            color: #000000;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .age-gate-text {
-            font-size: 15px;
-            color: #111111;
-            margin-bottom: 25px;
-            font-family: Arial, sans-serif;
-        }
-
-        .age-btn-container {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .age-btn {
-            flex: 1;
-            padding: 12px 0;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            border: 2px solid #000000;
-            transition: all 0.2s ease;
-            font-family: Arial, sans-serif;
-        }
-
-        .btn-yes {
-            background-color: #000000;
-            color: #ffffff;
-        }
-
-        .btn-yes:hover {
-            background-color: #333333;
-        }
-
-        .btn-no {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .btn-no:hover {
-            background-color: #eeeeee;
-        }
-
         /* Header Section */
         header {
             padding: 15px 0;
@@ -155,7 +78,7 @@
             display: block;
         }
 
-        /* Caption Text (Fixed CSS) */
+        /* Caption Text */
         .product-caption {
             display: block !important;
             font-size: 18px !important;
@@ -168,7 +91,7 @@
             user-select: text;
         }
 
-        /* Full Width Black Buy Button (Fixed CSS) */
+        /* Full Width Black Button */
         a.buy-btn, 
         a.buy-btn:visited, 
         a.buy-btn:link {
@@ -213,18 +136,6 @@
 </head>
 <body>
 
-    <!-- 18+ Age Gate Popup Modal -->
-    <div class="age-gate-overlay" id="ageGate">
-        <div class="age-gate-box">
-            <div class="age-gate-title">⚠️ Age Verification</div>
-            <div class="age-gate-text">Are you 18 years old or older?</div>
-            <div class="age-btn-container">
-                <button class="age-btn btn-yes" onclick="confirmAge(true)">YES</button>
-                <button class="age-btn btn-no" onclick="confirmAge(false)">NO</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Header Section -->
     <header>
         <div class="brand-name">DARK STORE</div>
@@ -244,31 +155,21 @@
             </div>
 
             <!-- Product Caption Placeholder -->
-            <p class="product-caption">You have Video's receive in Telegram app, ( 2000+ )Dark Web Leaked Video's / price only - 249₹</p>
+            <p class="product-caption">Teligram Group Avilable Price Only 249₹ </p>
 
-            <!-- Black Buy Button (Full Width) -->
-            <a href="https://t.me/Rebel_by_dark_side?text=yes%20I%20am%20ready%20for%20buy%20content%20in%20249%E2%82%B9" class="buy-btn">Buy Now</a>
+            <!-- Black Join Group Button (With Updated Telegram Custom Message Link) -->
+            <a href="https://t.me/Rebel_by_dark_side?text=I%20Am%20See%20Your%20Full%20Demo%20On%20Instagram%20Profile%2C%20yes%20I%20Am%20Ready%20For%20Buy%20Your%20Content%20Group%20In%20249%E2%82%B9" class="buy-btn" target="_blank">Join Group</a>
 
         </div>
     </main>
 
     <!-- Footer Section -->
     <footer>
-        <p class="site-desc">First Download Teligram App, Massage For Buy DARK WEB Leaked Video's , Rebel✓ </p>
+        <p class="site-desc">Download First Teligram, After Joi Dark Web Services Leaked Video's Group</p>
     </footer>
 
     <!-- Scripts -->
     <script>
-        // Age verification handler
-        function confirmAge(isAdult) {
-            if (isAdult) {
-                document.getElementById('ageGate').style.display = 'none';
-            } else {
-                alert("Access Denied! You must be 18 or older to view this site.");
-                window.location.href = "https://www.google.com";
-            }
-        }
-
         // Disable Right Click / Long Press
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
