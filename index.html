@@ -23,7 +23,6 @@
       overflow-x: hidden;
     }
 
-    /* Video Background */
     .video-container {
       position: fixed;
       top: 0;
@@ -40,7 +39,6 @@
       object-fit: cover;
     }
 
-    /* Dark Overlay */
     .overlay {
       position: fixed;
       top: 0;
@@ -51,7 +49,6 @@
       z-index: -1;
     }
 
-    /* Main Card Container */
     .main-card {
       background: rgba(18, 18, 18, 0.85);
       backdrop-filter: blur(10px);
@@ -75,7 +72,6 @@
       text-transform: uppercase;
     }
 
-    /* Caption / Subtitle Placeholder */
     .caption {
       font-size: 0.95rem;
       color: #cccccc;
@@ -83,7 +79,6 @@
       line-height: 1.4;
     }
 
-    /* Buy Button */
     .buy-btn {
       display: block;
       width: 100%;
@@ -109,34 +104,27 @@
 </head>
 <body>
 
-  <!-- Background Video -->
   <div class="video-container">
     <video autoplay loop muted playsinline id="bg-video">
-      <source src="https://raw.githack.com/weAre0back0-max/video-host/main/product.mp4" type="video/mp4">
-      <source src="https://cdn.statically.io/gh/weAre0back0-max/video-host/main/product.mp4" type="video/mp4">
-      <source src="https://raw.githubusercontent.com/weAre0back0-max/video-host/main/product.mp4" type="video/mp4">
+      <source src="https://weare0back0-max.github.io/video-host/product.mp4" type="video/mp4">
     </video>
   </div>
 
   <div class="overlay"></div>
 
-  <!-- Store Content -->
   <div class="main-card">
     <h1 class="title">DARK STORE</h1>
     
-    <!-- YAHAN APNA WEBSITE / PRODUCT CAPTION LIKHO -->
     <p class="caption">
       <!-- AAPKA CAPTION YAHAN AAYEGA -->
     </p>
 
-    <!-- Buy Now Telegram Button -->
     <a href="https://t.me/Rebel_by_dark_side" target="_blank" class="buy-btn">
       BUY NOW
     </a>
   </div>
 
   <script>
-    // Force video play on mobile devices
     document.addEventListener("DOMContentLoaded", function() {
       var video = document.getElementById("bg-video");
       if (video) {
