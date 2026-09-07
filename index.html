@@ -1,180 +1,175 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Store</title>
-    <style>
-        /* Base Reset & Styling */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DARK STORE</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        body {
-            background-color: #ffffff;
-            color: #000000;
-            font-family: 'Courier New', Courier, monospace, sans-serif;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    body {
+      background-color: #0d0d0d;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-        /* Header Section */
-        header {
-            padding: 15px 0;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #000000;
-        }
+    /* Video Background Styling */
+    .video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
 
-        .brand-name {
-            font-size: 32px;
-            font-weight: 900;
-            color: #000000;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: block;
-            margin-bottom: 5px;
-        }
+    #bg-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        .tagline {
-            font-size: 13px;
-            color: #000000;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            font-family: Arial, sans-serif;
-        }
+    /* Dark Overlay for better text readability */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: -1;
+    }
 
-        /* Main Video Card Container */
-        .product-card {
-            border: 2px solid #000000;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+    /* Main Card Container */
+    .main-card {
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      margin: 20px;
+      animation: fadeIn 0.8s ease-in-out;
+    }
 
-        /* Video Box */
-        .video-wrapper {
-            width: 100%;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            background-color: #000000;
-            border: 1px solid #000000;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .video-wrapper video {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+    .title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
 
-        /* Caption Text */
-        .product-caption {
-            display: block !important;
-            font-size: 18px !important;
-            font-weight: bold !important;
-            color: #000000 !important;
-            margin: 20px 0 !important;
-            line-height: 1.5;
-            font-family: Arial, sans-serif;
-            -webkit-user-select: text;
-            user-select: text;
-        }
+    .subtitle {
+      font-size: 0.95rem;
+      color: #b0b0b0;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
 
-        /* Full Width Black Button */
-        a.buy-btn, 
-        a.buy-btn:visited, 
-        a.buy-btn:link {
-            display: block !important;
-            width: 100% !important;
-            background-color: #000000 !important;
-            color: #ffffff !important;
-            padding: 16px 0 !important;
-            text-decoration: none !important;
-            font-weight: bold !important;
-            font-size: 18px !important;
-            border-radius: 6px !important;
-            font-family: Arial, sans-serif !important;
-            border: 2px solid #000000 !important;
-            text-align: center !important;
-            box-sizing: border-box !important;
-        }
+    /* Buy Now Button Styling */
+    .buy-btn {
+      display: inline-block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #0088cc 0%, #005580 100%);
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 136, 204, 0.4);
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
 
-        a.buy-btn:hover {
-            background-color: #333333 !important;
-        }
+    .buy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(0, 136, 204, 0.6);
+      background: linear-gradient(135deg, #0099ee 0%, #006699 100%);
+    }
 
-        /* Footer / Description Box */
-        footer {
-            margin-top: 50px;
-            padding: 25px 20px;
-            border: 2px solid #000000;
-            text-align: center;
-            background-color: #ffffff;
-            border-radius: 8px;
-        }
+    .buy-btn:active {
+      transform: translateY(1px);
+    }
 
-        .site-desc {
-            font-size: 14px;
-            color: #000000;
-            line-height: 1.6;
-            font-family: Arial, sans-serif;
-            -webkit-user-select: text;
-            user-select: text;
-        }
-    </style>
+    /* Footer / Features */
+    .features {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+    }
+
+    .feature-item {
+      font-size: 0.8rem;
+      color: #888888;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .feature-item span {
+      color: #0088cc;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <header>
-        <div class="brand-name">DARK STORE</div>
-        <div class="tagline">( Wait 10 Second Vedeo Is Loding 💢)</div>
-    </header>
+  <!-- Video Background (Hosted on Secondary GitHub CDN) -->
+  <div class="video-container">
+    <video autoplay loop muted playsinline id="bg-video">
+      <source src="https://cdn.jsdelivr.net/gh/weAre0back0-max/video-host@main/product.mp4" type="video/mp4">
+      <source src="https://raw.githubusercontent.com/weAre0back0-max/video-host/main/product.mp4" type="video/mp4">
+      Your browser does not support video playback.
+    </video>
+  </div>
 
-    <!-- Main Content: Single Video Product -->
-    <main>
-        <div class="product-card">
-            
-            <!-- Video Box -->
-            <div class="video-wrapper">
-                <video id="myVideo" controls controlsList="nodownload" disablePictureInPicture oncontextmenu="return false;" preload="metadata">
-                    <source src="product.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
+  <!-- Background Dark Overlay -->
+  <div class="overlay"></div>
 
-            <!-- Product Caption Placeholder -->
-            <p class="product-caption">( Teligram Group 💥) Dark Web Leaked Video's Group Is available Price Only- 99₹</p>
+  <!-- Main Dark Store Card -->
+  <div class="main-card">
+    <h1 class="title">DARK STORE</h1>
+    <p class="subtitle">Instant Access & Premium Service. Click below to proceed via Telegram.</p>
+    
+    <!-- Telegram Redirect Button -->
+    <a href="https://t.me/Rebel_by_dark_side" target="_blank" class="buy-btn">
+      BUY NOW
+    </a>
 
-            <!-- Black Buy Now Button (Updated 99₹ Telegram Link) -->
-            <a href="https://t.me/Rebel_by_dark_side?text=I%20Am%20See%20Your%20Full%20Demo%20On%20Instagram%20Profile%2C%20yes%20I%20Am%20Ready%20For%20Buy%20Your%20Content%20Group%20In%2099%E2%82%B9" class="buy-btn" target="_blank">Buy Now</a>
-
-        </div>
-    </main>
-
-    <!-- Footer Section -->
-    <footer>
-        <p class="site-desc">Teligram Group Avilable✓ Click on Buy button and Join FAST 🥵</p>
-    </footer>
-
-    <!-- Scripts -->
-    <script>
-        // Disable Right Click / Long Press
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-    </script>
+    <div class="features">
+      <div class="feature-item"><span>✓</span> Instant Support</div>
+      <div class="feature-item"><span>✓</span> 100% Verified</div>
+      <div class="feature-item"><span>✓</span> Safe Deal</div>
+    </div>
+  </div>
 
 </body>
 </html>
