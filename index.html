@@ -1,147 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DARK STORE</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Store</title>
+    <style>
+        /* Base Reset & Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
-    body {
-      background-color: #000000;
-      color: #ffffff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow-x: hidden;
-    }
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Courier New', Courier, monospace, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-    .video-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -2;
-      overflow: hidden;
-      background: #000000;
-    }
+        /* Header Section */
+        header {
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000000;
+        }
 
-    #bg-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+        .brand-name {
+            font-size: 32px;
+            font-weight: 900;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 5px;
+        }
 
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: -1;
-    }
+        .tagline {
+            font-size: 13px;
+            color: #000000;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            font-family: Arial, sans-serif;
+        }
 
-    .main-card {
-      background: rgba(18, 18, 18, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 35px 25px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
-      text-align: center;
-      max-width: 380px;
-      width: 88%;
-      margin: 20px;
-    }
+        /* Main Video Card Container */
+        .product-card {
+            border: 2px solid #000000;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
 
-    .title {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-      color: #ffffff;
-      text-transform: uppercase;
-    }
+        /* Video Box */
+        .video-wrapper {
+            width: 100%;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #000000;
+            border: 1px solid #000000;
+        }
 
-    .caption {
-      font-size: 0.95rem;
-      color: #cccccc;
-      margin-bottom: 25px;
-      line-height: 1.4;
-    }
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-    .buy-btn {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      background: #0088cc;
-      color: #ffffff;
-      font-size: 1.1rem;
-      font-weight: 700;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0, 136, 204, 0.4);
-      transition: all 0.2s ease;
-      border: none;
-    }
+        /* Caption Text */
+        .product-caption {
+            display: block !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+            color: #000000 !important;
+            margin: 20px 0 !important;
+            line-height: 1.5;
+            font-family: Arial, sans-serif;
+            -webkit-user-select: text;
+            user-select: text;
+        }
 
-    .buy-btn:active {
-      transform: scale(0.98);
-      background: #0077bb;
-    }
-  </style>
+        /* Full Width Black Button */
+        a.buy-btn, 
+        a.buy-btn:visited, 
+        a.buy-btn:link {
+            display: block !important;
+            width: 100% !important;
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            padding: 16px 0 !important;
+            text-decoration: none !important;
+            font-weight: bold !important;
+            font-size: 18px !important;
+            border-radius: 6px !important;
+            font-family: Arial, sans-serif !important;
+            border: 2px solid #000000 !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        a.buy-btn:hover {
+            background-color: #333333 !important;
+        }
+
+        /* Footer / Description Box */
+        footer {
+            margin-top: 50px;
+            padding: 25px 20px;
+            border: 2px solid #000000;
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+
+        .site-desc {
+            font-size: 14px;
+            color: #000000;
+            line-height: 1.6;
+            font-family: Arial, sans-serif;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Background Video Container -->
-  <div class="video-container">
-    <video autoplay loop muted playsinline webkit-playsinline preload="auto" id="bg-video">
-      <source src="https://we0are0back0-max.github.io/video-host/product.mp4" type="video/mp4">
-    </video>
-  </div>
+    <!-- Header Section -->
+    <header>
+        <div class="brand-name">DARK STORE</div>
+        <div class="tagline">( The most Darkest vidios in the world 😲 )</div>
+    </header>
 
-  <div class="overlay"></div>
+    <!-- Main Content: Single Video Product -->
+    <main>
+        <div class="product-card">
+            
+            <!-- Video Box (Hosted Externally - 0% Vercel Bandwidth & No Buffering) -->
+            <div class="video-wrapper">
+                <video id="myVideo" controls controlsList="nodownload" disablePictureInPicture oncontextmenu="return false;" preload="auto" playsinline webkit-playsinline>
+                    <source src="https://we0are0back0-max.github.io/video-host/product.mp4" type="video/mp4">
+                    <source src="https://raw.githack.com/we0are0back0-max/video-host/main/product.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
 
-  <!-- Store Content -->
-  <div class="main-card">
-    <h1 class="title">DARK STORE</h1>
-    
-    <p class="caption">
-      <!-- AAPKA CAPTION YAHAN AAYEGA -->
-    </p>
+            <!-- Product Caption Placeholder -->
+            <p class="product-caption">.....caption.....</p>
 
-    <a href="https://t.me/Rebel_by_dark_side" target="_blank" class="buy-btn">
-      BUY NOW
-    </a>
-  </div>
+            <!-- Black Buy Now Button (Updated 99₹ Telegram Link) -->
+            <a href="https://t.me/Rebel_by_dark_side?text=I%20Am%20See%20Your%20Full%20Demo%20On%20Instagram%20Profile%2C%20yes%20I%20Am%20Ready%20For%20Buy%20Your%20Content%20Group%20In%2099%E2%82%B9" class="buy-btn" target="_blank">Buy Now</a>
 
-  <!-- Mobile Autoplay Force Script -->
-  <script>
-    const video = document.getElementById('bg-video');
-    if (video) {
-      video.muted = true;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // If browser restricts autoplay, play on first touch/scroll
-          document.addEventListener('touchstart', () => { video.play(); }, { once: true });
-          document.addEventListener('click', () => { video.play(); }, { once: true });
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p class="site-desc">.....site-description.....</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Disable Right Click / Long Press
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
         });
-      }
-    }
-  </script>
+    </script>
 
 </body>
 </html>
