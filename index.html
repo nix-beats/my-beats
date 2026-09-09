@@ -91,10 +91,16 @@
             user-select: text;
         }
 
-        /* Full Width Black Button */
+        /* Full Width Black Buttons */
         a.buy-btn, 
         a.buy-btn:visited, 
-        a.buy-btn:link {
+        a.buy-btn:link,
+        a.demo-btn,
+        a.demo-btn:visited,
+        a.demo-btn:link,
+        a.proof-btn,
+        a.proof-btn:visited,
+        a.proof-btn:link {
             display: block !important;
             width: 100% !important;
             background-color: #000000 !important;
@@ -110,7 +116,14 @@
             box-sizing: border-box !important;
         }
 
-        a.buy-btn:hover {
+        a.demo-btn,
+        a.proof-btn {
+            margin-top: 12px !important;
+        }
+
+        a.buy-btn:hover,
+        a.demo-btn:hover,
+        a.proof-btn:hover {
             background-color: #333333 !important;
         }
 
@@ -139,14 +152,14 @@
     <!-- Header Section -->
     <header>
         <div class="brand-name">DARK STORE</div>
-        <div class="tagline">(wait 5 second and play Vedio, The most Darkest vidios in the world 😲 )</div>
+        <div class="tagline">( wait 5 second and play Vedio, The most Darkest vidios in the world 😲 )</div>
     </header>
 
     <!-- Main Content: Single Video Product -->
     <main>
         <div class="product-card">
             
-            <!-- Video Box (Hosted Externally - 0% Vercel Bandwidth & No Buffering) -->
+            <!-- Video Box (Hosted Externally) -->
             <div class="video-wrapper">
                 <video id="myVideo" controls controlsList="nodownload" disablePictureInPicture oncontextmenu="return false;" preload="auto" playsinline webkit-playsinline>
                     <source src="https://we0are0back0-max.github.io/video-host/product.mp4" type="video/mp4">
@@ -160,15 +173,19 @@
 
 Leaked Video's Group Is available , - Pay after join the group ✓ - Price Only-99₹ 💥</p>
 
-            <!-- Black Buy Now Button (Updated 99₹ Telegram Link) -->
+            <!-- Black Buy Now Button -->
             <a href="https://t.me/Rebel_by_dark_side?text=I%20Am%20See%20Your%20Full%20Demo%20On%20Instagram%20Profile%2C%20yes%20I%20Am%20Ready%20For%20Buy%20Your%20Content%20Group%20In%2099%E2%82%B9" class="buy-btn" target="_blank">Buy Now</a>
+
+            <!-- See Demo Video's Button -->
+            <a href="https://t.me/Dark_web_rooms_bot" class="demo-btn" target="_blank">See Demo Video's</a>
+
 
         </div>
     </main>
 
     <!-- Footer Section -->
     <footer>
-        <p class="site-desc">FIRST ADD, PAY AFTER - 2000+ dark web leaked video's is uploaded in group: Instant Support, 100% Verified, Safe Deal. Massage on Teligram App And Buy / First Download Teligram.....</p>
+        <p class="site-desc">2000+ dark web leaked video's is uploaded in group: Instant Support, 100% Verified, Safe Deal. Massage on Teligram App And Buy / First Download Teligram.....</p>
     </footer>
 
     <!-- Scripts -->
